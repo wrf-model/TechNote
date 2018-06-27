@@ -1,0 +1,207 @@
+\documentclass[12pt]{book}
+%
+% Use graphicsx package for including epsi figures
+\usepackage{graphicx}
+% Use espfig package and wrapfig for less-than column
+% width figures
+\usepackage{epsfig,wrapfig}
+%
+% Use the ams packages for equations
+\usepackage{amsmath}
+\usepackage{amssymb}
+%
+% Use hyperref to insert links in pdf documents
+%\usepackage[colorlinks,citecolor=black,linkcolor=black,urlcolor=black]{hyperref}
+\usepackage[colorlinks,citecolor=blue,linkcolor=red,urlcolor=cyan]{hyperref}
+%
+% Set up page layout
+\setlength{\textwidth}{6.75in}
+\setlength{\oddsidemargin}{-0.0in}
+\setlength{\evensidemargin}{-0.25in}
+\setlength{\textheight}{9.0in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\headheight}{0.0in}
+\setlength{\headsep}{0.5in}
+\setlength{\topskip}{0.0in}
+\setlength{\footskip}{0.5in}
+%\renewcommand{\baselinestretch}{2.0}
+%\setlength{\parindent}{0.0in}
+%
+% Include some coding shortcuts
+\def \eg{{\emph{e.g.} }}
+\def \ie{{\emph{i.e.} }}
+\def \ni{\noindent}
+\newcommand{\xbmf}[1]{\hbox{\sffamily\slshape #1}}
+\newcommand{\xmathbf}{\boldsymbol}
+
+\begin{document}
+\pagestyle{plain}
+
+%\setcounter{page}{1}
+
+\setlength{\parskip}{0.08in}
+\LARGE 
+\begin{center} 
+\centering
+\textbf {Corrigendum}
+\end{center}
+
+\normalsize
+\noindent
+
+\noindent
+In Chapter 2, Equations (2.3) and (2.4) should be
+\begin{align}
+ \partial_t U + (\nabla \cdot {\bf V} u )
+- \partial_x (p\phi_\eta)
++ \partial_\eta (p\phi_x) &= F_U
+\tag{2.3}
+\\
+%
+ \partial_t V + (\nabla \cdot {\bf V} v )
+- \partial_y (p\phi_\eta)
++ \partial_\eta (p\phi_y) &= F_V 
+\tag{2.4}
+%
+\end{align}
+
+\noindent
+In Chapter 2, Governing Equations, the correct equation (2.33) should be:
+\setlength{\parskip}{0.00in}
+
+\begin{align}
+%
+F_{V_{cor}} & = - \biggl(f + u {\partial m \over
+\partial y} - v {\partial m \over \partial x}\biggr) U
++ e W \sin \alpha_r - {vW \over r_e}
+\tag{2.33}
+\end{align}
+
+\noindent
+In Chapter 3, Model Discretization, the coefficient $C$ on page 12
+should be defined as 
+
+$$C=c_s^2/\mu^{t^*}{\alpha^{t^*}_d}^2$$.
+
+\noindent
+The correct equation 3.11 is
+\begin{align}
+ \delta_\tau W'' 
+- m^{-1} g\overline{\left[(\alpha/\alpha_d)^{t^*} \biggl[
+     \partial_\eta (C \partial_\eta \phi'') 
+   + \partial_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta''\over\Theta^{t^*}}\biggr)\biggr]
+- \mu_d''\right]}^\tau
+                                                   &= {R_W}^{t^*}  
+\tag{3.11}
+\end{align}
+
+
+\noindent
+The correct equation (3.26) are:
+%%\begin{align}
+%% \delta_\tau \phi'' + {1\over\mu_d^{t^*}}
+%%[
+%%m \Omega''^{\tau+\Delta \tau}\phi_\eta^{t^*}  - \overline{g W''}^\tau ]
+%%&= {R_\phi}^{t^*}
+%%\tag{3.12}
+%%\end{align}
+
+\begin{align}
+ \delta_\tau \phi'' + {1\over\mu_d^{t^*}}
+[
+ m \Omega''^{\tau+\Delta \tau} \delta_\eta \overline{\phi^{t^*}}^\eta  - m_y\overline{g W''}^\tau ]
+&= {R_\phi}^{t^*}
+\tag{3.26}
+\end{align}
+
+\noindent
+For equations (3.13), (3.14), (3.15), and (3.17), the correct ones are:
+
+%
+\begin{align}
+R_U^{t^*} = &
+- m[\partial_x(Uu) + \partial_y(Vu)] - \partial_\eta (\Omega u)
+- ({\mu}_d \alpha \partial_x p'   
+- {\mu}_d \alpha' \partial_x \bar{p}) ~~~~~~~~ \notag
+\\
+& - (\alpha/\alpha_d) ( {\mu}_d \partial_x \phi' 
+  -  \partial_\eta p' \partial_x \phi
+  + {\mu}_d' \partial_x \phi ) + F_U
+\tag{3.13}
+\\
+%
+R_V^{t^*} = &
+- m[\partial_x (Uv) + \partial_y (Vv)] - \partial_\eta (\Omega v)
+- ({\mu}_d \alpha \partial_y p'
+- {\mu}_d \alpha' \partial_y \bar{p}) ~~~~~~~~ \notag
+\\
+& - (\alpha/\alpha_d) ( {\mu}_d \partial_y \phi'
+  - \partial_\eta p' \partial_y \phi
+  + {\mu}_d' \partial_y \phi ) + F_V
+\tag{3.14}
+\\
+%
+R_{\mu_d}^{t^*} = &
+- m^2[\partial_x U + \partial_y V] - m \partial_\eta \Omega
+\tag{3.15}
+\\
+%
+R_W^{t^*} = &
+- m[\partial_x (Uw) + \partial_y (Vw)] - \partial_\eta
+(\Omega w)  ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~ \notag
+\\
+& + m^{-1} g (\alpha/\alpha_d) [\partial_\eta p'
+  - {\bar{\mu}}_d (q_v + q_c +q_r)]
+  - m^{-1} {\mu}_d'g + F_W
+\tag{3.17}
+%
+\end{align}
+
+\vfill\eject
+\noindent
+At the top of page 14 in Chapter 3, we have corrected the statement
+concerning the lower boundary condition for the vertically-implicit
+solution for $W''$, the correct lower boundary condition being
+$\Omega = \Omega'' = 0$.
+
+Also in Chapter 3, page 18, the correct equation for $V$ component of 
+the Coriolis and curvature term is
+
+\begin{align}
+F_{V_{cor}} & =  -
+\bigl({\overline f}^y +
+{\overline{
+{\overline u}^x 
+{\delta_y m}
+- {\overline v}^y \delta_x m}}^y \bigr)
+{\overline U}^{xy}
++ {\overline e}^y
+{\overline W}^{y\eta}\, {\overline{\sin \alpha_r}}^y
+- {v {\overline W}^{y\eta} \over r_e}
+\notag
+\end{align}
+
+\noindent
+In Chapter 4, Turbulent Mixing and Model Filters, equation (4.6) has been
+corrected to:
+
+\begin{equation}
+K_{h,v} = C_s^2 \, l_{h,v}^2 \,\hbox{max}
+\biggl[ 0., \bigl( D^2 - P_r^{-1} N^2 \bigr)^{1/2}\biggr],
+\tag{4.6}
+\end{equation}
+
+\begin{equation}
+D^2 =
+{1 \over 2} \biggl[
+D^2_{11} +
+D^2_{22} +
+D^2_{33} \biggr] +
+\bigl({{\overline{D_{12}}}^{xy}}\bigr)^2 +
+\bigl({{\overline{D_{13}}}^{x\eta}}\bigr)^2 +
+\bigl({{\overline{D_{23}}}^{y\eta}}\bigr)^2
+\notag
+\end{equation}
+
+
+\end{document}

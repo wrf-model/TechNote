@@ -1,0 +1,645 @@
+\begin{thebibliography}{}
+
+\bibitem[Barker et al.(2003)]{barker03}%
+Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: A Three-Dimensional
+   Variational (3DVAR) Data Assimilation System For Use With MM5. 
+   NCAR Tech Note, NCAR/TN-453+STR, 68 pp. [Available from UCAR Communications, P.O.
+   Box 3000, Boulder, CO, 80307.].
+
+\bibitem[Barker et al.(2004)]{barker04}%
+Barker, D. M., W. Huang, Y.-R. Guo, A. Bourgeois, and X. N. Xiao, 2004: 
+   A Three-Dimensional Variational Data Assimilation System for MM5: 
+   Implementation and Initial Results
+   {\em Mon. Wea. Rev.}, {\bf 132}, 897--914.
+
+\bibitem[Beljaars(1994)]{beljaars94}%
+Beljaars, A.C.M., 1994: The parameterization of surface fluxes in 
+  large-scale models under free convection, 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 121}, 255--270.
+
+\bibitem[Betts(1986)]{betts86}%
+Betts, A. K., 1986: A new convective adjustment scheme. 
+  Part I: Observational and theoretical basis. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 677--691.
+
+\bibitem[Betts and Miller(1986)]{bettsmiller86}%
+Betts, A. K., and M. J. Miller, 1986: A new convective adjustment scheme. 
+  Part II: Single column tests using GATE wave, BOMEX, and arctic air-mass data sets. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 693--709.
+
+\bibitem[Carpenter et al.(1990)]{carpenter1990}%
+Carpenter, R. L., K. K. Droegemeier, P. R. Woodward, and C. E. Hane, 1990:
+  Application of the Piecewise Parabolic Method (PPM) to
+  meteorological modeling. 
+  {\em Mon. Wea. Rev.}, {\bf 118}, 586--612.
+
+\bibitem[Chen and Dudhia(2001)]{chendudhia01}%
+Chen, F., and J. Dudhia, 2001: Coupling an advanced land-surface/ hydrology model 
+  with the Penn State/ NCAR MM5 modeling system. 
+  Part I: Model description and implementation. 
+  {\em Mon. Wea. Rev.}, {\bf 129}, 569--585.
+
+\bibitem[Chen et al.(2006)]{chen06}%
+Chen, F., M. Tewari, H. Kusaka, and T. T. Warner, 2006:
+ Current status of urban modeling in the community Weather Research and Forecast (WRF) model. 
+Joint with Sixth Symposium on the Urban Environment and AMS Forum: Managing our
+Physical and Natural Resources: Successes and Challenges, Atlanta, GA, USA, Amer.
+Meteor. Soc., CD-ROM. J1.4.
+
+\bibitem[Chen and Sun(2002)]{chen02}%
+Chen, S.-H., and W.-Y. Sun, 2002: A one-dimensional time dependent cloud model. 
+  {\em J. Meteor. Soc. Japan}, {\bf 80}, 99--118.
+
+\bibitem[Chou and Suarez(1994)]{chou94}%
+Chou M.-D., and M. J. Suarez, 1994: An efficient thermal infrared radiation 
+  parameterization for use in general circulation models. 
+  NASA Tech. Memo. 104606, 3, 85pp.
+
+\bibitem[Collins et al.(2004)]{collins04}%
+Collins, W.D. et al., 2004: 
+Description of the NCAR Community Atmosphere Model (CAM 3.0),
+NCAR Technical Note, NCAR/TN-464+STR, 226pp.
+
+\bibitem[Cooper(1986)]{cooper86}%
+ Cooper, W. A., 1986: Ice initiation in natural clouds.
+   {\em Precipitation Enhancement --- A Scientific Challenge}, Meteor. Monogr., No. 43,
+   Amer. Met. Soc., 29--32.
+
+\bibitem[Daley and Barker(2001)]{daley01}%
+Daley, R., and E. Barker, 2001: NAVDAS: Formulation and Diagnostics. 
+  {\em Mon. Wea.  Rev.}, {\bf 129}, 869--883.
+
+\bibitem[Davies and Turner(1977)]{daviesturner77}%
+Davies, H. C., and R. E. Turner, 1977: Updating prediction models by dynamical relaxation: An
+  examination of the technique.
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 103}, 225--245.
+
+\bibitem[Deardorff(1972)]{deardorff72}%
+Deardorff, J. W., 1972 Numerical investigation of neutral and unstable
+  planetary boundary layers, {\em J. Atmos. Sci.}, {\bf 29}, 91--115.
+
+\bibitem[Desroziers(1997)]{desroziers97}%
+Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
+  frontal structures. {\em Mon. Wea. Rev.}, {\bf 125}, 3030--3039.
+
+\bibitem[Desroziers and Ivanov(2001)]{desroziers01}%
+Desroziers, G., and S. Ivanov, 2001: 
+  Diagnosis and adaptive tuning of observation-error parameters 
+  in a variational assimilation. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 127}, 1433--1452.
+
+\bibitem[Dudhia(1989)]{dudhia89}%
+Dudhia, J., 1989: Numerical study of convection observed during the winter 
+  monsoon experiment using a mesoscale two-dimensional model,
+  {\em J. Atmos. Sci.}, {\bf 46}, 3077--3107.
+
+\bibitem[Dudhia(1995)]{dudhia95}%
+Dudhia, J., 1995: Reply,
+  {\em Mon. Wea. Rev.}, {\bf 123}, 2571--2575.
+
+\bibitem[Dudhia et al.(2008)]{dudhia08}%
+Dudhia, J., S.-Y. Hong, and K.-S. Lim, 2008:
+ A new method for representing mixed-phase particle fall speeds in bulk microphysics parameterizations. 
+  {\em J. Met. Soc. Japan}, in press.
+
+\bibitem[Durran and Klemp(1983)]{durran_klemp83}%
+Durran, R. D., and J. B. Klemp, 1983: A compressible model for the simulation
+  of moist mountain waves,
+  {\em Mon. Wea. Rev.}, {\bf 111}, 2341--2361.
+
+\bibitem[Dyer and Hicks(1970)]{dyer70}%
+Dyer, A. J., and B. B. Hicks, 1970: Flux-gradient relationships in the constant flux layer, 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 96}, 715--721.
+
+\bibitem[Easter(1993)]{easter93}%
+Easter, R. C., 1993: Two modified versions of Bott's positive definite
+  numerical advection scheme.  {\em Mon. Wea. Rev.,} {\bf 121,} 297--304.
+
+\bibitem[Fels and Schwarzkopf(1975)]{fels75}%
+Fels, S. B. and M. D. Schwarzkopf, 1975:
+  The Simplified Exchange Approximation: A New Method for Radiative Transfer Calculations,
+  {\em J. Atmos. Sci.}, {\bf 32}, 1475--1488.
+
+\bibitem[Fisher(2003)]{fisher03}
+Fisher, M., 2003: Background error covariance modeling.
+  {\em Seminar on Recent Development in Data Assimilation for Atmosphere and Ocean},
+  45--63, ECMWF.
+
+\bibitem[Fletcher(1962)]{fletcher62}%
+Fletcher, N. H., 1962: {\em The Physics Of Rain Clouds.} Cambridge University Press, 
+  386 pp.
+
+\bibitem[Grell and Devenyi(2002)]{grell02}%
+Grell, G. A., and D. Devenyi, 2002: A generalized approach to parameterizing convection
+  combining ensemble and data assimilation techniques. 
+  {\em Geophys. Res. Lett.}, {\bf 29(14)}, Article 1693.
+
+\bibitem[Grell et al.(2005)]{Grelletal05}%
+Grell, G.A., S.E. Peckham, R. Schmitz, S.A. McKeen, G. Frost,
+W.C. Skamarock and B. Eder, 2005: Fully coupled online chemistry
+within the WRF model. {\em Atmos. Environ.}, {\bf 39}, 6957-6975.
+
+\bibitem[Haltiner and Williams(1980)]{haltiner_and_williams}%
+Haltiner, G. J., and R. T. Williams, 1980: 
+  {\em Numerical prediction and dynamic meteorology.}
+  John Wiley \& Sons, Inc., 477pp.
+
+\bibitem[Hollingsworth and Lonnberg(1986)]{hollingsworth86}%
+Hollingsworth, A., and P. Lonnberg, 1986: The Statistical Structure Of Short-Range
+  Forecast Errors As Determined From Radiosonde Data. Part I: The Wind Field.
+  {\em Tellus}, {\bf 38A}, 111--136.
+
+\bibitem[Holtslag and Boville (1993)]{holtslag93}%
+Holtslag, A. A. M. and B. A. Boville, 1993: 
+Local versus non-local boundary layer diffusion in a global climate model, 
+ {\em J. Climate}, {\bf 6}, 1825--1842.
+
+\bibitem[Hong(2007)]{hong07}%
+Hong, S.-Y., 2007:
+ Stable Boundary Layer Mixing in a Vertical Diffusion Scheme.
+ The Korea Meteor. Soc., Fall conference, Seoul, Korea, Oct. 25-26.
+
+\bibitem[Hong and Lim(2006)]{honglim06}%
+Hong, S.-Y., and J.-O. J. Lim, 2006:
+ The WRF Single-Moment 6-Class Microphysics Scheme (WSM6),
+ {\em J. Korean Meteor. Soc.}, {\bf 42}, 129--151.
+
+\bibitem[Hong and Pan(1996)]{hong96}%
+Hong, S.-Y., and H.-L. Pan, 1996:
+  Nonlocal boundary layer vertical diffusion in a medium-range forecast model, 
+  {\em Mon. Wea. Rev.}, {\bf 124}, 2322--2339.
+
+\bibitem[Hong et al.(1998)]{hong98}%
+Hong, S.-Y., H.-M. H. Juang, and Q. Zhao, 1998:
+  Implementation of prognostic cloud scheme for a regional spectral model, 
+  {\em Mon. Wea. Rev.}, {\bf 126}, 2621--2639.
+
+\bibitem[Hong et al.(2004)]{hong04}%
+Hong, S.-Y., J. Dudhia, and S.-H. Chen, 2004:
+  A Revised Approach to Ice Microphysical Processes for the Bulk Parameterization 
+  of Clouds and Precipitation,
+  {\em Mon. Wea. Rev.}, {\bf 132}, 103--120.
+
+\bibitem[Hong et al.(2006)]{hong06}%
+Hong, S.-Y., and Y. Noh, and J. Dudhia, 2006:
+A new vertical diffusion package with an explicit treatment of entrainment processes. 
+ {\em Mon. Wea. Rev.}, {\bf 134}, 2318--2341. 
+
+\bibitem[Huang and Lynch, 1993]{huanglynch93}%
+Huang, X.-Y. and P. Lynch, 1993:
+  Diabatic Digital-Filtering Initialization: Application to the HIRLAM Model.,
+  {\em Mon. Wea. Rev.}, {\bf 121}, 589--603.
+  
+\bibitem[Ide et al.(1997)]{ide97}%
+Ide, K., P. Courtier, M. Ghil, and A. C. Lorenc, 1997: Unified notation for data
+  assimilation: Operational, sequential and variational. 
+  {\em J. Met. Soc. Japan}, {\bf 75}, 181--189.
+
+\bibitem[Ingleby(2001)]{ingleby01}%
+Ingleby, N. B., 2001: The statistical structure of forecast errors and its representation in
+  the Met. Office global 3-D variational data assimilation scheme. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 127}, 209--232.
+
+\bibitem[Janjic(1990)]{janjic90}%
+Janjic, Z. I., 1990: The step-mountain coordinate: physical package,
+  {\em Mon. Wea. Rev.}, {\bf 118}, 1429--1443.
+
+\bibitem[Janjic(1994)]{janjic94}%
+Janjic, Z. I., 1994: The step-mountain eta coordinate model: 
+  further developments of the convection, viscous sublayer and turbulence closure schemes,
+  {\em Mon. Wea. Rev.}, {\bf 122}, 927--945.
+
+\bibitem[Janjic(1996)]{janjic96}%
+Janjic, Z. I., 1996: The surface layer in the NCEP Eta Model, 
+  {\em Eleventh Conference on Numerical Weather Prediction}, 
+  Norfolk, VA, 19--23 August; Amer. Meteor. Soc., Boston, MA, 354--355.
+
+\bibitem[Janjic(2000)]{janjic00}%
+Janjic, Z. I., 2000: Comments on "Development and Evaluation of a Convection 
+  Scheme for Use in Climate Models", 
+  {\em J. Atmos. Sci.}, {\bf 57}, p. 3686.
+
+\bibitem[Janjic(2002)]{janjic02}%
+Janjic, Z. I., 2002: Nonsingular Implementation of the Mellor--Yamada Level 2.5 Scheme 
+  in the NCEP Meso model,
+  {\em NCEP Office Note}, {\bf No. 437}, 61 pp.
+
+\bibitem[Kain and Fritsch(1990)]{kain90}%
+Kain, J. S., and J. M. Fritsch, 1990: A one-dimensional entraining/ detraining 
+  plume model and its application in convective parameterization,
+  {\em J. Atmos. Sci.}, {\bf 47}, 2784--2802.
+
+\bibitem[Kain and Fritsch(1993)]{kain93}%
+Kain, J. S., and J. M. Fritsch, 1993: Convective parameterization for mesoscale models: 
+  The Kain-Fritcsh scheme, {\em The representation of cumulus convection
+  in numerical models}, 
+  K. A. Emanuel and D.J. Raymond, Eds., Amer. Meteor. Soc., 246 pp.
+
+\bibitem[Kain(2004)]{kain04}%
+Kain, J. S., 2004: The Kain-Fritsch convective parameterization: An update. 
+  {\em J. Appl. Meteor.}, {\bf 43}, 170--181.
+
+\bibitem[Kessler(1969)]{kessler69}%
+Kessler, E., 1969: On the distribution and continuity of water 
+  substance in atmospheric circulation,
+  {\em Meteor. Monogr.}, {\bf 32}, Amer. Meteor. Soc., 84 pp.
+
+\bibitem[Klemp and Lilly(1978)]{klemp_and_lilly78}%
+Klemp, J. B., and D. K. Lilly, 1978:
+  Numerical simulation of hydrostatic mountain waves,
+  {\em J. Atmos. Sci.}, {\bf 35}, 78--107.
+
+\bibitem[Klemp and Wilhelmson(1978)]{klemp78}%
+Klemp, J. B., and R. Wilhelmson, 1978:
+  The simulation of three-dimensional convective storm dynamics,
+  {\em J. Atmos. Sci.}, {\bf 35}, 1070--1096.
+
+\bibitem[Klemp et al.(2007)]{klemp_et_al_2007}%
+Klemp, J. B., W. C. Skamarock, and J. Dudhia, 2007:
+  Conservative split-explicit time integration methods for the
+compressible nonhydrostatic equations,
+  {\em Mon. Wea. Rev..}, {\bf 135,} 2897--2913.
+
+\bibitem[Klemp et al.(2008)]{klemp_et_al_2008}%
+Klemp, J. B., J. Dudhia, and A. Hassiotis, 2008:
+  An Upper Gravity Wave Absorbing Layer for NWP Applications.
+  {\em Mon. Wea. Rev..}, submitted.
+
+\bibitem[Knievel et~al.(2007)]{knievel.et.al.2007}
+Knievel, J.~C., G.~H. Bryan, and J.~P. Hacker, 2007: Explicit numerical
+  diffusion in the {WRF} {M}odel. {\em Mon.\ Wea.\ Rev.}, {\bf 135},
+  3808--3824.
+
+\bibitem[Kusaka and Kimura(2004)]{kusaka04}
+Kusaka, H. and F. Kimura, 2004:
+ Coupling a single-layer urban canopy model with a simple atmospheric model: Impact on urban heat island simulation for an idealized case. 
+{\em J. Meteor. Soc. Japan}, {\bf 82}, 67--80.
+
+\bibitem[Kusaka et al.(2001)]{kusaka01}
+Kusaka, H., H. Kondo, Y. Kikegawa, and F. Kimura, 2001:
+ A simple single-layer urban canopy model for atmospheric models: Comparison with multi-layer and slab
+models. 
+{\em Bound.-Layer Meteor.}, {\bf 101}, 329--358.
+
+\bibitem[Lacis and Hansen(1974)]{lacis74}%
+Lacis, A. A., and J. E. Hansen, 1974: A parameterization for the 
+  absorption of solar radiation in the earth's atmosphere. 
+  {\em J. Atmos. Sci.}, {\bf 31}, 118--133.
+
+\bibitem[Laprise(1992)]{laprise92}%
+Laprise R., 1992: The Euler Equations of motion with hydrostatic pressure
+  as as independent variable,
+  {\em Mon. Wea. Rev.}, {\bf 120}, 197--207.
+
+\bibitem[Lee et al.(2004)]{lee04}%
+Lee, M.-S., D. Barker, W. Huang and Y.-H. Kuo, 2004: First Guess at
+Appropriate Time (FGAT) with WRF 3DVAR. {\em WRF/MM5 Users Workshop},
+22--25 June 2004, Boulder, Colorado.
+
+\bibitem[Lin et al.(1983)]{lin83}%,
+Lin, Y.-L., R. D. Farley, and H. D. Orville, 1983:
+  Bulk parameterization of the snow field in a cloud model. 
+  {\em J. Climate Appl. Meteor.}, {\bf 22}, 1065--1092.
+
+\bibitem[Lin and Rood(1996)]{linrood96}%,
+Lin, S.-J., and R. B. Rood, 1996: Multidimensional flux-form
+  semi-Lagrangian transport schemes.  {\em Mon. Wea. Rev.}, {\bf 124},
+  2046--2070.
+
+\bibitem[Liu et al.(2008)]{liu08}%,
+Liu, Y., T.T. Warner, J. F. Bowers, L. P. Carson, F. Chen, C. A. Clough,
+C. A. Davis, C. H. Egeland, S. Halvorson, T.W. Huck Jr., L. Lachapelle,
+R.E. Malone, D. L. Rife, R.-S. Sheu, S. P. Swerdlin, and D.S. Weingarten,
+2008:
+ The operational mesogamma-scale analysis and forecast system of the
+U.S. Army Test and Evaluation Command.  Part 1: Overview of the modeling
+system, the forecast products.  
+{\em J. Appl. Meteor. Clim.}, {\bf 47}, 1077--1092.
+
+
+\bibitem[Lorenc(1986)]{lorenc86}%
+Lorenc, A. C., 1986: Analysis methods for numerical weather prediction. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 1177--1194.
+  
+\bibitem[Lynch and Huang(1992)]{lynchhuang92}%,
+Lynch, P., and X.-Y. Huang, 1992: Initialization of the HIRLAM
+  Model Using a Digital Filter.  {\em Mon. Wea. Rev.}, {\bf 120},
+  1019--1034.
+  
+\bibitem[Lynch and Huang(1994)]{lynchhuang94}%,
+Lynch, P., and X.-Y. Huang, 1994:  Diabatic initialization using recursive filters.
+  {\em Tellus}, {\bf 46A}, 583--597.
+  
+\bibitem[Lynch(1997)]{lynch97}%,
+Lynch, P., 1997: The Dolph-Chebyshev Window: A Simple Optimal Filter. 
+  {\em Mon. Wea. Rev.}, {\bf 125}, 655--660.
+  
+\bibitem[McCumber et al.(1991)]{mccumber91}
+McCumber, M., W.-K. Tao, J. Simpson, R. Penc, and S.-T. Soong, 1991:
+Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection,
+  {\em J. Appl. Meteor.}, {\bf 30}, 985--1004.
+
+\bibitem[Mellor and Yamada(1982)]{melloryamada82}%
+Mellor, G. L., and T. Yamada, 1982:
+  Development of a turbulence closure model for geophysical fluid problems.
+  {\em Rev. Geophys. Space Phys.}, {\bf 20}, 851--875.
+
+\bibitem[Michalakes et al.(1999)]{michalak99}%
+Michalakes, J., J. Dudhia, D. Gill, J. Klemp, and W. Skamarock, 1999:
+  Design of a next-generation regional weather research and forecast model, 
+  {\it Towards Teracomputing}, World Scientific, River Edge, New Jersey, 117--124.
+
+\bibitem[Michalakes et al.(2004)]{michalak04}%
+Michalakes, J., J. Dudhia, D. Gill, T. Henderson, J. Klemp, W. Skamarock, and W. Wang, 2004: 
+  The Weather Research and Forecast Model: Software Architecture and Performance. 
+  To appear in proceeding of {\em the Eleventh ECMWF Workshop 
+  on the Use of High Performance Computing in Meteorology}. 
+  25--29 October 2004, Reading, U.K., Ed. George Mozdzynski.
+
+\bibitem[Mlawer et al.(1997)]{mlawer97}%
+Mlawer, E. J., S. J. Taubman, P. D. Brown, M. J. Iacono, and S. A. Clough, 1997:
+  Radiative transfer for inhomogeneous atmosphere: 
+  RRTM, a validated correlated-k model for the long-wave. 
+  {\em J. Geophys. Res.}, {\bf 102} (D14), 16663--16682.
+
+\bibitem[Monin and Obukhov(1954)]{monin54}%
+Monin, A.S. and A.M. Obukhov, 1954: Basic laws of turbulent mixing in the surface layer 
+  of the atmosphere. 
+  {\em Contrib. Geophys. Inst. Acad. Sci.}, USSR, {\bf (151)}, 163--187 (in Russian).
+
+\bibitem[Morrison et al.(2005)]{morrison05}%
+Morrison, H., J. A. Curry, and V. I. Khvorostyanov, 2005:
+ A new double-moment
+microphysics parameterization for application in cloud and climate models, Part
+I: Description. 
+ {\em J. Atmos. Sci.}, {\bf 62}, 1665--1677.
+
+\bibitem[Morrison and Pinto(2006)]{morrison06}%
+Morrison, H., and J. O. Pinto, 2006:
+ Intercomparison of bulk microphysics
+schemes in mesoscale simulations of springtime Arctic mixed-phase stratiform clouds. 
+{\em Mon. Wea. Rev.}, {\bf 134}, 1880--1900.
+
+\bibitem[Morrison et al.(2008)]{morrison08}%
+Morrison, H., G. Thompson, and V. Tatarskii, 2008:
+ Impact of cloud
+micrpohysics on the development of trailing stratiform precipitation in a
+simulated squall line: Comparison of one- and two-moment
+schemes. 
+Submitted to {\em Mon. Wea. Rev.} 
+
+\bibitem[Noh et al.(2003)]{noh03}%
+Noh, Y., W.G. Cheon, S.-Y. Hong, and S. Raasch, 2003:
+ Improvement of the K-profile model for the planetary boundary layer based on large eddy simulation data. 
+ {\em Bound.-Layer Meteor.}, {\bf 107}, 401--427.
+
+\bibitem[Noilhan and Planton(1989)]{noilhan89}%
+Noilhan, J., and S. Planton, 1989:
+  A simple parameterization of land surface processes for meteorological models. 
+{\em Mon. Wea. Rev.}, {\bf 117}, 536--549.
+
+\bibitem[Ooyama(1990)]{ooyama90}%
+Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere,
+  {\em J. Atmos. Sci.}, {\bf 47}, 2580--2593.
+
+\bibitem[Parrish and Derber(1992)]{parrish92}%
+Parrish, D. F., and J. C. Derber, 1992: The National Meteorological Center's Spectral
+  Statistical Interpolation analysis system. 
+  {\em Mon. Wea. Rev.}, {\bf 120}, 1747--1763.
+
+\bibitem[Paulson(1970)]{paulson70}%
+Paulson, C. A., 1970: The mathematical representation of wind speed and 
+  temperature profiles in the unstable atmospheric surface layer. 
+  {\em J. Appl. Meteor.}, {\bf 9}, 857--861.
+
+\bibitem[Pleim(2006)]{pleim06}%
+Pleim, J. E., 2006:
+ A simple, efficient solution of flux-profile relationships in the atmospheric surface layer,
+{\em J. Appl. Meteor. and Clim.}, {\bf 45}, 341--347
+
+\bibitem[Pleim(2007)]{pleim07}%
+Pleim, J. E., 2007:
+ A combined local and non-local closure model for the atmospheric boundary layer. Part 1: Model description and testing,
+{\em J. Appl. Meteor. and Clim.}, {\bf 46}, 1383--1395.
+
+\bibitem[Pleim and Gilliam(2008)]{pleim08}%
+Pleim, J.E. and R.C. Gilliam, 2008:
+ An indirect data assimilation scheme for deep soil temperature in the Pleim-Xiu land surface model. 
+ Submitted to {\em J. Appl. Meteor. Climatol.}
+
+\bibitem[Pleim and Xiu(1995)]{pleim95}%
+Pleim, J. E. and A. Xiu, 1995:
+  Development and testing of a surface flux and planetary boundary layer model for application in mesoscale models. 
+ {\em J. Appl. Meteor.}, {\bf 34}, 16--32.
+
+\bibitem[Pleim and Xiu(2003)]{pleim03}%
+Pleim, J. E., and A. Xiu, 2003:
+ Development of a land surface model. Part II: Data Assimilation. 
+{\em J. Appl. Meteor.}, {\bf 42}, 1811--1822.
+
+\bibitem[Pollard et al.(1973)]{pollard73}%
+Pollard, R. T., P. B. Rhines and R. O. R. Y. Thompson, 1973:
+ The deepening of the wind-mixed layer.
+{\em  Geophys. Fluid Dyn.}, {\bf 3}, 381--404. 
+
+\bibitem[Purser et al.(2003)]{purser03}%
+Purser, R. J., W. -S. Wu, D. F. Parrish, and N. M. Roberts, 2003: Numerical aspects of
+  the application of recursive filters to variational statistical analysis. Part I: Spatially
+  homogeneous and isotropic Gaussian covariances. 
+  {\em Mon. Wea. Rev.}, {\bf 131}, 1524--1535.
+
+\bibitem[Rabier et al.(1998)]{rabier98}%
+Rabier, F., H., J. N. Thepaut, and P. Courtier, 1998: Extended assimilation and forecast
+  experiments with a four-dimensional variational assimilation system. 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 124}, 1861--1887.
+
+\bibitem[Reisner et al.(1998)]{reisner98}%
+Reisner, J. R., R. M. Rasmussen, and R. T. Bruintjes, 1998: Explicit forecasting of
+  supercooled liquid water in in winter storms using the MM5 mesoscale model.
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 124}, 1071--1107.
+
+\bibitem[Roberts et al.(1976)]{roberts76}%
+Roberts, R. E., J. E. A. Selby, and L. M. Biberman, 1976: Infrared continuum absorption
+ by atmospheric water-vapor in 8--12 um window.
+ {\em Applied Optics}, {\bf 15 (9)}, 2085--2090.
+
+\bibitem[Rodgers(1968)]{rodgers68}%
+Rodgers, C. D., 1968: Some extensions and applications of the new random
+  model for molecular band transmission.
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 94}, 99--102.
+
+\bibitem[Rutledge and Hobbs(1984)]{rutledge84}%
+Rutledge, S. A., and P. V. Hobbs, 1984:
+  The mesoscale and microscale structure and organization of clouds and 
+  precipitation in midlatitude cyclones. XII: 
+  A diagnostic modeling study of precipitation development in narrow 
+  cloud-frontal rainbands. {\em J. Atmos. Sci.}, {\bf 20}, 2949--2972.
+
+\bibitem[Ryan (1996)]{ryan96}%
+Ryan, B. F., 1996: On the global variation of precipitating layer clouds.
+  {\em Bull. Amer. Meteor. Soc.}, {\bf 77}, 53--70.
+
+\bibitem[Sasamori et al.(1972)]{sasamori72}%
+Sasamori, T., J. London, and D. V. Hoyt, 1972: Radiation budget of the
+  Southern Hemisphere.
+ {\em Meteor. Monogr.}, {\bf 13}, No. 35, 9--23.
+
+\bibitem[Schwarzkopf and Fels(1985)]{schwarzkopf85}%
+Schwarzkopf, M. D., and S. B. Fels, 1985: Improvements to the algorithm for computing CO2
+ transmissivities and cooling rates. 
+ {\em J. Geophys. Res.}, {\bf 90} (ND6), 541--550.
+
+\bibitem[Schwarzkopf and Fels(1991)]{schwarzkopf91}%
+Schwarzkopf, M. D., and S. B. Fels, 1991: The simplified exchange method revisited --- An accurate,
+  rapid method for computation of infrared cooling rates and fluxes.
+ {\em J. Geophys. Res.}, {\bf 96} (D5), 9075--9096.
+
+\bibitem[Skamarock and Klemp(1992)]{skamarock92}%
+Skamarock W. C. and J. B. Klemp, 1992: The Stability of Time-Split Numerical 
+  Methods for the Hydrostatic and the Nonhydrostatic Elastic Equations, 
+  {\em Mon. Wea. Rev.}: {\bf 120}, 2109--2127.
+
+\bibitem[Skamarock and Weisman(2008)]{skamarock-weisman-08}%
+Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
+moisture transport on NWP precipitation forecasts, 
+  {\em Mon. Wea. Rev.}: submitted.
+
+\bibitem[Skamarock(2005)]{skamarock2005}%
+Skamarock W. C., 2005: Timesplitting techniques for multidimensional transport,
+  available at {\em
+  http://www.mmm.ucar.edu/individual/skamarock/advect3d\_2005.pdf},
+  26 pp.
+
+\bibitem[Smirnova et al.(1997)]{smirnova97}%
+Smirnova, T. G., J. M. Brown, and S. G. Benjamin, 1997: Performance of
+  different soil model configurations in simulating ground surface temperature
+  and surface fluxes.
+  {\em Mon. Wea. Rev.}, {\bf 125}, 1870--1884.
+
+\bibitem[Smirnova et al.(2000)]{smirnova00}%
+Smirnova, T. G., J. M. Brown, S. G. Benjamin, and D. Kim, 2000: Parameterization
+  of cold-season processes in the MAPS land-surface scheme.
+  {\em J. Geophys. Res.}, {\bf 105} (D3), 4077--4086.
+
+\bibitem[Smolarkiewicz and Grell(1992)]{smolargrell92}%
+Smolarkiewicz, P. K., and G. A. Grell, 1990: A class of monotone interpolation schemes,
+  {\em J. Comp. Phys.}, {\bf 101}, 431--440.
+
+\bibitem[Stauffer and Seaman(1990)]{stauffer90}%
+Stauffer D. R., and N. L. Seaman, 1990:
+ Use of four-dimensional data assimilation in a limited-area mesoscale model. Part I: Experiments with synoptic-scale data. 
+ {\em Mon. Wea. Rev.}, {\bf 118}, 1250--1277. 
+
+\bibitem[Stauffer and Seaman(1994)]{stauffer94}%
+Stauffer D. R., and N. L. Seaman, 1994:
+ Multiscale four-dimensional data assimilation.
+{\em J. Appl. Meteor.}, {\bf 33}, 416--434.
+
+\bibitem[Stephens(1978)]{stephens78}%
+Stephens, G. L., 1978: Radiation profiles in extended water clouds. 
+  Part II: Parameterization schemes,
+  {\em J. Atmos. Sci.}, {\bf 35}, 2123--2132.
+
+\bibitem[Tao and Simpson(1993)]{tao93}%
+Tao, W.-K., and J. Simpson, 1993:
+ The Goddard cumulus ensemble model. Part I: Model description.
+{\em Terr. Atmos. Oceanic Sci.}, {\bf 4}, 35--72.
+
+\bibitem[Tao et al.(2003)]{tao03}%
+Tao, W.-K,, J. Simpson, D. Baker, S. Braun, M.-D. Chou, B. Ferrier, D. Johnson, A. Khain, S. Lang, B. Lynn, C.-L. Shie, D. Starr, C.-H. Sui, Y. Wang, and P. Wetzel, 2003:
+Microphysics, radiation and surface processes in the Goddard Cumulus Ensemble (GCE) model.
+{\em Meteor. and Atmos. Phys.}, {\bf 82}, 97--137.
+
+
+\bibitem[Tao et al.(1989)]{tao89}%
+Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment, 
+  {\em Mon. Wea. Rev.}, {\bf 117}, 231--235.
+
+\bibitem[Thompson et al.(2004)]{thompson04}%
+Thompson, G., R. M. Rasmussen, and K. Manning, 2004: Explicit forecasts of winter precipitation
+  using an improved bulk microphysics scheme. Part I: Description and sensitivity analysis.
+  {\em Mon. Wea. Rev.}, {\bf 132}, 519--542.
+
+\bibitem[Walko et al.(1995)]{walko95}%
+Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS cloud microphysics
+  parameterization. Part I: The single-moment scheme. 
+  {\em Atmos. Res.,} {\bf 38}, 29--62.
+
+\bibitem[Wang et al.(2008)]{wang08}%
+Wang, W., D. Barker, C. Bruy\`ere, M. Duda, J. Dudhia, D. Gill, J. Michalakes, and S. Rizvi, 2008: 
+WRF Version 3 Modeling System User's Guide.
+  {\em http://www.mmm.ucar.edu/wrf/users/docs/user$\_$guide$\_$V3/}.
+
+\bibitem[Webb(1970)]{webb70}%
+Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to strong stability, 
+  {\em Quart. J. Roy. Meteor. Soc.}, {\bf 96}, 67--90.
+
+\bibitem[Wicker and Skamarock(2002)]{wicker02}% 
+  Wicker, L. J. and W. C. Skamarock, 2002:
+  Time splitting methods for elastic models using forward time schemes,
+  {\em Mon. Wea. Rev.}, {\bf 130}, 2088--2097.
+
+\bibitem[Wicker and Wilhelmson(1995)]{wicker95}%
+  Wicker, L. J., and R. B. Wilhelmson, 1995:
+  Simulation and analysis of tornado development and decay within a 
+  three-dimensional supercell thunderstorm.
+  {\em J. Atmos. Sci.}, {\bf 52}, 2675--2703.
+
+\bibitem[Wu et al.(2002)]{wu02}%
+Wu, W. -S., R. J. Purser, and D. F. Parrish, 2002: Three-Dimensional Variational
+  Analysis with Spatially Inhomogeneous Covariances. 
+  {\em Mon. Wea. Rev.}, {\bf 130}, 2905--2916.
+
+\bibitem[Xiao et al.(2005)]{xiao05}%
+Xiao, Q. N., Y. H. Kuo, J. Sun, W. C. Lee, E. Lim, Y. R. Guo, and D. M. Barker, 2005:
+  Assimilation of Doppler Radar Observations with a Regional 3D--Var System: Impact of
+  Doppler Velocities on Forecasts of a Heavy Rainfall Case. 
+  {\em J. Appl. Met.}, {\bf 44(6)}, 768--788.
+
+\bibitem[Xiao et al.(2007a)]{xiao07}%
+  Xiao, Q., Ying-Hwa Kuo, Juanzhen Sun, Wen-Chau Lee, D. M. Barker,
+  and Eunha Lim, 2007: An approach of radar reflectivity data assimilation
+  and its assessment with the inland QPF of Typhoon Rusa (2002) at landfall.
+  {\em J. Appl. Meteor. Climat.}, {\bf 46}, 14--22.
+
+\bibitem[Xiao et al.(2007b)]{xiao072}%
+  Xiao, Q., J. Sun, 2007: Multiple radar data assimilation and short-range
+  quantitative precipitation forecasting of a squall line observed during
+  IHOP 2002.
+  {\em Mon. Wea. Rev.}, {\bf 135}, 3381--3404.
+
+\bibitem[Xiao et al.(2008)]{xiao08}%
+  Xiao, Q., Eunha Lim, D.-J. Won, J. Sun, W.-C. Lee, M.-S. Lee, W.-J. Lee,
+  J.-Y. Cjo, Y.-H. Kuo, D. M. Barker, D.-K. Lee, and H.-S. Lee, 2008: Doppler
+  radar data assimilation in KMAs operational forecasting.
+  {\em Bull. Amer. Meteor. Soc.}, {\bf 89}, 39--43.
+
+\bibitem[Xiu and Pleim(2001)]{xiu01}
+Xiu, A. and J. E. Pleim, 2001:
+ Development of a land surface model part I: Application in a mesoscale meteorology model. 
+{\em J. Appl. Meteor.}, {\bf 40}, 192--209
+
+\bibitem[Xu et al.(2002)]{xu02}
+Xu, M., Y. Liu, C. Davis and T. Warner, 2002:
+ Sensitivity of nudging parameters on the performance of a mesoscale FDDA
+     system: A case study.
+ 15th Conference on Numerical Weather
+     Prediction, 12-16 August, 2002, San Antonio, Texas, 127-130.
+
+\bibitem[Xue(2000)]{xue.2000}
+Xue, M., 2000: High-order monotonic numerical diffusion and smoothing. {\em
+  Mon.\ Wea.\ Rev.}, {\bf 128}, 2853--2864.
+
+\bibitem[Zhang and Anthes(1982)]{zhanganthes82}%
+Zhang, D.-L., and R.A. Anthes, 1982: A high-resolution model of the
+  planetary boundary layer--sensitivity tests and comparisons with SESAME--79 data. 
+  {\em J. Appl. Meteor.}, {\bf 21}, 1594--1609.
+
+\bibitem[Zilitinkevich(1995)]{zilit95}%
+Zilitinkevich, S.~S., 1995: Non-local turbulent transport: pollution dispersion 
+  aspects of coherent structure of convective flows,
+  {\em Air Pollution III} --- Volume I. Air Pollution Theory and Simulation,
+  Eds. H. Power, N. Moussiopoulos and C.A. Brebbia. 
+  Computational Mechanics Publications, Southampton Boston, 53--60.
+
+\end{thebibliography}

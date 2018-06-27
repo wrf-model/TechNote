@@ -1,0 +1,1529 @@
+\chapter{Model Discretization}
+\label{discretization_chap}
+
+\section{Temporal Discretization}
+
+The ARW solver uses a time-split integration scheme.  Generally
+speaking, slow or low-frequency (meteorologically significant) modes are
+integrated using a third-order Runge-Kutta (RK3) time integration
+scheme, while the high-frequency acoustic modes are integrated over
+smaller time steps to maintain numerical stability.  The horizontally
+propagating acoustic modes (including the external mode present in the
+mass-coordinate equations using a constant-pressure upper boundary
+condition) and gravity waves are integrated using a forward-backward
+time integration scheme, and vertically propagating acoustic modes and
+buoyancy oscillations are integrated using a vertically implicit scheme
+(using the acoustic time step).  The time-split integration for the
+flux-form equations is described and analyzed in
+\citet{klemp_et_al_2007}.  The time-splitting is similar to that first
+developed by \citet{klemp78} for leapfrog time integration and analyzed
+by \citet{skamarock92}.  This time-split approach was extended to the
+RK3 scheme as described in \citet{wicker02}.  The primary differences
+between the earlier implementations described in the references and the
+ARW implementation are associated with our use of the mass vertical
+coordinate and a flux-form set of equations, as described in
+\citet{klemp_et_al_2007}, along with our use of
+perturbation variables for the acoustic component of the time-split
+integration.  The acoustic-mode integration is cast in the form of a
+correction to the RK3 integration.
+
+\subsection{Runge-Kutta Time Integration Scheme}
+\label{rk3_scheme}
+
+The RK3 scheme, described in \citet{wicker02},
+integrates a set of ordinary differential equations using a
+predictor-corrector formulation.  Defining the prognostic variables in
+the ARW solver as $\Phi = (U,V,W,\Theta,\phi', \mu', Q_m)$ and the 
+model equations as $\Phi_t = R(\Phi)$, the RK3
+integration takes the form of 3 steps to advance a solution 
+$\Phi(t)$ to $\Phi(t+\Delta t)$:
+%
+\begin{align}
+\Phi^* & = \Phi^t + {\Delta t \over 3} R(\Phi^t) 
+\label{rk3a}
+\\
+\Phi^{**} & = \Phi^t + {\Delta t \over 2} R(\Phi^*) 
+\label{rk3b}
+\\
+\Phi^{t+\Delta t} & = \Phi^t + {\Delta t} R(\Phi^{**})
+\label{rk3c}
+\end{align}
+%
+\noindent
+where $\Delta t$ is the time step for the low-frequency modes
+(the model time step).
+In \eqref{rk3a} -- \eqref{rk3c}, superscripts denote time levels.
+This scheme is not a true Runge-Kutta scheme {\it per se} because, while it is 
+third-order accurate for linear equations, it is only second-order accurate
+for nonlinear equations.  With respect to the ARW equations, the 
+time derivatives $\Phi_t$ are the partial time derivatives (the leftmost
+terms) in equations \eqref{u-mom-pert} -- \eqref{scalar-pert}, and
+$R(\Phi)$ are the remaining terms in \eqref{u-mom-pert} --
+\eqref{scalar-pert}.
+
+\subsection{Acoustic Integration}
+\label{acoustic_equations}
+
+The high-frequency but meteorologically insignificant acoustic modes
+would severely limit the RK3 time step $\Delta t$ in \eqref{rk3a} --
+\eqref{rk3c}.  To circumvent this time step limitation we use the 
+time-split approach described in \citet{wicker02}.  Additionally, to increase the
+accuracy of the splitting, we integrate 
+a perturbation form of the governing equations using smaller acoustic
+time steps within the RK3 large-time-step sequence.
+To form the perturbation
+equations for the RK3 time-split acoustic integration, we define small
+time step variables that are deviations from the most recent RK3
+predictor (denoted by the superscript $t^*$ and representing either
+$\Phi^t$, $\Phi^*$, or $\Phi^{**}$ in \eqref{rk3a} -- \eqref{rk3c}): 
+%
+\begin{align} 
+\hbox{\bf V}'' &= \hbox{\bf V} -\hbox{\bf V}^{t^*}, ~~~~~~
+\Omega'' = \Omega - \Omega^{t^*}, ~~~~~~ \Theta'' = \Theta -
+\Theta^{t^*}, \notag \\ \phi'' &= \phi' - {\phi'}^{t^*}, 
+~~~~~~ \alpha_d''= \alpha_d' - {\alpha_d'}^{t^*}, ~~~~~~
+\mu_d''= \mu_d' - {\mu'}_d^{t^*}.  \notag 
+\end{align} 
+% 
+\noindent 
+The hydrostatic relation (i.e., the vertical coordinate definition) becomes 
+% 
+\begin{equation}
+\alpha_d'' = -{1\over\mu_d^{t^*}}\Bigl(\partial_\eta \phi'' + \alpha_d^{t^*}\mu_d''
+\Bigr).  
+\label{small-hydro} 
+\end{equation} 
+% 
+\noindent
+Additionally, we also
+introduce a version of the equation of state that is linearized about $t^*$, 
+%
+\begin{equation} p'' = {c_s^2\over\alpha_d^{t^*}} \biggl({\Theta''\over\Theta^{t^*}}
+-{\alpha_d''\over\alpha_d^{t^*}} - {\mu_d''\over\mu_d^{t^*}}\biggr), 
+\label{p-linear}
+\end{equation} 
+% 
+\noindent 
+where $c_s^2 = \gamma p^{t^*} \alpha_d^{t^*}$ is the
+square of the sound speed.
+The linearized
+state equation \eqref{p-linear} and the vertical coordinate definition
+\eqref{small-hydro} are used to cast the vertical pressure gradient in
+\eqref{w-mom-pert} in terms of the model's prognostic variables.
+By combining \eqref{p-linear} and \eqref{small-hydro}, the vertical
+pressure gradient can be expressed as
+%
+\begin{equation}
+  \partial_\eta p'' = 
+     \partial_\eta (C \partial_\eta \phi'') 
+   +
+\partial_\eta\biggl({c_s^2\over\alpha_d^{t^*}}
+{\Theta''\over\Theta^{t^*}}\biggr),
+\label{pz-linear}
+\end{equation}
+%
+\noindent
+where $C=c_s^2/\mu^{t^*}{\alpha^{t^*}_d}^2$. This linearization about the most
+recent large time step should be highly accurate over the time interval of
+the several small time steps.
+
+These variables along with \eqref{pz-linear} 
+are substituted into the prognostic equations
+\eqref{u-mom-pert} -- \eqref{scalar-pert} and lead to the 
+acoustic time-step equations:
+%
+\begin{align}
+  \null\hskip-.5in
+\partial_t U'' + (m_x/m_y)(\alpha^{t^*}/\alpha^{t^*}_d) \left[\mu_d^{t^*} \left(
+\alpha_d^{t^*} \partial_x {p''}^\tau +  {\alpha_d''}^\tau \partial_x {\overline p}  + \partial_x {\phi''}^\tau \right)
++ \partial_x \phi^{t^*} \left(\partial_\eta {p''} - {\mu''_d} \right)^\tau \right] & = R_U^{t^*}
+%% \delta_\tau U'' + \mu^{t^*}\alpha^{t^*} \partial_x {p''}^\tau 
+%%                 + (\mu^{t^*} \partial_x \bar p){\alpha''}^\tau  
+%%                 + (\alpha/\alpha_d) [\mu^{t^*} \partial_x {\phi''}^\tau 
+%%                 + (\partial_x \phi^{t^*})(\partial_\eta p''-\mu'')^\tau]
+%%                                                   &= {R_U}^{t^*}  
+\label{u-small-step} 
+\\
+  \null\hskip-.5in
+\partial_t V'' + (m_y/m_x)(\alpha^{t^*}/\alpha^{t^*}_d) \left[\mu_d^{t^*} \left(
+\alpha_d^{t^*} \partial_y {p''}^\tau +  {\alpha_d''}^\tau \partial_y {\overline p}  + \partial_y {\phi''}^\tau \right)
++ \partial_y \phi^{t^*} \left(\partial_\eta {p''} - {\mu''_d} \right)^\tau \right] & = R_V^{t^*}
+%% \delta_\tau V'' + \mu^{t^*}\alpha^{t^*} \partial_y {p''}^\tau 
+%%                 + (\mu^{t^*} \partial_y \bar p){\alpha''}^\tau  
+%%                 + (\alpha/\alpha_d) [\mu^{t^*} \partial_y {\phi''}^\tau 
+%%                 + (\partial_y \phi^{t^*})(\partial_\eta p''-\mu'')^\tau]
+%%                                                   &= {R_V}^{t^*}   
+\label{v-small-step}
+\\
+ \delta_\tau \mu_d'' 
+ + m_x m_y[\partial_x U'' + \partial_y V'']^{\tau+\Delta \tau} 
++ m_y \partial_\eta {\Omega''^{\tau+\Delta \tau}} &= {R_\mu}^{t^*}  
+\label{mu-small-step}
+\\
+ \delta_\tau \Theta'' 
++ m_x m_y[  \partial_x (U''\theta^{t^*}) 
+      + \partial_y (V''\theta^{t^*})]^{\tau+\Delta \tau} 
++ m_y \partial_\eta (\Omega''^{\tau+\Delta \tau} \theta^{t^*})
+                                                &= {R_\Theta}^{t^*}  
+\label{theta-small-step}
+\\
+ \delta_\tau W'' 
+- m_y^{-1} g\overline{\left\{(\alpha/\alpha_d)^{t^*} \left[
+     \partial_\eta (C \partial_\eta \phi'') 
+   +
+\partial_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta''\over\Theta^{t^*}}\biggr)
+\right]
+- \mu_d''\right\}}^\tau
+                                                   &= {R_W}^{t^*}  
+\label{w-small-step}
+\\
+ \delta_\tau \phi'' + {1\over\mu_d^{t^*}} 
+%% [ m_y \Omega''^{\tau+\Delta \tau}\phi_\eta^{t^*}  - m_y \overline{g W''}^\tau ] 
+[ m_y \Omega''^{\tau+\Delta \tau}\delta_\eta \phi^{t^*}  - m_y \overline{g W''}^\tau ] 
+&= {R_\phi}^{t^*}.
+\label{geo-small-step}
+\end{align}
+%
+\noindent
+The RHS terms in \eqref{u-small-step} -- \eqref{geo-small-step} are
+fixed for the acoustic steps that comprise the time integration of each
+RK3 sub-step (i.e., \eqref{rk3a} -- \eqref{rk3c}),
+and are given by
+%
+\begin{align}
+R_U^{t^*} = & - m_x\left[\partial_x (Uu) + \partial_y (Vu)\right] - \partial_\eta (\Omega u)  & \cr
+& -(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) +
+\partial_x \phi (\partial_\eta p' - \mu'_d)\right]
+%%R_U^{t^*} = &
+%%- m_x[\partial_x(Uu) + \partial_y(Vu)] - \hphantom{(m_y/m_x)} \partial_\eta (\Omega u)
+%%- ({\mu}_d \alpha \partial_x p' 
+%%- {\mu}_d \alpha' \partial_x \bar{p}) ~~~~~~~~ \notag
+%%\\
+%%& - (\alpha/\alpha_d) ( {\mu}_d \partial_x \phi' 
+%%  -  \partial_\eta p' \partial_x \phi 
+%%  + {\mu}_d' \partial_x \phi ) + F_U
+\label{u-rhs}
+\\
+%
+R_V^{t^*} = & - m_y\left[\partial_x (Uv) + \partial_y (Vv)\right] - (m_y/m_x) \partial_\eta (\Omega v)  & \cr
+& -(m_y/m_x) (\alpha/\alpha_d) \left[ \mu_d (\partial_y \phi' + \alpha_d \partial_y p' + \alpha'_d \partial_y \overline{p}) +
+\partial_y \phi (\partial_\eta p' - \mu'_d)\right]
+%%R_V^{t^*} = &
+%%- m_y[\partial_x (Uv) + \partial_y (Vv)] - (m_y/m_x) \partial_\eta (\Omega v)
+%%- ({\mu}_d \alpha \partial_y p' 
+%%- {\mu}_d \alpha' \partial_y \bar{p}) ~~~~~~~~ \notag
+%%\\
+%%& - (\alpha/\alpha_d) ( {\mu}_d \partial_y \phi' 
+%%  - \partial_\eta p' \partial_y \phi 
+%%  + {\mu}_d' \partial_y \phi ) + F_V
+\label{v-rhs}
+\\ 
+%
+R_{\mu_d}^{t^*} = &
+- m_x m_y[\partial_x U + \partial_y V] - m_y \partial_\eta \Omega
+\label{mu-rhs}
+\\
+R_\Theta^{t^*} = &
+- m_x m_y [\partial_x (U\theta) + \partial_y (V\theta)] - m_y \partial_\eta
+(\Omega \theta) + F_\Theta
+\label{theta-rhs}
+\\
+%
+R_W^{t^*} = &
+- (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] - \partial_\eta
+(\Omega w)  ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~ \notag 
+\\
+& + m_y^{-1} g (\alpha/\alpha_d) [\partial_\eta p' 
+  - {\bar{\mu}}_d (q_v + q_c +q_r)]
+  - m_y^{-1} {\mu}_d'g + F_W
+\label{w-rhs} 
+\\
+%
+R_\phi^{t^*} = &
+- \mu_d^{-1}
+%% [m_x m_y (U\phi_x + V\phi_y) + m_y
+%% \Omega\phi_\eta - m_y gW ],
+[m_x m_y (U\partial_x\phi + V\partial_y\phi) + m_y
+\Omega\partial_\eta\phi - m_y gW ],
+\label{geo-rhs}
+%
+\end{align}
+%
+\noindent
+where all variables in \eqref{u-rhs} -- \eqref{geo-rhs} are evaluated at
+time $t^*$ (i.e., using $\Phi^t$, $\Phi^*$, or $\Phi^{**}$ for the
+appropriate RK3 sub-step in \eqref{rk3a} -- \eqref{rk3c}).  
+Equations \eqref{u-small-step} -- \eqref{geo-small-step} utilize
+the discrete
+acoustic time-step operator
+%
+\begin{equation}
+\delta_\tau a = { a^{\tau + \Delta \tau} - a^\tau \over \Delta \tau },
+\notag
+\end{equation}
+%
+\noindent
+where $\Delta \tau$ is the acoustic time step, 
+and an acoustic time-step averaging operator 
+%
+\begin{equation}
+\overline{a}^\tau = {1 + \beta \over 2}a^{\tau+\Delta \tau} +
+{1 - \beta \over 2}a^{\tau},
+\label{avg-operator}
+\end{equation}
+%
+\noindent
+where $\beta$ is a user-specified parameter (see Section \ref{offcentering}).
+
+The integration over the acoustic time steps proceeds as follows.
+Beginning with the small time-step variables at time $\tau$, 
+\eqref{u-small-step}
+and \eqref{v-small-step}
+are stepped forward to obtain ${U''}^{\tau+\Delta\tau}$ and
+${V''}^{\tau+\Delta\tau}$. Both ${\mu''}^{\tau+\Delta\tau}$ and
+${\Omega''}^{\tau+\Delta\tau}$ are then calculated from
+\eqref{mu-small-step}. 
+This is
+accomplished by first integrating \eqref{mu-small-step} 
+vertically from the surface to the
+material surface at the top of the domain, which removes the $\partial_\eta
+\Omega''$ term such that 
+%
+\begin{equation}
+  \delta_\tau\mu_d = m_x m_y \int_1^0 
+ [\partial_x U'' + \partial_y V'']^{\tau+\Delta \tau} 
+d\eta.
+\label{omega}
+\end{equation}
+%
+After computing ${\mu_d''}^{\tau+\Delta\tau}$ from \eqref{omega},
+${\Omega''}^{\tau+\Delta\tau}$ is recovered by using
+\eqref{mu-small-step} 
+to integrate the
+$\partial_\eta \Omega''$ term vertically using the lower boundary 
+condition $\Omega''=0$ at the
+surface. Equation \eqref{theta-small-step} is then stepped forward to calculate
+${\Theta''}^{\tau+\Delta\tau}$. Equations \eqref{w-small-step} and 
+\eqref{geo-small-step}
+are combined to form a vertically implicit equation that is solved for
+${W''}^{\tau+\Delta\tau}$ subject to the boundary condition
+%$W''={\hbox{\bf V}''}\cdot{\nabla}h$ 
+$\Omega = \Omega'' = 0$
+at the surface ($z=h(x,y)$) and $p'=0$ 
+along the model top. ${\phi''}^{\tau+\Delta\tau}$ is  then
+obtained from \eqref{geo-small-step}, and ${p''}^{\tau+\Delta\tau}$ and 
+${\alpha_d''}^{\tau+\Delta\tau}$ are recovered from \eqref{p-linear}
+and \eqref{small-hydro}.
+ 
+\noindent
+\begin{figure}[h]
+\setlength{\fboxrule}{.75pt}
+\framebox[\columnwidth]{
+\parbox{6.5truein}{
+\vskip 5truept
+\noindent
+{\bf Begin Time Step} \medskip \hfill \break
+%
+\hphantom{Begin} {\bf Begin RK3 Loop: Steps 1, 2, and 3} \smallskip\hfill \break
+%
+\hphantom{BeginBegin} 
+(1) If RK3 step 1, compute and store $F_\Phi$ \hfill
+\break
+%
+\hphantom{BeginBegin If RK3 step 1,}
+(i.e., physics tendencies for RK3 step, including
+mixing). \smallskip \hfill \break
+%
+\hphantom{BeginBegin} 
+%% (2) Compute $R_\Phi^{t^*}$,
+(2) Compute $R^{t^*}$,
+\eqref{u-rhs}--\eqref{geo-rhs}
+\medskip \hfill \break
+%
+\hphantom{BeginBegini}{\bf Begin Acoustic Step Loop: Steps $1 \to n$},
+\hfill \break
+%
+\hphantom{BeginBeginBegini} 
+{\it RK3 step 1, $n = 1$, ~~~~$\Delta \tau = \Delta t/3$; \hfill \break
+\hphantom{BeginBeginBegini} 
+RK3 step 2, $n = n_s/2$, $\Delta \tau = \Delta t/n_s$; \hfill \break
+\hphantom{BeginBeginBegini} 
+RK3 step 3, $n = n_s$, ~~\,\,$\Delta \tau = \Delta t/n_s$.}
+\medskip \hfill \break
+%
+\hphantom{BeginBeginBegini}
+(3) Advance horizontal momentum, \eqref{u-small-step} 
+and \eqref{v-small-step} \hfill\break
+%
+\hphantom{BeginBeginBegini(3) }
+Global: Apply polar filter to $U''^{\tau+\Delta \tau}$ 
+and $V''^{\tau+\Delta \tau}$.
+\hfill\break
+%
+\hphantom{BeginBeginBegini}
+(4) Advance $\mu_d$ \eqref{mu-small-step} and compute 
+${\Omega''}^{\tau+\Delta \tau}$ then
+advance $\Theta$ 
+\eqref{theta-small-step} \hfill\break
+\hphantom{BeginBeginBegini(4) }
+Global: Apply polar filter to $\mu_d^{\tau+\Delta \tau}$ 
+and $\Theta''^{\tau+\Delta \tau}$. \hfill\break
+%
+\hphantom{BeginBeginBegini}
+(5) Advance $W$ and $\phi$ \eqref{w-small-step} 
+and \eqref{geo-small-step} \hfill\break
+\hphantom{BeginBeginBegini(5) }
+Global: Apply polar filter to $W''^{\tau+\Delta \tau}$
+and $\phi''^{\tau+\Delta \tau}$. \hfill\break
+%
+\hphantom{BeginBeginBegini}
+(6) Diagnose $p''$ and $\alpha''$ using
+\eqref{p-linear} and  \eqref{small-hydro}
+\medskip \hfill \break
+%
+\hphantom{BeginBegini}{\bf End Acoustic Step Loop}
+\medskip
+\hfill \break
+%
+\hphantom{BeginBegin} 
+(7) Scalar transport: Advance scalars \eqref{scalar-pert} 
+\hfill \break \hphantom{BeginBeginBegin} over RK3
+substep \eqref{rk3a}, \eqref{rk3b} or \eqref{rk3c} \hfill \break
+\hphantom{BeginBeginBegin} 
+(using mass fluxes $U$, $V$ and $\Omega$ time-averaged over the acoustic steps).
+\hfill \break
+\hphantom{BeginBeginBegin}
+Global: Apply polar filter to scalars. \smallskip\hfill\break
+%
+\hphantom{BeginBegin} 
+(8) Compute $p'$ and $\alpha'$ using
+updated prognostic variables in
+\eqref{moist-state-equation} and \eqref{hydro-pert}
+\medskip \hfill \break
+%
+\hphantom{Begin} {\bf End RK3 Loop} 
+\medskip \hfill \break
+%
+\smallskip
+\hphantom{Begin} 
+(9) Compute non-RK3 physics (currently microphysics), advance variables.
+\hfill \break
+\hphantom{Begin(4) }
+Global: Apply polar filter to updated variables. \medskip\hfill\break
+%
+{\bf End Time Step}
+\vskip 5truept
+}
+}
+\caption{Time step integration sequence. Here $n$ represents the number
+of acoustic time steps for a given substep of the RK3 integration, and 
+$n_s$ is the ratio of the RK3 time step to the acoustic time step for the
+second and third RK3 substeps.}
+\label{time_integration_figure}
+\end{figure}
+
+\subsection{Full Time-Split Integration Sequence}
+\label{full_time_split_integration}
+
+The time-split RK3 integration technique is summarized in Figure \ref{time_integration_figure}.
+It consists of two primary loops--- an outer loop for the
+large-time-step Runge-Kutta integration, and an inner loop for the
+acoustic mode integration.  
+
+In the RK3 scheme, physics can be integrated within the RK3 time
+integration (using a time forward step, i.e., step (1) in Fig.
+\ref{time_integration_figure}, or the RK3 time integration if higher
+temporal accuracy is desired, i.e., in step (2)--- implying a physics
+evaluation every RK3 substep) or external to it using additive
+timesplitting, i.e., step (9).
+
+Within the acoustic integration, the acoustic time step $\Delta \tau$ is
+specified by the user through the choice of $n_s$ (see Section
+\ref{acoustic_step_constraint}).  Within the first RK3 substep, however,
+a single acoustic time step is used to advance the solution regardless of
+$n_s$.  Within the full RK3-acoustic timesplit integration, this
+modified acoustic time step does not impose any additional stability
+constraints \citep[see][]{wicker02}.
+
+The major costs in the model arise from the evaluation of the 
+right hand side terms $R^{t^*}$ in \eqref{u-small-step}
+-- \eqref{geo-small-step}.
+The efficiency of the RK3 timesplit
+scheme arises from the fact that the RK3 time step $\Delta t$ is much
+larger than the acoustic time step $\Delta \tau$, hence the most costly
+evaluations are only performed in the less-frequent RK3 steps.
+
+\subsection{Diabatic Forcing}
+\label{diabatic forcing subsection}
+
+Within the RK3 integration sequence outlined in Fig.
+\ref{time_integration_figure}, the RHS term $R_\Theta^{t^*}$ in the
+thermodynamic equation \eqref{theta-small-step} contains contributions
+from the diabatic physics tendencies that are computed in step (1) at
+the beginning of the first RK3 step.  This diabatic forcing is
+integrated within the acoustic steps (specifically, in step 4 in the
+time integration sequence shown in Fig. \ref{time_integration_figure}).
+Additional diabatic contributions
+are integrated in an additive-time-split manner in step (9) after the RK3
+update is complete.  Thus, the diabatic forcing computed in step (9) (the
+microphysics in the current release of the ARW) does not appear in
+$R_\Theta^{t^*}$ from \eqref{theta-small-step} in the acoustic
+integration.  We have discovered that this time splitting can excite
+acoustic waves and can give rise to noise in the solutions for some
+applications.  Note that the non-RK3 physics are integrated in step (9)
+because balances produced in the physics are required at the end of the
+time step (e.g., the saturation adjustment in the microphysics).  So while
+moving these non-RK3 physics into step (1) would eliminate the noise,
+the balances produced by these physics would be altered.
+
+We have found that the excitation of the acoustic modes can be
+circumvented while leaving the non-RK3 physics in step (9) by using the
+following procedure that is implemented in the ARW.  In step (1) of the
+integration procedure (Fig. \ref{time_integration_figure}), an
+estimate of the diabatic forcing of $\Theta$ arising from the non-RK3
+physics in step (9) is included in the diabatic forcing term
+$R_\Theta^{t^*}$ in \eqref{theta-small-step} (which is advanced in step
+4).  This estimated diabatic forcing is then removed from the updated
+$\Theta$ after the RK3 integration is complete and before the evaluation
+of the non-RK3 physics in step (9).  We use the diabatic forcing from
+the previous time step as the estimated forcing; hence this procedure
+results in few additional computations outside of saving the diabatic
+forcing between time steps.
+
+\subsection{Hydrostatic Option}
+
+A hydrostatic option is available in the ARW solver.  The time-split RK3
+integration technique summarized  in Fig. \ref{time_integration_figure}
+is retained, including the acoustic
+step loop.  Steps (5) and (6) in the acoustic-step loop,  where
+$W$ and $\phi$ are advanced and $p''$ and $\alpha''$ are diagnosed, are 
+replaced by the following three steps.  
+(1) Diagnose the hydrostatic pressure using the definition of
+the vertical coordinate
+%
+\begin{equation}
+\delta_\eta p_h = {\alpha_d \over \alpha} \mu_d = \bigl(1 + \sum q_m \bigr)\mu_d.
+\notag
+\end{equation}
+%
+\noindent
+(2) Diagnose $\alpha_d$ using
+the equation of state \eqref{moist-state-equation}
+and the prognosed $\theta$.
+(3) Diagnose
+the geopotential using the hydrostatic equation
+%
+\begin{equation}
+\delta_\eta \phi' = - \bar \mu_d \alpha_d' - \mu_d' \alpha_d.
+\notag
+\end{equation}
+%
+\noindent
+The vertical velocity
+$w$ can be diagnosed from the geopotential equation, but it is not needed
+in the solution procedure.  The acoustic step loop advances gravity waves,
+including the external mode, and the Lamb wave 
+when the hydrostatic option is used.
+
+\section{Spatial Discretization}
+
+The spatial discretization in the ARW solver uses a C grid staggering for
+the variables as shown in Fig. \ref{figure:2}.  That is, normal
+velocities are staggered one-half grid length from the thermodynamic
+variables.  The variable indices, $(i,j,k)$ 
+indicate variable locations with
+$(x,y,\eta) = (i\Delta x, j\Delta y, k \Delta \eta)$.  We will denote
+the points where $\theta$ is located as being {\it mass} points, and
+likewise we will denote locations where $u$, $v$, and $w$ are defined as
+$u$ points, $v$ points, and $w$ points, respectively.  Not shown in Fig.
+\ref{figure:2} are the column mass $\mu$, defined at the $(i,j)$ points
+(mass points) on the discrete grid, the geopotential $\phi$ that is
+defined at the $w$ points, and the moisture variables $q_m$ are defined
+at the mass points.  The diagnostic variables used in the model, the
+pressure $p$ and inverse density $\alpha$, are computed at mass points.
+The grid lengths $\Delta x$ and $\Delta y$ are constants in the model
+formulation; changes in the physical grid lengths associated with the
+various projections to the sphere are accounted for using the map
+factors introduced in Section \ref{spherical_projections}.  The vertical
+grid length $\Delta \eta$ is not a fixed constant; it is specified in
+the initialization.  The user is free to specify the $\eta$ values of the
+model levels subject to the constraint that $\eta = 1$ at the surface,
+$\eta = 0$ at the model top, and $\eta$ decreases monotonically between
+the surface and model top.  Using these grid and variable definitions,
+we can define the spatial discretization for the ARW solver.
+
+%
+% Figure 3.something
+%
+\begin{figure}
+  \includegraphics *[width=6.5in,bb= 0 0 629.8 325.4]{figures/grids.pdf}
+  \caption{\label{figure:2}Horizontal and vertical grids of the ARW}
+\end{figure}
+
+\subsection{Acoustic Step Equations}
+\label{acoustic_discretization}
+
+We begin by defining the column-mass-coupled variables relative to the
+uncoupled variables.  The vertical velocity is staggered only in $k$, so
+it can be coupled directly to the column mass with no averaging or
+interpolation.  The horizontal velocities are horizontally staggered
+relative to the column mass such that the continuous variables are 
+represented discretely as
+%
+\begin{equation}
+U = {\mu_d u \over m_y} \to 
+{\overline{\mu_d}^x u \over {\overline m_y}^x} , 
+~~~ V = {\mu_d v \over m_x} \to {\overline{\mu_d}^y v \over {\overline m_x}^y} , 
+\notag
+\end{equation}
+%
+\noindent
+where the discrete operator 
+$\overline{a}^x $
+denotes a linear
+interpolation operator.  The grid lengths $\Delta x$ and $\Delta y$ are
+constant, hence in this case the operator reduces to $\overline{a}^x =
+(a_{i+1/2} + a_{i-1/2})/2$.  
+
+Using these definitions, we can write the spatially discrete 
+acoustic step equations \hfill\break
+\eqref{u-small-step} -- \eqref{geo-small-step} as
+%
+\begin{align}
+\partial_t U'' + (m_x/m_y)\overline{(\alpha^{t^*}/\alpha^{t^*}_d)}^x \bigg[\overline{\mu_d^{t^*}}^x\bigg(
+\overline{\alpha_d^{t^*}}^x  \partial_x {p''}^\tau  + \overline{{\alpha_d''}^\tau}^x  \partial_x {\overline p}
++ \partial_x \overline{{\phi''}^\tau}^\eta \bigg)
+\notag &
+\\
++ \partial_x \overline{\phi^{t^*}}^\eta \bigg(\partial_\eta \overline{\overline{{p''}}^x}^\eta - \overline{{\mu''_d}}^x \bigg)^\tau \,\bigg]  & = R_U^{t^*}
+%%\delta_{\tau} U''  +  \overline{\mu^{t^*}}^x
+%%   \overline{\alpha^{t^*}}^x \delta_x {p''}^\tau 
+%% + (\overline{\mu^{t^*}}^x \delta_x \bar p)\overline{{\alpha''}^\tau}^x
+%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%\notag \\
+%%  + \overline{(\alpha/\alpha_d)}^x 
+%%    [\overline{\mu^{t^*}}^x \delta_x \overline{{\phi''}^\tau}^\eta
+%% + (\delta_x \overline{\phi^{t^*}}^\eta)
+%% (\delta_\eta \overline{\overline{p''}^x}^\eta 
+%%    -\overline{\mu''}^x)^\tau] &= R_U^{t^*} 
+\label{u-discrete}
+\\
+%
+\partial_t V'' + (m_y/m_x)\overline{(\alpha^{t^*}/\alpha^{t^*}_d)}^y \bigg[\overline{\mu_d^{t^*}}^y\bigg(
+\overline{\alpha_d^{t^*}}^y  \partial_y  {p''}^\tau  + \overline{{\alpha_d''}^\tau}^y  \partial_y {\overline p}
++ \partial_y \overline{{\phi''}^\tau}^\eta \bigg) 
+ \notag &
+\\
++ \partial_y \overline{\phi^{t^*}}^\eta \bigg(\partial_\eta \overline{\overline{{p''}}^y}^\eta - \overline{{\mu''_d}}^y \bigg)^\tau \, \bigg]  & = R_V^{t^*}
+%%\delta_{\tau} V''  +  \overline{\mu^{t^*}}^y
+%%   \overline{\alpha^{t^*}}^y \delta_y {p''}^\tau 
+%% + (\overline{\mu^{t^*}}^y \delta_y \bar p)\overline{{\alpha''}^\tau}^y
+%%~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+%%\notag \\
+%% + \overline{(\alpha/\alpha_d)}^y 
+%%    [\overline{\mu^{t^*}}^y \delta_y \overline{{\phi''}^\tau}^\eta
+%% + (\delta_y \overline{\phi^{t^*}}^\eta)
+%% (\delta_\eta \overline{\overline{p''}^y}^\eta 
+%%    -\overline{\mu''}^y)^\tau] &= R_V^{t^*}
+\label{v-discrete}
+\\
+ \delta_\tau \mu_d'' 
+ + m_x m_y[\delta_x U'' + \delta_y V'']^{\tau+\Delta \tau} 
++ m_y {\delta_\eta \Omega''^{\tau+\Delta \tau}} & = 
+R_\mu^{t^*}
+\label{mu-discrete}
+\\
+ \delta_\tau \Theta'' 
++ m_x m_y[  \delta_x (U''\overline{\theta^{t^*}}^x)
+      + \delta_y (V''\overline{\theta^{t^*}}^y)]^{\tau+\Delta \tau} 
++ m_y \delta_\eta (\Omega''^{\tau+\Delta \tau} \overline{\theta^{t^*}}^\eta)
+                                                &= {R_\Theta}^{t^*}  
+\label{theta-discrete}
+\\
+ \delta_\tau W'' 
+- m_y^{-1} g\overline{\left\{\overline{(\alpha/\alpha_d)^{t^*}}^\eta 
+  \left[ \delta_\eta (C \delta_\eta \phi'') 
+   +
+\delta_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta''\over\Theta^{t^*}}\biggr)
+\right]
+- \mu_d''\right\}}^\tau
+ &= {R_W}^{t^*}  
+\label{w-discrete}
+\\
+ \delta_\tau \phi'' + {1\over\mu_d^{t^*}}
+[m_y \Omega''^{\tau+\Delta \tau} \delta_\eta \overline{\phi^{t^*}}^\eta  - m_y\overline{g W''}^\tau ] 
+&= {R_\phi}^{t^*},
+\label{geo-discrete}
+\end{align}
+%
+\noindent
+where the discrete operator 
+%
+\begin{equation}
+\delta_x a = \Delta x^{-1} (a_{i+1/2} -
+a_{i-1/2}) 
+\end{equation}
+%
+\noindent
+with the operators $\delta_y$ and $\delta_\eta$ similarily defined.
+Additionally,
+the operator $\overline{a}^\eta$ is a vertical interpolation operator.
+Using the notation given for the vertically stretched grid depicted 
+in Fig. \ref{figure:2}, it is defined as
+%
+\begin{equation}
+\overline{a}^\eta|_{k+1/2} = {1 \over 2} \biggl(
+{\Delta\eta_{k} \over \Delta\eta_{k+1/2}} a_{k+1} +
+{\Delta\eta_{k+1} \over \Delta\eta_{k+1/2}} a_{k} \biggr).
+\end{equation}
+%
+\noindent
+This operator vertically interpolates variables on mass levels $k$ to the
+$w$ levels $(k+{1\over 2})$.  It should be noted that the vertical grid
+is defined such that vertical interpolation from $w$ levels to mass
+levels reduces to 
+$\overline{a}^\eta_k = (a_{k+1/2}+a_{k-1/2})/2$ (see Fig. \ref{figure:2}).
+
+The RHS terms in the discrete acoustic step equations 
+for momentum
+\eqref{u-discrete}, \eqref{v-discrete} and \eqref{w-discrete}
+are discretized as
+%
+\begin{align}
+R_U^{t^*} =
+ -(m_x/m_y) \overline{(\alpha/\alpha_d)}^x & \left[ \overline{\mu_d}^x (\partial_x \overline{\phi'}^\eta
++ \overline{\alpha_d}^x \partial_x p' + \overline{\alpha'_d}^x \partial_x \overline{p}) +
+\partial_x \overline{\phi}^\eta (\partial_\eta \overline{\overline{p'}^x}^\eta - \overline{\mu'_d}^x)\right] & \cr
+& + F_{U_{cor}} + \hbox{advection} + \hbox{mixing} + \hbox{physics,}
+%%R_U^{t^*} = &- ( \overline{{\mu}_d}^x \overline{\alpha}^x \delta_x p' 
+%%   -\overline{{\mu}_d}^x \overline{\alpha'}^x \delta_x \bar{p}) 
+%%-\overline{(\alpha / \alpha_d)}^x
+%%( \overline{{\mu}_d}^x \delta_x \overline{\phi'}^\eta
+%%  -  \delta_\eta \overline{\overline{p'}^x}^\eta \delta_x \overline{\phi}^\eta
+%%  + \overline{{\mu}_d'}^x \delta_x \overline{\phi}^\eta ) \notag  \\
+%%& ~~~~~~~~~~~~~~~~~~~~~~~~~ + F_{U_{cor}} + \hbox{advection} +
+%%\hbox{mixing} + \hbox{physics},
+\label{u-pg-discrete} \\
+%
+R_V^{t^*} =
+ -(m_y/m_x) \overline{(\alpha/\alpha_d)}^y & \left[ \overline{\mu_d}^y (\partial_y \overline{\phi'}^\eta
++ \overline{\alpha_d}^y \partial_y p' + \overline{\alpha'_d}^y \partial_y \overline{p}) +
+\partial_y \overline{\phi}^\eta (\partial_\eta \overline{\overline{p'}^y}^\eta - \overline{\mu'_d}^y)\right] & \cr
+& + F_{V_{cor}} + \hbox{advection} + \hbox{mixing} + \hbox{physics,}
+%%R_V^{t^*} = &- ( \overline{{\mu}_d}^y \overline{\alpha}^y \delta_y p' 
+%%   -\overline{{\mu}_d}^y \overline{\alpha'}^y \delta_y \bar{p}) 
+%%-\overline{(\alpha / \alpha_d)}^y
+%%( \overline{{\mu}_d}^y \delta_y \overline{\phi'}^\eta
+%%  -  \delta_\eta \overline{\overline{p'}^y}^\eta \delta_y \overline{\phi}^\eta
+%%  + \overline{{\mu}_d'}^y \delta_y \overline{\phi}^\eta ) \notag  \\
+%%& ~~~~~~~~~~~~~~~~~~~~~~~~~ + F_{V_{cor}} + \hbox{advection} +
+%%\hbox{mixing} + \hbox{physics},
+\label{v-pg-discrete} \\
+%
+R_W^{t^*} = ~ m_y^{-1} g \overline{(\alpha/\alpha_d)}^\eta [\delta_\eta p' 
++ & {\bar{\mu}}_d \overline{q_m}^\eta]
+- m_y^{-1} {\mu}_d'g & \cr
+& + F_{W_{cor}} + \hbox{advection} + \hbox{mixing} + \hbox{buoyancy} + \hbox{physics}.
+\label{w-pg-discrete}
+\end{align}
+
+\subsection{Coriolis and Curvature Terms}
+
+The terms $F_{U_{cor}}$, $F_{V_{cor}}$, and $F_{W_{cor}}$ in 
+\eqref{u-pg-discrete} -- \eqref{w-pg-discrete}
+represent Coriolis and
+curvature effects in the equations using the isotropic map projections 
+(Lambert conformal, polar stereographic, and Mercator) where $m_x=m_y=m$.
+These terms in continuous form are given in
+\eqref{u-mom-rhs} --
+\eqref{w-mom-rhs}.  Their spatial discretization is
+%
+\begin{align}
+F_{U_{cor}} & =  + 
+\bigl({\overline f}^x +
+{\overline{
+  {\overline u}^x 
+   {\delta_y m} 
+- {\overline v}^y 
+    \delta_x m}}^x     \bigr)
+{\overline V}^{xy}
+- {\overline e}^x
+{\overline W}^{x\eta}\, {\overline{\cos \alpha_r}}^x 
+- {u {\overline W}^{x\eta} \over r_e},
+\label{coriolis-u-regional}
+\\
+%
+F_{V_{cor}} & =  - 
+\bigl({\overline f}^y +
+{\overline{
+{\overline u}^x 
+{\delta_y m} 
+- {\overline v}^y \delta_x m}}^y \bigr)
+{\overline U}^{xy}
++ {\overline e}^y
+{\overline W}^{y\eta}\, {\overline{\sin \alpha_r}}^y 
+- {v {\overline W}^{y\eta} \over r_e},
+\label{coriolis-v-regional}
+\\
+%
+F_{W_{cor}} & = + e ({\overline U}^{x\eta}
+\cos \alpha_r - {\overline V}^{y\eta}
+\sin \alpha_r) + \biggl({ 
+ {\overline u}^{x\eta}  {\overline U}^{x\eta} 
++{\overline v}^{y\eta}  {\overline V}^{y\eta} 
+\over r_e}\biggr).
+\label{coriolis-w-regional}
+\end{align}
+%
+\noindent
+Here the operators $\overline{()}^{xy} = \overline{\overline{()}^{x}}^y
+$, and likewise for $\overline{()}^{x\eta}$ and $\overline{()}^{y\eta}$.
+
+For the non-isotropic latitude longitude projection, the Coriolis and
+curvature terms given in 
+\eqref{u-mom-rhs-global} and 
+\eqref{v-mom-rhs-global} are discretized as
+%
+\begin{align}
+F_{U_{cor}} & =  {m_x \over m_y} \biggl[\hphantom{-}{\overline f}^x 
+{\overline V}^{xy}
++ {u\overline{V}^{xy} \over r_e} \tan\psi \biggr] 
+- {\overline e}^x
+{\overline W}^{x\eta}\, {\overline{\cos \alpha_r}}^x 
+- {u {\overline W}^{x\eta} \over r_e},
+\label{coriolis-u-global}
+\\
+%
+F_{V_{cor}} & =  {m_y \over m_x} \biggl[ - \overline{f}^y
+\overline{U}^{xy} 
+- {\overline{u}^{xy} \overline{U}^{xy} \over r_e} \tan \psi  
++ \overline{e}^y \overline{W}^{y\eta}\overline{\sin \alpha_r}^y
+%% + {v\overline{W}^{y\eta} \over r_e}
+- {v\overline{W}^{y\eta} \over r_e}
+\biggr],
+\label{coriolis-v-global}
+\\
+%
+F_{W_{cor}} & = + e ({\overline U}^{x\eta}
+\cos \alpha_r - (m_x/m_y) {\overline V}^{y\eta}
+\sin \alpha_r) + \biggl({ 
+ {\overline u}^{x\eta}  {\overline U}^{x\eta} 
++(m_x/m_y) {\overline v}^{y\eta}  {\overline V}^{y\eta} 
+\over r_e}\biggr).
+\label{coriolis-w-global}
+%
+\end{align}
+
+
+
+\subsection{Advection}
+\label{advection}
+
+The advection terms in the ARW solver are in the form of a flux divergence and
+are a subset of the RHS terms in equations \eqref{u-rhs} --
+\eqref{geo-rhs}:
+%
+\begin{align}
+R_{U_{adv}}^{t^*} = &
+- m_x[\partial_x(Uu) + \partial_y(Vu)] + \hphantom{(m_x/m_y)} \partial_\eta (\Omega u)
+\\
+%
+R_{V_{adv}}^{t^*} = &
+- m_y[\partial_x (Uv) + \partial_y (Vv)] + (m_x/m_y) \partial_\eta (\Omega v)
+\\ 
+%
+R_{\mu_{adv}}^{t^*} = &
+%% - m_x m_y[U_x + V_y] + m_y \Omega_\eta
+- m_x m_y[\partial_x U + \partial_y V] + m_y \partial_\eta\Omega
+\\
+R_{\Theta_{adv}}^{t^*} = &
+- m_x m_y [\partial_x (U\theta) + \partial_y (V\theta)] - m_y \partial_\eta
+(\Omega \theta) 
+\\
+%
+R_{W_{adv}}^{t^*} = &
+- (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
+(\Omega w) 
+\\
+%
+R_{\phi_{adv}}^{t^*} = &
+- \mu_d^{-1}
+%% [m_x m_y (U\phi_x + V\phi_y) + m_y
+%% \Omega\phi_\eta].
+[m_x m_y (U\partial_x \phi + V\partial_y \phi) + m_y
+\Omega\partial_\eta\phi].
+\end{align}
+%
+\noindent
+For the mass conservation equation, the flux divergence is discretized
+using a 2nd-order centered approximation:
+%
+\begin{equation}
+R_{\mu_{adv}}^{t^*} = 
+- m_x m_y [\delta_x U + \delta_y V]^{t^*} + m_y \delta_\eta \Omega^{t^*}.
+\end{equation}
+%
+
+In the current version of the ARW, the advection of vector quantities
+(momentum) and scalars is performed
+using the RK3 time integration as outlined in Fig. 
+\ref{time_integration_figure}.  The spatial discretization used in this
+approach is outlined in the next section.  For many applications it
+is desirable to use positive definite or monotonic advection schemes
+for scalar transport.  
+
+%In the next major release of the ARW we will be
+%including a forward-in-time scheme for scalar transport that has
+%positive definite and monotonic options.  We describe that scheme in
+%the section following the description of the RK3 advection.
+
+\subsubsection{RK3 Advection}
+\label{rk3-advection}
+
+$\hbox{2}^{nd}$ through $\hbox{6}^{th}$ order accurate spatial 
+discretizations
+of the flux divergence are available in the ARW for momentum,
+scalars and geopotential using the RK3 time-integration scheme
+(scalar advection option 1, step 7 in the time-split integration sequence
+in Fig. \ref{time_integration_figure}).
+The discrete operators can be illustrated
+by considering the flux divergence equation for
+a scalar $q$ in its discrete form:
+%
+\begin{equation}
+R_{q_{adv}}^{t^*} =
+- m_x m_y [\delta_x (U \overline{q}^{x_{adv}}) 
++ \delta_y (V\overline{q}^{y_{adv}})] 
+- m_y \delta_\eta
+(\Omega \overline{q}^{\eta_{adv}}).
+\label{flux-divergence}
+\end{equation}
+%
+As in the pressure gradient discretization, the discrete operator
+is defined as
+%
+\begin{equation}
+\delta_x (U \overline{q}^{x_{adv}}) = \Delta x^{-1} 
+\bigl[ (U \overline{q}^{x_{adv}})_{i+1/2} -
+(U \overline{q}^{x_{adv}})_{i-1/2} \bigr].
+\label{discrete-divergence}
+\end{equation}
+%
+\noindent
+The different order advection schemes correspond to different
+definitions for the operator  $\overline{q}^{x_{adv}}$.  
+The even order operators 
+($\hbox{2}^{nd}$, $\hbox{4}^{th}$, and $\hbox{6}^{th}$) are
+%
+\begin{align}
+\hbox{2}^{nd} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+{1 \over 2} 
+(q_{i} + q_{i-1}) \notag \\
+%
+\hbox{4}^{th} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+{7 \over 12} (q_{i} + q_{i-1}) 
+- {1 \over 12} (q_{i+1} + q_{i-2}) 
+\notag \\
+\hbox{6}^{th} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+{37 \over 60} (q_{i} + q_{i-1}) 
+- {2 \over 15} (q_{i+1} + q_{i-2}) 
++ {1 \over 60} (q_{i+2} + q_{i-3}),
+\notag
+\end{align}
+%
+\noindent
+and the odd order operators ($\hbox{3}^{rd}$ and $\hbox{5}^{th}$) are
+%
+\begin{align}
+\hbox{3}^{rd} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+(\overline{q}^{x_{adv}})_{i-1/2}^{4^{th}} 
+\notag
+\\
+&~~~~~~~~~~~~~~~~~~~~
++ \hbox{sign}(U){1 \over 12} \bigl[
+(q_{i+1}-q_{i-2}) - 3(q_i - q_{i-1}) \bigr]
+\notag
+\\
+\hbox{5}^{th} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+(\overline{q}^{x_{adv}})_{i-1/2}^{6^{th}} 
+\notag
+\\
+&~~~~~~~~~~~~~~~~~~~~
+- \hbox{sign}(U){1 \over 60} \bigl[
+(q_{i+2}-q_{i-3}) - 5(q_{i+1} - q_{i-2}) 
++ 10(q_i - q_{i-1})
+\bigr].
+\notag
+\end{align}
+
+The even-order advection operators are spatially centered and thus
+contain no implicit diffusion outside of the diffusion inherent in
+the RK3 time integration.  The odd-order schemes are upwind-biased, and
+the spatial discretization is inherently diffusive.  The behavior of 
+the upwind schemes is easily understood by expanding
+\eqref{discrete-divergence} using the $5^{th}$ order operator, assuming a
+constant mass flux $U$ and
+multiplying by the timestep $\Delta t$:
+%
+\begin{align}
+\Delta t \delta_x (U \overline{q}^{x_{adv}}) =  
+& \, {\Delta t} {\delta (Uq)|}^{6th}
+-\left| {U \Delta t \over \Delta x }\right| {1 \over 60}
+\left(-q_{i-3}+6q_{i-2}-15q_{i-1}+20q_{i}-15q_{i+1}+6q_{i+2}-q_{i+3}
+\right)
+\notag
+\\
+= & \, {\Delta t} {\delta (Uq)|}^{6th} - {Cr \over 60} \Delta x^6 {\partial^6
+%% q \over \partial x^6} + \, H.O.T.
+q \over \partial x^6} + \, {\rm higher\ order\ terms}
+\notag
+\end{align}
+%
+\noindent
+Similarly, we can expand \eqref{discrete-divergence} using the $3^{rd}$
+order operator:
+\begin{align}
+\Delta t \delta_x (U \overline{q}^{x_{adv}})
+= & \, {\Delta t} {\delta (Uq)|}^{4th} + {Cr \over 12} \Delta x^4 {\partial^4
+%% q \over \partial x^4} + \, H.O.T.
+q \over \partial x^4} + \, {\rm higher\ order\ terms}
+\notag
+\end{align}
+%
+\noindent
+As is evident in
+their formulation, the odd-order schemes are comprised of the next
+higher (even) order centered scheme plus an upwind term that, for a
+constant transport mass flux, is a diffusion term of that next higher
+(even) order with a hyper-viscosity proportional to the Courant number
+($Cr$).
+The diffusion term is the leading order error term in the flux
+divergence discretization.
+Further details concerning RK3 advection can be found in \citet{wicker02}
+
+\subsubsection{Positive-Definite Limiter for RK3 Advection}
+\label{positive-definite-transport}
+
+Mixing ratios of moisture, chemical species or other tracer species
+should remain positive-definite, that is, negative masses should not be
+permitted.  The Runge-Kutta transport integration defined by the
+timestepping algorithm \eqref{rk3a} -- \eqref{rk3c}, combined with the
+flux divergence operator \eqref{flux-divergence}, is conservative but it
+does not guarantee positive definiteness; any negative values will be
+offset by positive mass such that mass is conserved.  In many physics
+options, negative mixing ratios will be set to zero, and this will
+result in an increase in mass of that species.  A positive-definite flux
+renormalization, applied on the final Runge-Kutta transport step
+\eqref{rk3a}, can be used to remove this unphysical effect from the RK3
+scalar transport scheme.  This scheme is described in
+\citet{skamarock-weisman-08} and \citet{skamarock2005}, and we briefly
+outline the ARW implementation here.
+
+The final RK3 time integration step for transport of a scalar can be
+expressed as
+%
+\begin{equation}
+(\mu\phi)^{t+\Delta t} = (\mu\phi)^{t} - {\Delta t}\bigl\{
+m_x m_y [\delta_x (U \overline{q}^{x_{adv}}) 
++ \delta_y (V\overline{q}^{y_{adv}})] 
++ m_y \delta_\eta
+(\Omega \overline{q}^{\eta_{adv}})\bigr\}
++ \Delta t \mu S_\phi^t
+\label{rk3c-scalar}
+\end{equation}
+%
+\noindent
+where the flux divergence is evaluated using the (**) time level
+predicted in RK3 step \eqref{rk3b}.  The positive-definite flux
+renormalization replaces \eqref{rk3b} with the following two steps.  First,
+the scalar mixing ratio is updated using the tendency derived from the
+model physics and source/sink terms.
+%
+\begin{equation}
+(\mu\phi)^{***} = (\mu\phi)^{t} + {\Delta t} \mu S_\phi^t
+\label{scalar-source-update}
+\end{equation}
+%
+where we denote this new predictor as $(\mu\phi)^{***}$.  Second, the
+full update is computed using a
+flux divergence composed of a first-order upwind flux plus a
+higher order correction:
+
+\begin{align}
+(\mu\phi)^{t+\Delta t} = (\mu\phi)^{***} - {\Delta t}\bigl\{ \,\,\,
+m_x m_y ( \delta_x &\left[ (U \overline{q}^{x_{adv}})^1 
++ R(U \overline{q}^{x_{adv}})' \right] 
+\notag
+\\
++\delta_y &\left[(V\overline{q}^{y_{adv}})^1 
++ R(V\overline{q}^{y_{adv}})'\right] )
+\notag
+\\
++ m_y \delta_\eta &\left[
+(\Omega \overline{q}^{\eta_{adv}})^1 + R(\Omega \overline{q}^{\eta_{adv}})' \right]
+\,\,\,\, \bigr\}.
+\label{pd-update}
+\end{align}
+%
+In \eqref{pd-update}, $()^1$ denotes a first-order upwind flux and $R()'$
+denotes a renormalized higher-order correction flux.  The higher-order
+correction flux is the difference between the full RK3 flux and the
+first-order upwind flux, that is,
+%
+\begin{equation}
+(U \overline{q}^{x_{adv}}) = (U \overline{q}^{x_{adv}})^1 + (U
+\overline{q}^{x_{adv}})',
+\label{correction-def}
+\end{equation}
+%
+with similar definitions for $(V \overline{q}^{y_{adv}})'$ 
+and $(\Omega \overline{q}^{\eta_{adv}})'$.  The correction flux is then
+renormalized as follows.  First, the upwind fluxes are used to perform a
+partial update of the scalar mass.
+%
+\begin{equation}
+(\tilde{\mu\phi}) = (\mu\phi)^{***} 
+- {\Delta t} \bigl\{
+m_x m_y [\delta_x (U \overline{q}^{x_{adv}})^1 
++ \delta_y (V\overline{q}^{y_{adv}})^1] 
++ m_y \delta_\eta
+(\Omega \overline{q}^{\eta_{adv}})^1\bigr\}
+\notag
+\end{equation}
+%
+This update is positive definite (and monotonic) by design because it is
+the first-order upwind scheme.  Next, a prediction of the minimum
+possible values of the new-time-level species mass is computed at each
+point by using only the outward directed fluxes (fluxes that remove mass
+from the control volume),
+%
+\begin{equation}
+(\mu\phi)_{min}^{t+\Delta t} = (\tilde{\mu\phi}) 
+-{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
++ \delta_y (V_+\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\}
+\label{min-prediction}
+\end{equation}
+%
+where $U_+$, $V_+$ and $\Omega_+$ indicated the use of fluxes 
+out of a control volume only, that is, only those that contribute to
+lowering the scalar mass.  As is obvious from \eqref{min-prediction},
+the scalar mass $(\mu\phi)_{min}^{t+\Delta t} < 0$ if 
+%
+\begin{equation}
+(\tilde{\mu\phi}) < 
+{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
++ \delta_y (V_+\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\}
+\notag
+\end{equation}
+%
+For each volume where negative mass is indicated by
+\eqref{min-prediction}, the fluxes are renormalized
+such that the outgoing fluxes and mass in the volume are equivalent.
+%
+\begin{equation}
+R\left(U_+\overline{q}^{x_{adv}}\right)' = 
+\left(U_+\overline{q}^{x_{adv}}\right)' 
+{ \tilde{\mu \phi} \over
+{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
++ \delta_y (V_+\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\} }
+\label{renormalization}
+\end{equation}
+%
+with a similar renormalization applied to the 
+$(V \overline{q}^{y_{adv}})'$ 
+and $(\Omega \overline{q}^{\eta_{adv}})'$.
+If no negative mass is indicated in \eqref{min-prediction}, the
+correction flux is equal to the 
+%
+\begin{equation}
+R\left(U_+\overline{q}^{x_{adv}}\right)' = 
+\left(U_+\overline{q}^{x_{adv}}\right)',
+\,\,\,
+R\left(V_+\overline{q}^{y_{adv}}\right)' = 
+\left(V_+\overline{q}^{y_{adv}}\right)',
+\,\,\,
+R\left(\Omega_+\overline{q}^{\eta_{adv}}\right)' = 
+\left(\Omega_+\overline{q}^{\eta_{adv}}\right)'.
+\label{r-ok}
+\end{equation}
+%
+The renormalized fluxes \eqref{renormalization} and \eqref{r-ok}, along
+with the first order fluxes, are then used in the update equation
+\eqref{pd-update}.  Note that if no renormalization is needed, the
+scheme \eqref{pd-update} reverts to the standard RK3 update because
+the definition of the correction \eqref{correction-def}.
+
+%
+%  figure 3.2 for polar b.c
+%
+\begin{figure}
+  \includegraphics *[width=6.5in,bb= 0 0 419 183]{figures/polar_bc.pdf}
+  \caption{\label{figure_pole} Latitude-longitude grid structure in the
+pole region. In the ARW formulation, $r_e\Delta\psi = \Delta y/m_y $.}
+\end{figure}
+
+\subsection{Pole Conditions for the Global Latitude-Longitude Grid}
+\label{pole_condition}
+
+The latitude-longitude grid has a singularity at the two poles where the
+latitude $\psi = \pm 90^\circ$, as illustrated in Figure
+\ref{figure_pole}.  By design, no variable is defined at the pole point.
+The area of the control volume face at the pole is zero, thus a flux at
+the pole point is not needed in the solution of any of the prognostic
+variables.  For example, in the finite volume discretization of the mass
+conservation equation \eqref{mu-discrete} for $\mu$ in a control volume
+closest to the pole, the meridional gradient ($y$ gradient) of the mass
+flux $\delta_y V''$ will use zero for the pole contribution to this
+term.
+
+The stencils for advection operators higher than 2nd order, described in
+Section \ref{rk3-advection}, cross the poles for flux calculations at
+the control volume faces located $r_e\Delta\psi$ and $2r_e\Delta\psi$
+from the pole point (Figure \ref{figure_pole}, the $V$ flux is indicated
+in red).  In the current implementation of the ARW, we reduce the order
+of the flux operator at these faces so that their stencils do not extend
+across the pole point.  While this formally reduces the accuracy of the
+scheme, we have not been able to identify any significant degradation in
+the ARW solutions.
+
+Coriolis and curvature terms are computed for the vertical momentum
+equation \eqref{coriolis-w-global} and the horizontal momentum equation
+for $U$ \eqref{coriolis-u-global}.  For the $W$ and $U$ points that lie
+$r_e \Delta \psi/2$ from the pole, the stencils for these terms require a
+value of $V$ at the pole point.  We set the value of $V$ at the pole
+equal to the value of $V$ at $\Delta \psi$ to evaluate these
+operators. This approximation is also used for the meridional advection
+of $V$, combined with a lowering of the flux-operator order to avoid
+differencing across the pole (as with the flux divergence terms for the
+other prognostic variables).
+
+%\subsubsection{Forward-In-Time Scalar Advection}
+%
+%A forward-in-time scalar advection scheme having monotonic and positive
+%definite options will be available in the next major release of the ARW.
+%This option entails bypassing step (7) in the time-split
+%integration sequence in Fig. \ref{time_integration_figure}, and adding
+%a single advection evaluation before step (9), after the end of the RK3
+%loop in the integration sequence.  The new advection algorithm is
+%patterned after \citet{easter93} and can be written as follows
+%
+%\begin{align}
+%              (\mu_d q)^* &= (\mu_d q)^t + m_x m_y F_x (q^t)
+%                                       \label{split_adv_start}      \\
+%\mu_d^{*}                   &= \mu_d^t + m_x m_y  F_x (I) \label{cont-x}             \\
+%q^{*}                   &=  (\mu_d q)^{*}/ (\mu_d)^{*}       \\
+%(\mu_d q)^{**}             &= (\mu_d q)^* + m_x m_y F_y (q^*)        \\
+%\mu_d^{**}                   &= \mu_d^* + m_x m_y  F_y (I) \label{cont-y}            \\
+%q^{**}                   &=  (\mu_d q)^{**}/ (\mu_d)^{**}    \\
+%(\mu_d q)^{t+\Delta t}     &= (\mu_d q)^{**} + m_y F_\eta (q^{**})  \\
+%\mu_d^{t+\Delta t}           &= \mu_d^{**} + m_y F_\eta (I) \label{cont-z}          \\
+%q^{t+\Delta t} & = (\mu_d q)^{t+\Delta t}/\mu_d^{t+\Delta t}. \label{split_adv_end}
+%\end{align}
+%
+%\noindent
+%In \eqref{split_adv_start} - \eqref{split_adv_end} the operator 
+%
+%\begin{equation}
+%F_x (q) = - \Delta t \Delta x^{-1}( (
+%{\overline{U}^t q})_{i+1/2} - 
+%({\overline{U}^t q})_{i-1/2}),
+%\label{flux_divergence}
+%\end{equation}
+%
+%\noindent
+%with similar definitions 
+%for $F_y$ and $F_\eta$,  and $I$ is a vector with all values equal to
+%1. 
+%The discrete mass continuity
+%equation (\eqref{cont-x}+\eqref{cont-y}+\eqref{cont-z}) can be
+%written as
+%
+%\begin{equation}
+%\delta_\tau \mu_d = 
+%- m_x m_y [\delta_x \overline{U}^t + \delta_y \overline{V}^t] 
+%- m_y {\delta_\eta \overline{\Omega}^t}.
+%\label{continuity}
+%\end{equation}
+%
+%\noindent
+%It can easily be seen that the scheme 
+%\eqref{split_adv_start} - \eqref{split_adv_end} 
+%collapses to \eqref{continuity} for $ q = I$, 
+%and hence it is consistent.  The mass fluxes
+%$\overline{U}^t$, $\overline{V}^t$, and $\overline{\Omega}^t$,
+%represent time-averaged values where the averaging is performed over the
+%final RK3 small-time-step cycle.  Hence, the mass conservation equation
+%\eqref{continuity} produces the mass conservation equation integrated
+%within the RK3 scheme.  Equation \eqref{continuity} is re-integrated 
+%within the time-split transport scheme only because a consistent 
+%column mass $\mu_d$ is
+%needed on the sub-steps to retrieve $ q$ from the prognostic
+%variable $\mu_d  q$. 
+%
+%Any forward-in-time flux operator that is stable
+%for $Cr \le 1$ can be used to evaluate
+%the operators
+%$F_x (q)$, $F_y (q)$,
+%or $F_\eta (q)$.  A scheme based on the Piecewise Parabolic Method
+%(PPM) has been implemented in the ARW.  It
+%is the non-monotonized PPM advection described in \citet{carpenter1990},
+%and it provides the fluxes 
+%$({\overline{U}^t q})_{i\pm {1\over 2}}$
+%used
+%in \eqref{flux_divergence} in the flux divergence operators.
+%Defining $ q_i$ as the control-volume average mixing ratio for cell
+%$i$, zone edge values $q^{adv}$ can be defined as
+%
+%\begin{equation}
+%q^{adv}_{i+{1\over 2}} = \bigl( 7( q_{i+1}+ q_i) -
+%( q_{i+2}+ q_{i-1})\bigr)/12. 
+%\end{equation}
+%
+%\noindent
+%The flux through the $i + {1 \over 2}$ face can be written as
+%%
+%\begin{equation}
+%(\overline{U}^t q)_{i+{1 \over 2}} = {\overline{U}^t}_{i+{1 \over 2}} \bigl[
+%q^{adv}_{i+{1 \over 2}} - Cr (q^{adv}_{i+{1 \over 2}} -  q_{i})
+%-Cr(1 - Cr)(  q^{adv}_{i-{1 \over 2}} - 2  q_{i} 
+%              + q^{adv}_{i+{1\over 2}}) \bigr]
+%\end{equation}
+%%
+%\noindent
+%for $Cr > 0$, and
+%
+%\begin{equation}
+%(\overline{U}^t q)_{i+{1 \over 2}} = {\overline{U}^t}_{i+{1 \over 2}} \bigl[
+%q^{adv}_{i+{1 \over 2}} - Cr  ( q^{adv}_{i+{1 \over 2}}-  q_{i+1})
+% + Cr(1 + Cr)(  q^{adv}_{i+{1 \over 2}} - 2  q_{i+1} 
+%              + q^{adv}_{i+{3\over 2}}) \bigr]
+%\end{equation}
+%
+%\noindent
+%for $Cr < 0$, where $Cr = u_{i+{1\over 2}}\Delta t/\Delta
+%x$.  In addition, to maintain second-order accuracy for the time-split
+%forward-in-time advection scheme, the sequence
+%\eqref{split_adv_start} -- \eqref{split_adv_end} is reversed
+%every other time step; that is, the flux divergence in $\eta$ is
+%computed first followed by $y$ and then $x$.
+%Finally, the scheme has also been augmented for Courant numbers
+%greater than one using the 1D ``semi-Lagrangian'' flux calculation
+%described in \citet{linrood96}.   More information about this
+%scheme and a description of the limiters 
+%can be found in \citet{skamarock2005}.
+
+\section{Stability Constraints}
+
+There are two time steps that a user must specify when running the ARW:
+the model time step (the time step used by the RK3 scheme, see 
+Section \ref{rk3_scheme}) and the acoustic time step (used in the 
+acoustic sub-steps of the time-split integration procedure,
+see Section \ref{acoustic_equations}).  Both are limited by Courant
+numbers. 
+%Note that the thermal buoyancy terms are handled on the acoustic
+%steps, and therefore gravity wave frequencies, which are lower than acoustic
+%frequencies, do not limit the time step.
+In the following sections we describe how to choose time steps
+for applications.
+
+\subsection{RK3 Time Step Constraint}
+\label{rk3_timestep_constraint}
+
+The RK3 time step is limited by the advective Courant number $u \Delta
+t/\Delta x$ and the user's choice of advection schemes--- users can
+choose $2^{nd}$ through $6^{th}$ order discretizations for the advection
+terms.  The time-step limitations for 1D advection in the RK3 scheme 
+using these advection schemes is given in \citet{wicker02}, 
+and is reproduced here.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|} \hline
+& \multicolumn{4}{c|}{Spatial order} \\\cline{2-5}
+\raisebox{1.5ex}[0cm]{Time Scheme}
+& 3rd & 4th & 5th & 6th \\\hline
+Leapfrog & {\em Unstable} & 0.72 & {\em Unstable} & 0.62 \\\hline
+RK2 & 0.88 & {\em Unstable} & 0.30 & {\em Unstable} \\\hline
+RK3 & 1.61 & 1.26 & 1.42 & 1.08 \\\hline
+\end{tabular}
+\end{center}
+\caption{Maximum stable Courant numbers for one-dimensional linear
+advection.  From \citet{wicker02}.}
+\label{courant_table}
+\end{table}
+
+As is indicated in the table, the maximum stable Courant numbers for
+advection in the RK3 scheme are almost a factor of two greater than
+those for the leapfrog time-integration scheme.  For advection in three
+spatial dimensions, the maximum stable Courant number is $1/\sqrt{3}$
+times the Courant numbers given in Table \ref{courant_table}.  For
+stability, the time step used in the ARW should produce a maximum
+Courant number less than that given by theory.  Thus, for 3D
+applications, the time step should satisfy the following equation:
+%
+\begin{equation}
+\Delta t_{max} < {Cr_{theory} \over \sqrt{3}} \cdot {\Delta x \over
+u_{max}},
+\label{rk3_timestep}
+\end{equation}
+%
+\noindent
+where $Cr_{theory}$ is the Courant number taken from the RK3 entry in
+Table \ref{courant_table} and $u_{max}$ is the maximum velocity expected
+in the simulation.  For example in real-data applications, where jet
+stream winds may reach as high as $100\,\,\hbox{ms}^{-1}$, the maximum
+time step would be approximately 80 s on a $\Delta x = 10 \,\,\hbox{km}$ grid 
+using $5^{th}$ order advection.  For convection-permitting resolutions
+(typically $\Delta x \le 5$ km), the vertical velocities in convective
+updrafts produce the stability-limiting Courant numbers.
+Given additional constraint from the time splitting, and to provide a
+safety buffer, we usually choose a time step that is approximately 25\%
+less than that given by \eqref{rk3_timestep}.  This time step is
+typically a factor of two greater than that used in leapfrog-based
+models.  For those users familiar with the MM5 model, the rule of thumb
+for choosing a time step is that the time step, in seconds, should be 
+approximately 3 times the horizontal grid distance, in kilometers.
+For the ARW, the time step (in seconds) should be approximately 
+6 times the grid distance (in kilometers).  
+
+\subsection{Acoustic Time Step Constraint}
+\label{acoustic_step_constraint}
+
+The forward-backward time integration scheme used in the ARW's 2D
+explicit acoustic step integration allows a maximum Courant number
+$Cr_{max} = c_s \Delta \tau/\Delta x < 1/\sqrt{2}$, where $c_s$ is the
+speed of sound.  We typically use a more conservative estimate for this
+by replacing the limiting value $1/\sqrt{2}$ with $1/2$.  Thus, the acoustic
+time step used in the model is
+%
+\begin{equation}
+\Delta \tau < 2 \cdot {\Delta x \over c_s}.
+\label{acoustic_timestep}
+\end{equation}
+%
+\noindent
+For example, on a $\Delta x = 10 \,\, \hbox{km}$ grid, using a sound
+speed $c_s = 300 \,\, \hbox{ms}^{-1}$, the acoustic time step given in
+\eqref{acoustic_timestep} is approximately 17 s.  In the ARW, the
+ratio of the RK3 time step to the acoustic time step must be an even
+integer.  For our example using a $\Delta x = 10$ km grid in a
+real-data simulation, we would specify the RK3 time step $\Delta t = 60
+s$ (i.e., 25\% less than the 80 s step given by \eqref{rk3_timestep},
+and an acoustic time step $\Delta \tau = 15$ s (i.e., 1/4 of the RK3
+step, rounding down the $\Delta \tau = 17$ s step given by
+\eqref{acoustic_timestep}).  Note that it is the ratio of the RK3
+time step to the acoustic time step that is the required input in the ARW.
+
+
+\subsection{Adaptive Time Step}
+\label{adaptive_time_step}
+
+The ARW model is typically integrated with a fixed timestep, 
+that is chosen to produce a stable integration.  During any time in
+the integration, the maximum stable timestep is likely to be larger than
+the fixed timestep.  In ARWV3, an adaptive timestepping capability has
+been introduced that chooses the RK3 timestep based on the temporally-evolving
+wind fields.  The adaptively-chosen timestep is usually larger than the
+typical fixed timestep, hence the dynamics integrates faster and
+physics are called less often, and the time-to-completion of the
+simulation can be substantially reduced.
+
+In the adaptive timestep scheme, a target maximum Courant number
+$Cr_{target}$ is chosen, where typically $1.1 \leq Cr_{target} \leq
+1.2$.  The maximum Courant number in the domain at a given time ($Cr_{domain}$), computed
+for all the velocity components $(u,v,w)$, is then used to compute a new
+timestep.  When the maximum Courant number in the domain is less than
+the target maximum Courant number $(Cr_{domain} < Cr_{target})$, 
+then the timestep can be increased
+and the new timestep is computed using
+%
+\begin{equation}
+\Delta t_{current} = min \Big( 1+f_{i} , 
+{Cr_{target} \over Cr_{domain}}\Big) \cdot \Delta t_{previous},
+\label{adapt_inc_timestep}
+\end{equation}
+%
+\noindent
+where a typical value for the regulated increase is $f_{i} \leq 5\%$.  When
+the computed maximum domain-wide Courant number exceeds the targeted
+maximum allowable Courant number $(Cr_{domain} > Cr_{target})$, 
+then the time step is 
+decreased to insure model stability:
+%
+\begin{equation}
+\Delta t_{current} = max \Big( 1-f_{d} , 
+{{Cr_{target} - {0.5 ({Cr_{domain} - Cr_{target}}) }} 
+\over Cr_{domain} } \Big) \cdot \Delta t_{previous},
+\label{adapt_dec_timestep}
+\end{equation}
+%
+\noindent
+where typically the factor to decrease the time step $f_{d} = 25\%$.  Both a lower bound and
+an upper bound on the time step are enforced based on the initial settings 
+of the time step suggested in section \ref{rk3_timestep_constraint}:
+%
+\begin{equation}
+\Delta t_{init}  = 6 \cdot \Delta x ,
+\label{adapt_init_timestep}
+\end{equation}
+\begin{equation}
+\Delta t_{min} = 0.5 \cdot \Delta t_{init},
+\label{adapt_bound_min_timestep}
+\end{equation}
+\begin{equation}
+\Delta t_{max} = 3.0 \cdot \Delta t_{init},
+\label{adapt_bound_max_timestep}
+\end{equation}
+\begin{equation}
+\Delta t = min ( max ( \Delta t, \Delta t_{min} ) , \Delta t_{max} ),
+\label{adapt_bound_min_timestep}
+\end{equation}
+%
+\noindent
+to guard the time step from becoming too small or too large.  
+The computation of the number of acoustic time steps $n_a$, described in section
+\ref{acoustic_step_constraint}, is handled during the first of each of the
+RK3 model integration steps:
+%
+\begin{equation}
+n_a
+= max \Big( 2 \cdot \lfloor { 300 \cdot {\Delta t \over \Delta x} + 1 } \rfloor , 4 \Big).
+\label{adapt_acoustic_timestep}
+\end{equation}
+%
+
+For a simulation using nests, the fine-grid domain must maintain an integer number of 
+time steps within a single model integration step from the parent.  At each of 
+the starting
+model integration steps for the child grid, those integration steps when the time on the fine-grid 
+domain equals the time
+on the parent's domain, the adaptive time step algorithm is conducted for the fine grid.
+Note that the ratio of the nominal grid distance between the parent and the child does not
+necesarily imply that same ratio between the model integration time steps.
+
+
+\subsection{Map Projection Considerations}
+\label{global_considerations}
+
+For ARW configurations using the Lambert conformal, polar stereographic,
+or Mercator projections, the timestep constraints is determined by
+the smallest physical horizontal grid spacing,
+i.e. $\hbox{min}(\Delta x/m_x, \Delta y/m_y)$.  For global applications,
+the grid distance used to determine the timestep should be $\Delta
+x/m_x$ evaluated at the computational latitude at which the polar
+filters are activated.  Polar filtering is discussed in section
+\ref{polar_filter_section}.

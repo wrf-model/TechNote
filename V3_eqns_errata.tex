@@ -1,0 +1,87 @@
+%\magnification=1200
+\raggedright
+\overfullrule=0pt
+\parskip=0pt
+\parindent=0pt
+
+Corrections for the WRF Version 3 Tech Note, 24 October 2011.
+
+\bigskip
+Page 10, added map scale factors to pressure gradient terms:
+$$ \eqalignno{
+\partial_t U + m_x\left[\partial_x (Uu) + \partial_y (Vu)\right] + \hphantom{(m_x/m_y)} \partial_\eta (\Omega u) 
++(m_x/m_y) [ \mu_d \alpha \partial_x p + (\alpha/\alpha_d) \partial_\eta p \partial_x \phi ] & = F_U & (2.23)  \cr
+%
+\partial_t V + m_y\left[\partial_x (Uv) + \partial_y (Vv)\right] + {(m_y/m_x)} \partial_\eta (\Omega v) 
++(m_y/m_x) [ \mu_d \alpha \partial_y p + (\alpha/\alpha_d) \partial_\eta p \partial_y \phi ]& = F_V & (2.24) \cr }
+$$
+Page 11, 4th line from bottom, change $\alpha = \overline{\alpha}(\overline{z}) + \alpha'$ to $\alpha_d = \overline{\alpha_d}(\overline{z}) + \alpha'_d$.
+
+Page 12, added map scale factors to pressure gradient terms, {\bf pressure gradient now written as it \break \hfill appears in the ARW code and Klemp et al 2007:}
+$$ \eqalignno{
+\partial_t U + & m_x\left[\partial_x (Uu) + \partial_y (Vu)\right] + \partial_\eta (\Omega u) & \cr
+& +(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) + 
+\partial_x \phi (\partial_\eta p' - \mu'_d)\right]  = F_U & (2.38)  \cr
+%
+\partial_t V + & m_y\left[\partial_x (Uv) + \partial_y (Vv)\right] + {(m_y/m_x)} \partial_\eta (\Omega v) & \cr
+& +(m_y/m_x) (\alpha/\alpha_d) \left[ \mu_d (\partial_y \phi' + \alpha_d \partial_y p' + \alpha'_d \partial_y \overline{p}) + 
+\partial_y \phi (\partial_\eta p' - \mu'_d)\right]  = F_V & (2.39)  \cr
+}
+$$
+Page 15, added map scale factors to pressure gradient terms, reordered terms to better match Klemp et al 2007:
+$$ \eqalignno{
+\partial_t U'' + (m_x/m_y)(\alpha^{t^*}/\alpha^{t^*}_d) \left[\mu_d^{t^*} \left(
+\alpha_d^{t^*} \partial_x {p''}^\tau +  {\alpha_d''}^\tau \partial_x {\overline p}  + \partial_x {\phi''}^\tau \right)
++ \partial_x \phi^{t^*} \left(\partial_\eta {p''} - {\mu''_d} \right)^\tau \right] & = R_U^{t^*} & (3.7) \cr
+%
+\partial_t V'' + (m_y/m_x)(\alpha^{t^*}/\alpha^{t^*}_d) \left[\mu_d^{t^*} \left(
+\alpha_d^{t^*} \partial_y {p''}^\tau +  {\alpha_d''}^\tau \partial_y {\overline p}  + \partial_y {\phi''}^\tau \right)
++ \partial_y \phi^{t^*} \left(\partial_\eta {p''} - {\mu''_d} \right)^\tau \right] & = R_V^{t^*} & (3.8) \cr
+}
+$$
+Page 15, added map scale factors to pressure gradient terms, {\bf pressure gradient now written as it \break \hfill appears in the ARW code and Klemp et al 2007:}
+$$ \eqalignno{
+R_U^{t^*} = & - m_x\left[\partial_x (Uu) + \partial_y (Vu)\right] - \partial_\eta (\Omega u)  & \cr
+& -(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) + 
+\partial_x \phi (\partial_\eta p' - \mu'_d)\right] & (3.13) \cr
+%
+R_V^{t^*} = & - m_y\left[\partial_x (Uv) + \partial_y (Vv)\right] - (m_y/m_x) \partial_\eta (\Omega v)  & \cr
+& -(m_y/m_x) (\alpha/\alpha_d) \left[ \mu_d (\partial_y \phi' + \alpha_d \partial_y p' + \alpha'_d \partial_y \overline{p}) + 
+\partial_y \phi (\partial_\eta p' - \mu'_d)\right] & (3.14) \cr
+}
+$$
+
+Page 19, added map scale factors to pressure gradient terms, reordered terms to better match Klemp et al 2007:
+$$ \eqalignno{
+\partial_t U'' + (m_x/m_y)\overline{(\alpha^{t^*}/\alpha^{t^*}_d)}^x \bigg[\overline{\mu_d^{t^*}}^x\bigg(
+\overline{\alpha_d^{t^*}}^x  \partial_x & {p''}^\tau  + \overline{{\alpha_d''}^\tau}^x  \partial_x {\overline p}  
++ \partial_x \overline{{\phi''}^\tau}^\eta \bigg) & \cr
+& + \partial_x \overline{\phi^{t^*}}^\eta \bigg(\partial_\eta \overline{\overline{{p''}}^x}^\eta - \overline{{\mu''_d}}^x \bigg)^\tau \,\bigg]  = R_U^{t^*} & (3.21) \cr
+%
+\partial_t V'' + (m_y/m_x)\overline{(\alpha^{t^*}/\alpha^{t^*}_d)}^y \bigg[\overline{\mu_d^{t^*}}^y\bigg(
+\overline{\alpha_d^{t^*}}^y  \partial_y & {p''}^\tau  + \overline{{\alpha_d''}^\tau}^y  \partial_y {\overline p}  
++ \partial_y \overline{{\phi''}^\tau}^\eta \bigg) & \cr
+& + \partial_y \overline{\phi^{t^*}}^\eta \bigg(\partial_\eta \overline{\overline{{p''}}^y}^\eta - \overline{{\mu''_d}}^y \bigg)^\tau \, \bigg]  = R_V^{t^*} & (3.22) \cr
+}
+$$
+
+Page 20, added map scale factors to pressure gradient terms, {\bf pressure gradient now written as it \break \hfill appears in the ARW code and Klemp et al 2007:}
+
+$$ \eqalignno{
+R_U^{t^*} =
+ -(m_x/m_y) \overline{(\alpha/\alpha_d)}^x & \left[ \overline{\mu_d}^x (\partial_x \overline{\phi'}^\eta 
++ \overline{\alpha_d}^x \partial_x p' + \overline{\alpha'_d}^x \partial_x \overline{p}) + 
+\partial_x \overline{\phi}^\eta (\partial_\eta \overline{\overline{p'}^x}^\eta - \overline{\mu'_d}^x)\right] & \cr
+& + F_{U_{cor}} + \hbox{advection} + \hbox{mixing} + \hbox{physics,} &  (3.29) \cr
+%
+R_V^{t^*} =
+ -(m_y/m_x) \overline{(\alpha/\alpha_d)}^y & \left[ \overline{\mu_d}^y (\partial_y \overline{\phi'}^\eta 
++ \overline{\alpha_d}^y \partial_y p' + \overline{\alpha'_d}^y \partial_y \overline{p}) + 
+\partial_y \overline{\phi}^\eta (\partial_\eta \overline{\overline{p'}^y}^\eta - \overline{\mu'_d}^y)\right] & \cr
+& + F_{V_{cor}} + \hbox{advection} + \hbox{mixing} + \hbox{physics,} &  (3.30) \cr
+}
+$$
+
+
+
+\vfill \eject \end

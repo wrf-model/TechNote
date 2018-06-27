@@ -1,0 +1,222 @@
+\chapter{Lateral Boundary Conditions}
+\label{lbc_chap}
+
+Several lateral boundary condition options exist for the ARW 
+that are suitable for idealized flows, and a specified lateral boundary
+condition for real-data simulations is available.  These choices are
+handled via a run-time option in the Fortran namelist file.
+For nesting, all fine domains use the 
+nest time-dependent lateral boundary condition where the outer row and column of the
+fine grid is specified from the parent domain, described in 
+Section \ref{nest-lbc}.
+The remaining lateral boundary options are exclusively 
+for use by the most coarse/parent domain.
+
+\section{Periodic Lateral Boundary Conditions}
+
+Periodic lateral boundary conditions in the ARW can be specified as
+periodic in $x$ (west-east), $y$ (south-north), or doubly periodic in
+$(x,y)$.  The periodic boundary conditions constrain the solutions to be
+periodic; that is, a generic model state variable $\psi$ will follow
+the relation 
+% 
+\begin{equation} \psi(x+nL_x,y+mL_y) = \psi(x,y)
+%\label{periodic} 
+\notag
+\end{equation} 
+% 
+\noindent for all integer $(n,m)$.
+The periodicity lengths $(L_x,L_y)$ are \hfil\break 
+[(dimension of the domain in $x$) - 1]$\Delta x$ and
+[(dimension of the domain in $y$) - 1]$\Delta y$.
+
+\section{Open Lateral Boundary Conditions}
+
+Open lateral boundary conditions, also referred to as gravity-wave
+radiating boundary conditions, can be specified for the west, east, 
+north, or south boundary, or any combination thereof.  
+The gravity wave radiation conditions follow the approach of 
+\citet{klemp_and_lilly78} and \citet{klemp78}.
+
+There are a 
+number of changes in the base numerical algorithm 
+described in Chapter \ref{discretization_chap} 
+that accompany the imposition of these
+conditions.  First, for the normal horizontal velocities along
+a boundary on which the condition is specified, the momentum
+equation for the horizontal velocity, \eqref{u-small-step} or 
+\eqref{v-small-step}, is replaced by
+%
+\begin{equation}
+\delta_\tau U'' = - U^* \delta_x u,
+\notag
+\end{equation}
+%
+\noindent
+where $U^* = \hbox{min}(U - c_b,0)$ at the $x = 0$ (western) boundary,
+$U^* = \hbox{max}(U + c_b,0)$ at the $x = L$ (eastern) boundary, and
+likewise for the south and north boundaries for the $V$ momentum.  The
+horizontal difference operator $\delta_x$ is evaluated in a one-sided
+manner using the difference between the boundary value and the
+value one grid-point into the grid from the boundary.  $c_b$ is the phase
+speed of the gravity waves that are to be radiated; it is specified
+as a model constant 
+\citep[for more details see][]{klemp_and_lilly78, klemp78}.
+%\citep{klemp78}.
+
+For scalars and non-normal momentum variables, the
+boundary-perpendicular flux divergence term is replaced with
+%
+\begin{equation}
+\delta_x (U\psi) = U^* \delta_x \psi + \psi \ \delta_x U,
+\notag
+\end{equation}
+%
+\noindent
+where $U^* = \hbox{min}(U,0)$ at the $x = 0 + \Delta x/2$ (western)
+scalar boundary,
+$U^* = \hbox{max}(U,0)$ at the $x = L - \Delta x/2$ (eastern) boundary, and
+likewise for the south and north boundaries using $V$.  As was the case
+for the momentum equations, the
+horizontal difference operator $\delta_x$ is evaluated in a one-sided
+manner using the difference between the boundary value and the
+value one grid-point into the grid from the boundary.
+
+\section{Symmetric Lateral Boundary Conditions}
+
+Symmetry lateral boundary conditions can be specified for the west,
+east, north, or south boundary, or any combination thereof.  The
+symmetry boundaries are located on the normal-velocity planes at the
+lateral edges of the grids.  The normal velocities are zero at
+these boundaries, and on either side of the boundary the normal 
+velocity satisfies the relation
+%
+\begin{equation}
+U_{\perp}(x_b - x) = - U_{\perp}(x_b + x),
+%\label{symmetry_u}
+\notag
+\end{equation}
+%
+\noindent
+where $x_b$ is the location of the symmetry boundary.
+All other variables satisfy the relation
+\begin{equation}
+\psi(x_b - x) = \psi(x_b + x).
+%\label{symmetry}
+\notag
+\end{equation}
+
+
+\section{Specified Lateral Boundary Conditions}
+\label{lbc_spec}
+
+
+%
+% spec and relax zones for  real-data lbc
+%
+\begin{figure}
+ \centering
+  \includegraphics *[width=4.5in]{figures/lbc_zones.pdf}
+  \caption{\label{figure:spec} Specified and relaxation zones for a grid
+with a single specified row and column, and four rows and columns for the
+relaxation zone.  These are typical values used for a specified lateral boundary
+condition for a real-data case.}
+\end{figure}
+
+
+Primarily for real-data cases, the specified boundary condition is also referred to as a
+relaxation, or nudging, boundary condition.  There are two uses of
+the specified boundaries in the ARW: for the outer-most coarse grid or
+for the time-dependent boundaries supplied to a nested grid.
+The specified lateral boundary conditions for the nest are automatically selected for all of the
+fine grids, even if the coarse grid is using combinations
+of the symmetry, periodic, or open options.  
+If the specified lateral boundary condition is selected for the coarse
+grid, then all four grid
+sides (west, east, north, and south) use specified lateral conditions.
+However, in tropical channel mode, where the domain wraps completely around
+the equator, it is possible to combine specified boundary conditions with
+periodic conditions in the $x$ direction. Note that care is needed in setting
+the domain up such that the points exactly match longitude at the east and west
+boundaries when periodic conditions are used in real-data cases. Also note that
+a Mercator projection is needed to make this possible.
+
+The coarse grid specified lateral boundary is comprised of both a specified and
+a relaxation zone (as shown in Fig. \ref{figure:spec}).  
+For the coarse grid, the specified zone is determined entirely by 
+temporal interpolation from an external
+forecast or analysis (supplied by WPS).  The width of the specified zone is run-time
+configurable, but is typically set to 1 (i.e., the last
+row and column along the outer edge of the most coarse grid
+is entirely specified by temporal interpolation using data
+from an external model).
+The second region of the lateral boundary for the coarse grid is the relaxation zone.
+The relaxation zone is where the model is nudged or relaxed
+towards the large-scale forecast (e.g., rows and columns 2 through 5 in 
+Fig. \ref{figure:spec}).
+The size of the relaxation zone is a run-time option.
+
+The specified lateral boundary condition for the coarse grid 
+requires an external file, generated
+during the same pre-processing as the initial condition file.
+Let $\psi$ be any prognostic value having a lateral boundary entry, after \cite{daviesturner77},
+
+\begin{equation}
+\partial_t \psi \big|_n = F_1(\psi_{LS} - \psi) - F_2 \Delta^2(\psi_{LS} - \psi),
+\label{lbc_relax}
+\end{equation}
+\noindent where $n$ is the number of grid points in from the outer row or column along the boundary
+($SpecZone + 1 \leq n \leq SpecZone + RelaxZone - 1$; see Fig. \ref{figure:spec}) 
+and $\psi_{LS}$ is the large-scale value obtained by spatial and temporal interpolation from the external analysis or model forecast by WPS .  $\Delta^2$
+is a 5-point horizontal smoother applied along $\eta$-surfaces.
+The weighting function
+coefficients $F_1$ and $F_2$ in \eqref{lbc_relax} are given by
+\begin{equation}
+F_1 = {1 \over {10 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}},
+\notag
+\end{equation}
+\begin{equation}
+F_2 = {1 \over {50 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}},
+\notag
+\end{equation}
+\noindent where $n$ extends only through the relaxation zone 
+($SpecZone + 1 \leq n \leq SpecZone + RelaxZone - 1$).
+$F_1$ and $F_2$ are
+linear ramping functions with a maximum at the first relaxation row or column 
+nearest the coarse grid boundary (just inside of the specified zone).  
+In Version 3.0 these linear functions can optionally be multiplied by an
+exponential function for smoother behavior when broad boundary zones are
+needed. This is achieved through an additional multiplier.
+\begin{equation}
+F_1 = {1 \over {10 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}}
+\exp [ - SpecExp ( n - SpecZone - 1)]
+\notag
+\end{equation}
+\begin{equation}
+F_2 = {1 \over {50 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}}
+\exp [ - SpecExp ( n - SpecZone - 1)]
+\notag
+\end{equation}
+where $SpecExp$ is an inverse length scale in grid lengths.
+
+On the coarse grid, the specified boundary condition applies to 
+the horizontal wind components, potential temperature, $\phi'$, $\mu'_d$, and water vapor. 
+The lateral boundary file contains enough information to update the
+boundary zone values through the entire simulation period.  The momentum fields are 
+coupled with $\mu_d$ and the inverse map factor (both at the specific variable's
+horizontal staggering location), and the other 3-dimensional fields are coupled with
+$\mu_d$.  The $\mu'_d$ field is not coupled in the lateral boundary file.
+
+Vertical velocity has a zero gradient boundary condition applied in the
+specified zone (usually the outer-most row and column).
+Microphysical variables, except vapor, and all other scalars have flow-dependent boundary
+conditions applied in the specified zone. This boundary condition specifies zero on inflow
+and zero-gradient on outflow. Since these boundary conditions require only information from
+the interior of the grid, these variables are not in the specified boundary condition file.
+However, for nested boundaries, microphysical variables and scalars are also available
+from the parent domain, and use same relaxation towards interpolated variables as the
+dynamic variables.
+
+\section{Polar Conditions}
+See subsection \ref{pole_condition} for details on how the polar boundary
+condition is applied.

@@ -1,0 +1,538 @@
+\chapter{Governing Equations}
+\label{equation_chap}
+
+The ARW dynamics solver integrates the compressible, nonhydrostatic
+Euler equations.  The equations are cast in flux form using variables
+that have conservation properties, following the philosophy of \citet{ooyama90}.
+The equations are formulated using a terrain-following mass
+vertical coordinate \citep{laprise92}.  In this chapter we define
+the vertical coordinate and present the flux form equations in Cartesian
+space, we extend the equations to include the effects of moisture in the
+atmosphere, and we further augment the equations to include
+projections to the sphere.
+
+\section{Vertical Coordinate and Variables}
+
+%\begin{figure}
+%\begin{center}
+%  \includegraphics *[height=6cm,bb= 0 0 445.5 405.2]{../fig0.pdf}
+%\end{center}
+%  \caption{\label{figure:2} Terrain-following coordinate in {\wrf}}
+%\end{figure}
+%
+%
+
+
+\begin{wrapfigure}{r}{8cm}
+\mbox{
+\epsfig{file=figures/vertical_coordinate.pdf,width=7cm,height=9.75cm}}
+\caption{\label{figure:v_coord}ARW $\eta$ coordinate.}
+\end{wrapfigure}
+The ARW equations are formulated using a terrain-following
+hydrostatic-pressure vertical coordinate denoted by $\eta$ and defined as
+%
+\begin{equation}
+\eta = (p_h-p_{ht})/\mu ~~~~~~~{\rm where
+                              }~~~ \mu = p_{hs}-p_{ht}.
+\label{eta_def}
+\end{equation}
+\noindent $p_h$ is the hydrostatic component of the pressure, and
+$p_{hs}$ and $p_{ht}$ refer to values along the surface and top
+boundaries, respectively. The coordinate definition \eqref{eta_def},
+proposed by \citet{laprise92}, 
+is the traditional $\sigma$ coordinate used
+in many hydrostatic atmospheric models.  $\eta$ varies from a value of 1
+at the surface to 0 at the upper boundary of the model domain (Fig. \ref{figure:v_coord}).
+This vertical coordinate is also called a mass vertical coordinate. 
+
+Since $\mu(x,y)$ represents the mass per unit area within the
+column in the model domain at $(x,y)$, the appropriate flux form variables
+are
+%
+\begin{equation}
+ \hbox{\bf V} = \mu \hbox{\bf  v} =(U,V,W), ~~~~ \Omega = \mu\dot\eta, ~~~~ 
+     \Theta = \mu \theta.                                      
+\end{equation}
+%
+\noindent
+${\hbox{\bf v}} = (u,v,w)$ are the covariant velocities in the two
+horizontal and vertical directions, respectively, while 
+$\omega = \dot\eta$ is the contravariant `vertical' velocity.  $\theta$
+is the potential temperature.  Also appearing in the governing equations
+of the ARW are the non-conserved variables $\phi=gz$ (the
+geopotential), $p$ (pressure), and $\alpha = 1/\rho$ (the inverse
+density).  
+ 
+\section{Flux-Form Euler Equations}
+
+Using the variables defined above, the flux-form Euler equations can be
+written as
+
+\begin{align}
+ \partial_t U + (\nabla \cdot {\bf V} u )
+%+ \mu \alpha \partial_x p 
+%+ \partial_\eta p \partial_x \phi &= F_U 
+%% - \partial_x (p\phi_\eta)
+%% + \partial_\eta (p\phi_x) &= F_U 
+- \partial_x      (p\phi_\eta)
++ \partial_\eta (p\phi_x) &= F_U 
+\label{cartesian_begin}
+\\
+%
+ \partial_t V + (\nabla \cdot {\bf V} v )
+%+ \mu \alpha \partial_y p
+%+ \partial_\eta p \partial_y \phi &= F_V \\
+%% - \partial_y (p\phi_\eta)
+%% + \partial_\eta (p\phi_y) &= F_V \\
+- \partial_y      (p\phi_\eta)
++ \partial_\eta (p\phi_y) &= F_V \\
+%
+ \partial_t W + (\nabla \cdot {\bf V} w )
+- g (\partial_\eta p - \mu) &= F_W 
+\label{cartesian_w} \\
+%
+\partial_t \Theta + (\nabla \cdot {\bf V} \theta )  & = F_\Theta 
+\label{cartesian_theta} \\
+%
+\partial_t \mu + (\nabla \cdot {\bf V} ) & = 0 
+\label{continuity0} \\
+%
+\partial_t \phi + \mu^{-1} [({\bf V} \cdot \nabla \phi ) -gW ] & = 0
+\label{prognostic_end}
+%
+\end{align}
+\noindent
+along with the diagnostic relation for the inverse density
+\begin{equation}
+\partial_\eta \phi = - \alpha \mu,
+\label{hydrostatic_relation}
+\end{equation}
+%
+\noindent
+and the equation of state
+%
+\begin{equation}
+ p = p_0 (R_d \theta / p_0 \alpha)^{\gamma}.
+\label{cartesian_end}
+\end{equation}
+%
+\noindent
+In (\ref{cartesian_begin}) -- (\ref{cartesian_end}), the subscripts 
+$x$, $y$ and $\eta$ denote
+differentiation, 
+%
+\begin{equation}
+\nabla \cdot {\bf V } a = \partial_x (Ua) + 
+                           \partial_y (Va) + 
+                           \partial_\eta (\Omega a),
+\notag
+\end{equation}
+%
+\noindent
+and
+%
+\begin{equation}
+{\bf V} \cdot \nabla a = U \partial_x a + 
+                           V \partial_y a + 
+                           \Omega \partial_\eta a,
+\notag
+\end{equation}
+%
+\noindent
+where $a$ represents a generic variable.  
+$\gamma=c_p/c_v = 1.4$ is the ratio of
+the heat capacities for dry air, $R_d$ is the gas constant for dry
+air, and $p_0$ is a reference pressure (typically $10^5$ Pascals).
+The right-hand-side (RHS) terms $F_U$, $F_V$, $F_W$, and
+$F_\Theta$ represent forcing terms arising from model physics,
+turbulent mixing, spherical projections, and the earth's rotation.
+
+The prognostic equations \eqref{cartesian_begin} --
+\eqref{prognostic_end} are cast in conservative form except for
+\eqref{prognostic_end} which is the material derivative of the
+definition of the geopotential.  \eqref{prognostic_end} could be cast in
+flux form but we find no advantage in doing so since $\mu \phi$ is not a
+conserved quantity.  We could also use a prognostic pressure equation in
+place of \eqref{prognostic_end} \citep[see][]{laprise92}, but pressure is
+not a conserved variable and we could not use a pressure equation
+together with
+the conservation equation for $\Theta$ \eqref{cartesian_theta} because
+they are linearly dependent.  
+Additionally, prognostic pressure
+equations have the disadvantage of possessing a mass divergence term
+multiplied by a large coefficient (proportional to the sound speed)
+which makes spatial and temporal discretization problematic.
+It should be noted that the relation for the hydrostatic
+balance \eqref{hydrostatic_relation} does not represent a constraint on
+the solution, rather it is a diagnostic relation that formally is part
+of the coordinate definition.  In the hydrostatic counterpart to the
+nonhydrostatic equations, \eqref{hydrostatic_relation} replaces the
+vertical momentum equation \eqref{cartesian_w} and it becomes a
+constraint on the solution.
+
+\section{Inclusion of Moisture}
+
+In formulating the moist Euler equations, we retain the coupling
+of dry air mass to the prognostic variables, and we retain the
+conservation equation for dry air \eqref{continuity0}, as opposed to
+coupling the variables to the full (moist) air mass and hence
+introducing source terms in the mass conservation equation
+\eqref{continuity0}.  Additionally, we define the coordinate with
+respect to the dry-air mass. Based on these principles, the vertical
+coordinate can be written as
+%
+\begin{equation}
+\eta = (p_{dh}-p_{dht})/\mu_d 
+\label{eta_def1}
+\end{equation}
+%
+\noindent
+where $\mu_d$ represents the mass of the dry air in the column and
+$p_{dh}$ and $p_{dht}$ represent the hydrostatic pressure of the dry
+atmosphere and the hydrostatic pressure at the top of the dry atmosphere.
+The coupled variables are defined as 
+%
+\begin{equation}
+ \hbox{\bf V} = \mu_d \hbox{\bf  v}, ~~~~ \Omega = \mu_d\dot\eta, ~~~~ 
+     \Theta = \mu_d \theta.                                      
+\end{equation}
+%
+With these definitions, the moist Euler equations can be written as
+%
+\begin{align}
+\partial_t U + (\nabla \cdot {\bf V}  u)
++ \mu_d \alpha \partial_x p 
++ (\alpha/\alpha_d) \partial_\eta p \partial_x \phi & = F_U \\
+%
+\partial_t V + (\nabla \cdot {\bf V} v ) 
++ \mu_d \alpha \partial_y p
++ (\alpha/\alpha_d) \partial_\eta p \partial_y \phi & = F_V \\
+%
+\partial_t W + (\nabla \cdot {\bf V} w )  
+- g [ (\alpha/\alpha_d) \partial_\eta p - \mu_d ] & = F_W \\
+%
+\partial_t \Theta + (\nabla \cdot {\bf V} \theta )  & = F_\Theta \\
+%
+\partial_t \mu_d + (\nabla \cdot {\bf V} ) & = 0 \\
+%
+\partial_t \phi + \mu_d^{-1} [({\bf V} \cdot \nabla \phi ) - gW ] & = 0\\
+%
+\partial_t Q_m + (\nabla \cdot {\bf V} q_m ) & = F_{Q_m} 
+%
+\end{align}
+\noindent
+with the diagnostic equation for dry inverse density
+%
+\begin{equation}
+\partial_\eta \phi  = - \alpha_d \mu_d
+\end{equation}
+%
+\noindent
+and the diagnostic relation for the 
+full pressure (vapor plus dry air)
+%
+\begin{equation}
+p = p_0 (R_d \theta_m / p_0 \alpha_d)^{\gamma}
+\label{ideal_gas_law}
+\end{equation}
+%
+\noindent
+In these equations, $\alpha_d$ is the inverse density of the dry air
+$(1/\rho_d)$ and $\alpha$ is the inverse density taking into account the
+full parcel density 
+$\alpha = \alpha_d ( 1 + q_v + q_c + q_r + q_i + ...)^{-1}$ where
+$q_*$ are the mixing ratios (mass per mass of dry air) for water vapor,
+cloud, rain, ice, etc.  
+Additionally, $\theta_m = \theta (1 + (R_v/R_d) q_v) 
+\approx \theta (1 + 1.61 q_v)$, and $Q_m = \mu_d q_m; \,\, q_m = q_v, q_c,
+q_i, ...$ .
+
+
+\section{Map Projections, Coriolis and Curvature Terms}
+\label{spherical_projections}
+
+The ARW solver currently supports four projections to the sphere--- the
+Lambert conformal, polar stereographic, Mercator, and latitude-longitude
+projections.  These projections are described in
+\citet{haltiner_and_williams}.  The transformation is isotropic for
+three of these projections -- the Lambert conformal, polar stereographic,
+and Mercator grids.  An isotropic transformation requires $(\Delta
+x/\Delta y)|_{earth} = \hbox{constant}$ everywhere on the grid.  Only
+isotropic transformations were supported in the previous ARW releases.
+Starting with the ARWV3 release, we now support anisotropic
+projections, in this case the latitude-longitude grid, and with it the
+full latitude-longitude global model.  The ARW implements the
+projections using map factors, and the generalization to anisotropic
+transformations introduced in ARW V3 requires that there be map factors
+for both the $x$ and $y$ components of the transformation from
+computational to physical space in order to accomodate the anisotropy.
+
+In the ARW's computational space, $\Delta x$ and $\Delta y$ are
+constants.  Orthogonal projections to the sphere require that
+the physical distances between grid points in the projection vary with
+position on the grid.  To transform the governing equations,
+map scale factors $m_x$ and $m_y$ are defined as the ratio of the distance 
+in computational space to the corresponding distance on the earth's surface:
+
+\begin{equation}
+(m_x,m_y) = {(\Delta x, \Delta y) \over \hbox{distance on the earth}}.
+\end{equation}
+%
+\noindent
+The ARW solver includes the map-scale factors in the governing equations
+by redefining the momentum variables as
+%
+\begin{equation}
+U = {\mu}_d u/m_y,~~~V = {\mu}_d v/m_x, ~~~W = \mu_d w / m_y, 
+~~~\Omega = \mu_d \dot\eta /m_y.
+\notag
+\end{equation}
+%
+\noindent
+Using these redefined momentum variables, 
+the governing equations, including map factors and rotational terms, 
+can be written as
+%
+\begin{align}
+\partial_t U + m_x[\partial_x(Uu) + \partial_y(Vu)] \hphantom{\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad}
+\notag \\ 
++ \hphantom{(m_y/m_x)} 
+\partial_\eta (\Omega u)
++ (m_x/m_y)[\mu_d \alpha \partial_x p
++ (\alpha/\alpha_d) \partial_\eta p \partial_x \phi] & = F_U
+\label{u-mom-full}
+\\
+%
+\partial_t V + m_y[\partial_x (Uv) + \partial_y (Vv)] \hphantom{\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad}
+\notag \\ + (m_y/m_x)\partial_\eta (\Omega v)
++ (m_y/m_x)[\mu_d \alpha \partial_y p
++ (\alpha/\alpha_d) \partial_\eta p \partial_y \phi] & = F_V
+\label{v-mom-full}
+\\
+%
+\partial_t W + (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta (\Omega w)
+- m_y^{-1} g [ (\alpha/\alpha_d) \partial_\eta p - \mu_d ] & = F_W 
+\label{w-mom-full}
+\\
+%
+\partial_t \Theta + 
+m_x m_y[\partial_x (U\theta) + \partial_y (V\theta)] + m_y \partial_\eta (\Omega \theta)
+& = F_\Theta \\
+%
+\partial_t \mu_d + m_x m_y[U_x + V_y] + m_y \partial_\eta (\Omega)
+& = 0 
+\label{mass-cons-full}
+\\
+%
+%% \partial_t \phi + \mu_d^{-1} [m_x m_y (U\phi_x + V\phi_y) + m_y
+%% \Omega\phi_\eta - m_y gW ] & = 0
+\partial_t \phi + \mu_d^{-1} [m_x m_y (U\partial_x\phi + V\partial_y\phi) + m_y
+\Omega\partial_\eta\phi - m_y gW ] & = 0
+\label{geo-full}
+\\
+%
+\partial_t Q_m + 
+m_x m_y \partial_x (U q_m) + \partial_y (V q_m)] + m _y\partial_\eta (\Omega q_m)
+& = F_{Q_m},
+%
+\end{align}
+\noindent
+and, for completeness, 
+the diagnostic relation for the dry inverse density
+%
+\begin{equation}
+\partial_\eta \phi  = - \alpha_d \mu_d,
+\label{hydro-full}
+\end{equation}
+%
+\noindent
+and the diagnostic equation for full pressure (vapor plus dry air)
+%
+\begin{equation}
+p = p_0 (R_d \theta_m / p_0 \alpha_d)^{\gamma}.
+\label{moist-state-equation}
+\end{equation}
+%
+
+The right-hand-side terms of the momentum equations
+\eqref{u-mom-full} -- \eqref{w-mom-full} contain the Coriolis and 
+curvature terms along with mixing terms and 
+physical forcings.  For the isotropic projections 
+(Lambert conformal, polar stereographic, and Mercator), where
+$m_x=m_y=m$, the Coriolis and
+curvature terms are cast in the following form:
+\begin{align}
+F_{U_{cor}} & =  + \biggl(f + u {\partial m \over
+\partial y} - v {\partial m \over \partial x}\biggr) V
+- e W \cos \alpha_r - {uW \over r_e} 
+\label{u-mom-rhs}
+\\
+%
+F_{V_{cor}} & = - \biggl(f + u {\partial m \over
+\partial y} - v {\partial m \over \partial x}\biggr) U
++ e W \sin \alpha_r - {v W \over r_e} \\
+%
+F_{W_{cor}} & = + e (U \cos \alpha_r - V \sin \alpha_r) 
++ \biggl({ uU +vV \over r_e}\biggr),
+\label{w-mom-rhs}
+\end{align}
+\noindent
+where $\alpha_r$ is the local rotation angle between the $y$-axis and the
+meridians, $\psi$ is the latitude, $f = 2 \Omega_e \sin \psi $, $e = 2
+\Omega_e \cos \psi$, $\Omega_e$ is the angular rotation rate of the earth,
+and $r_e$ is the radius of the earth.  In this
+formulation we have approximated the radial distance from the center of
+the earth as the mean earth radius $r_e$, and we have not taken into account
+the change in horizontal grid distance as a function of the radius.
+The terms containing $m$ are the horizontal curvature terms, those
+containing $r_e$ relate to vertical (earth-surface) curvature, and those
+with $e$ and $f$ are the Coriolis force.
+
+The curvature and Coriolis terms for the momentum equations
+are cast in the following form  
+for the anisotropic latitude-longitude grid:
+%
+\begin{align}
+F_{U_{cor}} & =  {m_x \over m_y} \biggl[fV + {uV \over r_e} 
+\tan\psi \biggr] - {uW \over r_e} -eW\cos \alpha_r 
+\label{u-mom-rhs-global}
+\\
+%
+F_{V_{cor}} & =  {m_y \over m_x} \biggl[ - fU - {uU \over r_e}
+%% \tan \psi  + {vW \over r_e}
+\tan \psi  - {vW \over r_e}
++ eW\sin \alpha_r  \biggr] 
+\label{v-mom-rhs-global}
+\\
+%
+F_{W_{cor}} & = + e (U \cos \alpha_r - (m_x/m_y) V \sin \alpha_r) 
++ \biggl({ uU + (m_x/m_y) vV \over r_e}\biggr),
+\label{w-mom-rhs-global}
+%
+\end{align}
+
+%% For idealized cases, the map scale factor $m_x = m_y = 1$, 
+%% $f$ is often taken to be constant, and $e=0$.
+For idealized cases on a Cartesian grid, the map scale factor $m_x = m_y = 1$, 
+$f$ is specified, and $e$ and $r_e^{-1}$ should be zero to remove the curvature terms.
+
+\section{Perturbation Form of the Governing Equations}
+
+Before constructing the discrete solver, it is advantageous to recast
+the governing equations using perturbation variables to reduce
+truncation errors in the horizontal pressure gradient calculations in
+the discrete solver and machine rounding errors in
+the vertical pressure gradient and buoyancy calculations.  
+For this purpose, new
+variables are defined as perturbations from a hydrostatically-balanced 
+reference state, and we define reference state
+variables (denoted by overbars) that are a function of height only and
+that satisfy the governing equations for an atmosphere at rest.  That is,
+the reference state is in hydrostatic balance and is strictly only a
+function of $\bar z$.  In this manner, $p=\bar p(\bar z)+p'$, $\phi=\bar
+\phi(\bar z)
++\phi'$, $\alpha=\bar \alpha_d(\bar z) +\alpha_d'$, and $\mu_d = \bar\mu_d(x,y) +
+\mu_d'$. Because the $\eta$ coordinate surfaces are generally not
+horizontal, the reference profiles $\bar p$, $\bar\phi$, and
+$\bar\alpha$ are functions of $(x,y,\eta)$. 
+The hydrostatically balanced portion of the pressure gradients in the
+reference sounding can be removed without approximation to the equations
+using these perturbation variables.
+The momentum equations 
+\eqref{u-mom-full} -- \eqref{w-mom-full} are written as
+%
+\begin{align}
+\partial_t U + m_x\left[\partial_x(Uu) + \partial_y(Vu)\right] + \partial_\eta (\Omega u) ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~ ~~~~~~~ ~~ \notag &
+\hphantom{(m_y/m_x)}
+\\
++(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) +
+\partial_x \phi (\partial_\eta p' - \mu'_d)\right]  = F_U
+%%+ ({\mu}_d \alpha \partial_x p' 
+%%+ {\mu}_d \alpha' \partial_x \bar{p}) ~~~~~~~~ \notag &
+%%\\
+%%+ (\alpha/\alpha_d) ( {\mu}_d \partial_x \phi' 
+%%+  \partial_\eta p' \partial_x \phi 
+%%- {\mu}_d' \partial_x \phi )
+%%                                                       &= F_U  
+\label{u-mom-pert}
+\\
+%
+\partial_t V + m_y[\partial_x (Uv) + \partial_y (Vv)] + (m_y/m_x) \partial_\eta (\Omega v) ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~ \notag &
+\\
++(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) +
+\partial_x \phi (\partial_\eta p' - \mu'_d)\right]  = F_U
+\\
+%%+ ({\mu}_d \alpha \partial_y p' 
+%%+ {\mu}_d \alpha' \partial_y \bar{p}) ~~~~~~~~ \notag &
+%%\\
+%%+ (\alpha/\alpha_d) ( {\mu}_d \partial_y \phi' 
+%%+ \partial_\eta p' \partial_y \phi 
+%%- {\mu}_d' \partial_y \phi )
+%%                                                      &= F_V   \\ 
+%
+\partial_t W  + (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
+(\Omega w)  ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~ \notag & 
+\\
+- m_y^{-1} g (\alpha/\alpha_d) [\partial_\eta p' 
+- {\bar{\mu}}_d (q_v + q_c +q_r)]
++ m_y^{-1} {\mu}_d'g
+&= F_W,
+\label{w-mom-pert}
+\end{align}
+%
+and the mass conservation equation \eqref{mass-cons-full}
+and geopotential equation \eqref{geo-full} become
+%
+\begin{align}
+\partial_t  \mu_d' + m_x m_y[\partial_x U + \partial_y V] + m_y
+\partial_\eta \Omega
+& = 0 \\
+%
+\partial_t \phi' 
++ \mu_d^{-1}
+%% [m_x m_y (U\phi_x + V\phi_y) + m_y
+%% \Omega\phi_\eta -m_y gW ] = 0.
+[m_x m_y (U\partial_x\phi + V\partial_y\phi) + m_y
+\Omega\partial_\eta\phi -m_y gW ] = 0.
+%
+\end{align}
+%
+\noindent
+Remaining unchanged are
+the conservation equations for the potential temperature and 
+scalars
+\begin{align}
+\partial_t \Theta
++ m_x m_y[\partial_x (U\theta) + \partial_y (V\theta)] + m_y \partial_\eta (\Omega \theta)
+& = F_\Theta \\
+%
+\partial_t Q_m 
++ m_x m_y[\partial_x (U q_m) + \partial_y (V q_m)] + m_y \partial_\eta (\Omega q_m)
+& = F_{Q_m}.
+\label{scalar-pert}
+\end{align}
+%
+\noindent
+In the perturbation system
+the hydrostatic relation \eqref{hydro-full} becomes
+%
+\begin{equation}
+\partial_\eta \phi' =-\bar\mu_d \alpha'_d-\alpha_d\mu'_d.
+\label{hydro-pert}
+\end{equation}
+%
+Equations \eqref{u-mom-pert} -- \eqref{scalar-pert},
+together with the equation of state \eqref{ideal_gas_law},
+represent the equations solved in the ARW.
+The RHS terms in these equations include the
+Coriolis terms \eqref{u-mom-rhs} -- \eqref{w-mom-rhs},
+mixing terms (described in Chapter \ref{filter_chap}), and
+parameterized physics (described in Chapter \ref{physics_chap}).  
+Also note that the equation of state \eqref{ideal_gas_law} cannot be
+written in perturbation form because of the exponent in the expression.
+For small perturbation simulations, accuracy for perturbation variables
+can be maintained by linearizing \eqref{ideal_gas_law} for the
+perturbation variables.
+%
+
+

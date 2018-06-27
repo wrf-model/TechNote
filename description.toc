@@ -1,0 +1,165 @@
+\contentsline {chapter}{\hbox to\@tempdima {\hfil }Acknowledgments}{ix}{chapter*.5}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Advanced Research WRF}{2}{section.1.1}
+\contentsline {section}{\numberline {1.2}Major Features of the ARW System, Version 3}{3}{section.1.2}
+\contentsline {chapter}{\numberline {2}Governing Equations}{7}{chapter.2}
+\contentsline {section}{\numberline {2.1}Vertical Coordinate and Variables}{7}{section.2.1}
+\contentsline {section}{\numberline {2.2}Flux-Form Euler Equations}{8}{section.2.2}
+\contentsline {section}{\numberline {2.3}Inclusion of Moisture}{9}{section.2.3}
+\contentsline {section}{\numberline {2.4}Map Projections, Coriolis and Curvature Terms}{9}{section.2.4}
+\contentsline {section}{\numberline {2.5}Perturbation Form of the Governing Equations}{11}{section.2.5}
+\contentsline {chapter}{\numberline {3}Model Discretization}{13}{chapter.3}
+\contentsline {section}{\numberline {3.1}Temporal Discretization}{13}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Runge-Kutta Time Integration Scheme}{13}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Acoustic Integration}{14}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Full Time-Split Integration Sequence}{17}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Diabatic Forcing}{17}{subsection.3.1.4}
+\contentsline {subsection}{\numberline {3.1.5}Hydrostatic Option}{18}{subsection.3.1.5}
+\contentsline {section}{\numberline {3.2}Spatial Discretization}{18}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Acoustic Step Equations}{18}{subsection.3.2.1}
+\contentsline {subsection}{\numberline {3.2.2}Coriolis and Curvature Terms}{20}{subsection.3.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Advection}{21}{subsection.3.2.3}
+\contentsline {subsubsection}{RK3 Advection}{21}{section*.6}
+\contentsline {subsubsection}{Positive-Definite Limiter for RK3 Advection}{22}{section*.7}
+\contentsline {subsection}{\numberline {3.2.4}Pole Conditions for the Global Latitude-Longitude Grid}{24}{subsection.3.2.4}
+\contentsline {section}{\numberline {3.3}Stability Constraints}{24}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}RK3 Time Step Constraint}{25}{subsection.3.3.1}
+\contentsline {subsection}{\numberline {3.3.2}Acoustic Time Step Constraint}{25}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Adaptive Time Step}{26}{subsection.3.3.3}
+\contentsline {subsection}{\numberline {3.3.4}Map Projection Considerations}{27}{subsection.3.3.4}
+\contentsline {chapter}{\numberline {4}Turbulent Mixing and Model Filters}{29}{chapter.4}
+\contentsline {section}{\numberline {4.1}Latitude-Longitude Global Grid and Polar Filtering}{29}{section.4.1}
+\contentsline {section}{\numberline {4.2}Explicit Spatial Diffusion}{30}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Horizontal and Vertical Diffusion on Coordinate Surfaces}{30}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Horizontal and Vertical Diffusion in Physical Space}{31}{subsection.4.2.2}
+\contentsline {subsubsection}{Coordinate Metrics}{31}{section*.8}
+\contentsline {subsubsection}{Continuous Equations}{31}{section*.9}
+\contentsline {subsubsection}{Spatial Discretization}{32}{section*.10}
+\contentsline {subsection}{\numberline {4.2.3}Computation of the Eddy Viscosities}{33}{subsection.4.2.3}
+\contentsline {subsubsection}{External specification of $K_h$ and $K_v$}{33}{section*.11}
+\contentsline {subsubsection}{$K_h$ determined from the horizontal deformation}{33}{section*.12}
+\contentsline {subsubsection}{3D Smagorinsky Closure}{33}{section*.13}
+\contentsline {subsubsection}{Prognostic TKE Closure}{34}{section*.14}
+\contentsline {subsection}{\numberline {4.2.4}TKE equation for the 1.5 Order Turbulence Closure}{34}{subsection.4.2.4}
+\contentsline {subsubsection}{Shear Production}{34}{section*.15}
+\contentsline {subsubsection}{Buoyancy}{35}{section*.16}
+\contentsline {subsubsection}{Dissipation}{35}{section*.17}
+\contentsline {subsection}{\numberline {4.2.5}Sixth-Order Spatial Filter on Coordinate Surfaces}{35}{subsection.4.2.5}
+\contentsline {section}{\numberline {4.3}Filters for the Time-split RK3 scheme}{36}{section.4.3}
+\contentsline {subsection}{\numberline {4.3.1}Three-Dimensional Divergence Damping}{36}{subsection.4.3.1}
+\contentsline {subsection}{\numberline {4.3.2}External Mode Filter}{36}{subsection.4.3.2}
+\contentsline {subsection}{\numberline {4.3.3}Semi-Implicit Acoustic Step Off-centering}{37}{subsection.4.3.3}
+\contentsline {section}{\numberline {4.4}Formulations for Gravity Wave Absorbing Layers}{37}{section.4.4}
+\contentsline {subsection}{\numberline {4.4.1}Absorbing Layer Using Spatial Filtering}{37}{subsection.4.4.1}
+\contentsline {subsection}{\numberline {4.4.2}Implicit Rayleigh Damping for the Vertical Velocity}{37}{subsection.4.4.2}
+\contentsline {subsection}{\numberline {4.4.3}Traditional Rayleigh Damping Layer}{38}{subsection.4.4.3}
+\contentsline {section}{\numberline {4.5}Other Damping}{39}{section.4.5}
+\contentsline {subsection}{\numberline {4.5.1}Vertical-Velocity Damping}{39}{subsection.4.5.1}
+\contentsline {chapter}{\numberline {5}Initial Conditions}{41}{chapter.5}
+\contentsline {section}{\numberline {5.1}Initialization for Idealized Conditions}{41}{section.5.1}
+\contentsline {section}{\numberline {5.2}Initialization for Real-Data Conditions}{43}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Use of the WRF Preprocessing System by the ARW}{43}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Reference State}{43}{subsection.5.2.2}
+\contentsline {subsection}{\numberline {5.2.3}Vertical Interpolation and Extrapolation}{45}{subsection.5.2.3}
+\contentsline {subsection}{\numberline {5.2.4}Perturbation State}{45}{subsection.5.2.4}
+\contentsline {subsection}{\numberline {5.2.5}Generating Lateral Boundary Data}{46}{subsection.5.2.5}
+\contentsline {subsection}{\numberline {5.2.6}Masking of Surface Fields}{47}{subsection.5.2.6}
+\contentsline {section}{\numberline {5.3}Digital Filtering Initialization}{47}{section.5.3}
+\contentsline {subsection}{\numberline {5.3.1}Filter Design}{48}{subsection.5.3.1}
+\contentsline {subsection}{\numberline {5.3.2}DFI Schemes}{48}{subsection.5.3.2}
+\contentsline {subsubsection}{DFL}{48}{section*.18}
+\contentsline {subsubsection}{DDFI}{49}{section*.19}
+\contentsline {subsubsection}{TDFI}{49}{section*.20}
+\contentsline {subsection}{\numberline {5.3.3}Backward Integration}{50}{subsection.5.3.3}
+\contentsline {chapter}{\numberline {6}Lateral Boundary Conditions}{51}{chapter.6}
+\contentsline {section}{\numberline {6.1}Periodic Lateral Boundary Conditions}{51}{section.6.1}
+\contentsline {section}{\numberline {6.2}Open Lateral Boundary Conditions}{51}{section.6.2}
+\contentsline {section}{\numberline {6.3}Symmetric Lateral Boundary Conditions}{52}{section.6.3}
+\contentsline {section}{\numberline {6.4}Specified Lateral Boundary Conditions}{52}{section.6.4}
+\contentsline {section}{\numberline {6.5}Polar Conditions}{54}{section.6.5}
+\contentsline {chapter}{\numberline {7}Nesting}{55}{chapter.7}
+\contentsline {section}{\numberline {7.1}Nesting Options}{55}{section.7.1}
+\contentsline {subsubsection}{1-Way and 2-Way Grid Nesting}{55}{section*.21}
+\contentsline {subsubsection}{Fine Grid Initialization Options}{56}{section*.22}
+\contentsline {subsubsection}{Possible Grid Configurations}{57}{section*.23}
+\contentsline {subsubsection}{Moving Nests}{58}{section*.24}
+\contentsline {section}{\numberline {7.2}Staggering and Feedback}{58}{section.7.2}
+\contentsline {section}{\numberline {7.3}Nested Lateral Boundary Conditions}{60}{section.7.3}
+\contentsline {section}{\numberline {7.4}Steps to Generate a Nest Grid}{61}{section.7.4}
+\contentsline {subsubsection}{Nest Instantiation}{61}{section*.25}
+\contentsline {subsubsection}{Fine Grid Input}{62}{section*.26}
+\contentsline {subsubsection}{Interface Blended Orography}{63}{section*.27}
+\contentsline {subsubsection}{Feedback}{64}{section*.28}
+\contentsline {subsubsection}{Reference State}{64}{section*.29}
+\contentsline {subsubsection}{Integration}{64}{section*.30}
+\contentsline {chapter}{\numberline {8}Physics}{65}{chapter.8}
+\contentsline {section}{\numberline {8.1}Microphysics}{65}{section.8.1}
+\contentsline {subsection}{\numberline {8.1.1}Kessler scheme}{66}{subsection.8.1.1}
+\contentsline {subsection}{\numberline {8.1.2}Purdue Lin scheme}{67}{subsection.8.1.2}
+\contentsline {subsection}{\numberline {8.1.3}WRF Single-Moment 3-class (WSM3) scheme}{67}{subsection.8.1.3}
+\contentsline {subsection}{\numberline {8.1.4}WSM5 scheme}{67}{subsection.8.1.4}
+\contentsline {subsection}{\numberline {8.1.5}WSM6 scheme}{67}{subsection.8.1.5}
+\contentsline {subsection}{\numberline {8.1.6}Eta Grid-scale Cloud and Precipitation (2001) scheme}{68}{subsection.8.1.6}
+\contentsline {subsection}{\numberline {8.1.7}Thompson et al. scheme}{68}{subsection.8.1.7}
+\contentsline {subsection}{\numberline {8.1.8}Goddard Cumulus Ensemble Model scheme}{69}{subsection.8.1.8}
+\contentsline {subsection}{\numberline {8.1.9}Morrison et al. 2-Moment scheme}{69}{subsection.8.1.9}
+\contentsline {section}{\numberline {8.2}Cumulus parameterization}{70}{section.8.2}
+\contentsline {subsection}{\numberline {8.2.1}Kain-Fritsch scheme}{70}{subsection.8.2.1}
+\contentsline {subsection}{\numberline {8.2.2}Betts-Miller-Janjic scheme}{71}{subsection.8.2.2}
+\contentsline {subsection}{\numberline {8.2.3}Grell-Devenyi ensemble scheme}{71}{subsection.8.2.3}
+\contentsline {subsection}{\numberline {8.2.4}Grell-3 scheme}{72}{subsection.8.2.4}
+\contentsline {section}{\numberline {8.3}Surface Layer}{72}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Similarity theory (MM5)}{72}{subsection.8.3.1}
+\contentsline {subsection}{\numberline {8.3.2}Similarity theory (Eta)}{72}{subsection.8.3.2}
+\contentsline {subsection}{\numberline {8.3.3}Similarity theory (PX)}{73}{subsection.8.3.3}
+\contentsline {section}{\numberline {8.4}Land-Surface Model}{73}{section.8.4}
+\contentsline {subsection}{\numberline {8.4.1}5-layer thermal diffusion}{73}{subsection.8.4.1}
+\contentsline {subsection}{\numberline {8.4.2}Noah LSM}{73}{subsection.8.4.2}
+\contentsline {subsection}{\numberline {8.4.3}Rapid Update Cycle (RUC) Model LSM}{74}{subsection.8.4.3}
+\contentsline {subsection}{\numberline {8.4.4}Pleim-Xiu LSM}{75}{subsection.8.4.4}
+\contentsline {subsection}{\numberline {8.4.5}Urban Canopy Model}{75}{subsection.8.4.5}
+\contentsline {subsection}{\numberline {8.4.6}Ocean Mixed-Layer Model}{75}{subsection.8.4.6}
+\contentsline {subsection}{\numberline {8.4.7}Specified Lower Boundary Conditions}{76}{subsection.8.4.7}
+\contentsline {section}{\numberline {8.5}Planetary Boundary Layer}{76}{section.8.5}
+\contentsline {subsection}{\numberline {8.5.1}Medium Range Forecast Model (MRF) PBL}{76}{subsection.8.5.1}
+\contentsline {subsection}{\numberline {8.5.2}Yonsei University (YSU) PBL}{77}{subsection.8.5.2}
+\contentsline {subsection}{\numberline {8.5.3}Mellor-Yamada-Janjic (MYJ) PBL}{77}{subsection.8.5.3}
+\contentsline {subsection}{\numberline {8.5.4}Asymmetrical Convective Model version 2 (ACM2) PBL}{78}{subsection.8.5.4}
+\contentsline {section}{\numberline {8.6}Atmospheric Radiation}{78}{section.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Rapid Radiative Transfer Model (RRTM) Longwave}{78}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Eta Geophysical Fluid Dynamics Laboratory (GFDL) Longwave}{79}{subsection.8.6.2}
+\contentsline {subsection}{\numberline {8.6.3}CAM Longwave}{79}{subsection.8.6.3}
+\contentsline {subsection}{\numberline {8.6.4}Eta Geophysical Fluid Dynamics Laboratory (GFDL) Shortwave}{79}{subsection.8.6.4}
+\contentsline {subsection}{\numberline {8.6.5}MM5 (Dudhia) Shortwave}{80}{subsection.8.6.5}
+\contentsline {subsection}{\numberline {8.6.6}Goddard Shortwave}{80}{subsection.8.6.6}
+\contentsline {subsection}{\numberline {8.6.7}CAM Shortwave}{80}{subsection.8.6.7}
+\contentsline {section}{\numberline {8.7}Physics Interactions}{80}{section.8.7}
+\contentsline {section}{\numberline {8.8}Four-Dimensional Data Assimilation}{82}{section.8.8}
+\contentsline {subsection}{\numberline {8.8.1}Grid Nudging or Analysis Nudging}{82}{subsection.8.8.1}
+\contentsline {subsection}{\numberline {8.8.2}Observational or Station Nudging}{83}{subsection.8.8.2}
+\contentsline {chapter}{\numberline {9}Variational Data Assimilation}{87}{chapter.9}
+\contentsline {section}{\numberline {9.1}Introduction}{87}{section.9.1}
+\contentsline {section}{\numberline {9.2}Improvements to the WRF-Var Algorithm}{89}{section.9.2}
+\contentsline {subsection}{\numberline {9.2.1}Improved vertical interpolation}{89}{subsection.9.2.1}
+\contentsline {subsection}{\numberline {9.2.2}Improved minimization and ``outer loop"}{89}{subsection.9.2.2}
+\contentsline {subsection}{\numberline {9.2.3}Choice of control variables}{90}{subsection.9.2.3}
+\contentsline {subsection}{\numberline {9.2.4}First Guess at Appropriate Time (FGAT)}{90}{subsection.9.2.4}
+\contentsline {subsection}{\numberline {9.2.5}Radar Data Assimilation}{90}{subsection.9.2.5}
+\contentsline {subsection}{\numberline {9.2.6}Unified Regional/Global 3D-Var Assimilation}{91}{subsection.9.2.6}
+\contentsline {section}{\numberline {9.3}Background Error Covariances}{92}{section.9.3}
+\contentsline {subsection}{\numberline {9.3.1}Removal of time-mean}{94}{subsection.9.3.1}
+\contentsline {subsection}{\numberline {9.3.2}Multivariate Covariances: Regression coefficients and unbalanced variables}{94}{subsection.9.3.2}
+\contentsline {subsection}{\numberline {9.3.3}Vertical Covariances: Eigenvectors/eigenvalues and control variable projections}{95}{subsection.9.3.3}
+\contentsline {subsection}{\numberline {9.3.4}Horizontal Covariances: Recursive filter lengthscale (regional), or power spectra (global)}{95}{subsection.9.3.4}
+\contentsline {section}{\numberline {9.4}WRF-Var V3.0 Software Engineering Improvements}{95}{section.9.4}
+\contentsline {subsection}{\numberline {9.4.1}Memory improvements}{95}{subsection.9.4.1}
+\contentsline {subsection}{\numberline {9.4.2}Four-Byte I/O}{96}{subsection.9.4.2}
+\contentsline {subsection}{\numberline {9.4.3}Switch from RSL to RSL\_LITE}{96}{subsection.9.4.3}
+\contentsline {subsection}{\numberline {9.4.4}Reorganisation of observation structures}{96}{subsection.9.4.4}
+\contentsline {subsection}{\numberline {9.4.5}Radar reflectivity operators redesigned}{96}{subsection.9.4.5}
+\penalty -\@highpenalty \relax \vskip 1.0em plus\p@ \@tempdima 1.5em\relax \begingroup \parindent \z@ \rightskip 1.55em\parfillskip -1.55em\unhbox \voidb@x \bfseries \advance \leftskip \@tempdima \hskip -\leftskip \penalty \@M \hfil \penalty \@M \hbox to1.55em{\hss }\par \penalty \@highpenalty \endgroup 
+\penalty -\@highpenalty \relax \vskip 1.0em plus\p@ \@tempdima 1.5em\relax \begingroup \parindent \z@ \rightskip 1.55em\parfillskip -1.55em\unhbox \voidb@x \bfseries \advance \leftskip \@tempdima \hskip -\leftskip Appendices\penalty \@M \hfil \penalty \@M \hbox to1.55em{\hss }\par \penalty \@highpenalty \endgroup 
+\contentsline {chapter}{\numberline {A}Physical Constants}{97}{appendix.A}
+\contentsline {chapter}{\numberline {B}List of Symbols}{99}{appendix.B}
+\contentsline {chapter}{\numberline {C}Acronyms}{103}{appendix.C}
+\contentsline {chapter}{\hbox to\@tempdima {\hfil }References}{105}{appendix.C}

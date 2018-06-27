@@ -1,0 +1,1017 @@
+\chapter{Turbulent Mixing and Model Filters}
+\label{filter_chap}
+
+A number of formulations for turbulent mixing and filtering are
+available in the ARW solver.  Some of these filters are used for
+numerical reasons.  For example, divergence damping is used to filter
+acoustic modes from the solution and polar filtering is used to reduce 
+the timestep restriction arising from the converging gridlines of the 
+latitude-longitude grid.  Other filters are meant to represent
+sub-grid turbulence processes that cannot be resolved on the chosen
+grid.  These filters remove energy from the solution and are formulated
+in part on turbulence theory and observations, or represent energy sink
+terms in some approximation to the Euler equation.  In this section, we
+begin by outlining the formulation and discretization of turbulent
+mixing processes in the ARW solver commonly associated with sub-gridscale
+turbulence as parameterized in cloud-scale models--- the second-order
+horizontal and vertical mixing.  In large-scale models and most NWP
+models, vertical mixing is parameterized within the planetary boundary
+layer (PBL) physics.  Vertical mixing parameterized within the PBL
+physics is described later in Chapter \ref{physics_chap}.  Here we note
+that, when a PBL parameterization is used, all other vertical mixing is
+disabled.  Following the outline of turbulent mixing parameterizations
+in this chapter, other numerical filters available in the ARW solver are
+described.
+
+
+\section{Latitude-Longitude Global Grid and Polar Filtering}
+\label{polar_filter_section}
+
+Polar filtering is used to reduce the timestep restriction associated
+with the gridlines that converge as they approach the poles of the
+latitude-longitude grid; the converging gridlines reduce the
+longitudinal gridlength, and thus the stable timestep for transport,
+discussed in Section \ref{rk3_timestep_constraint}, and for acoustic
+waves, discussed in Section \ref{acoustic_step_constraint}, will be reduced.
+
+Polar filtering a given variable is accomplished by first applying a 1D
+Fourier transform to the variable on a constant computational-grid
+latitude circle (the forward transform), where the field is periodic.
+The Fourier coefficients with wavenumbers above a prescribed threshold
+are truncated, after which a transformation back to physical space is
+applied (the backward transform), completing the filter step.
+
+A filter application can be written as
+%
+\begin{equation}
+\hat\phi(k)_{filtered} = a(k)\,\hat\phi(k), \,\,\,\,\, \hbox{for all }k,
+\notag
+\end{equation}
+%
+where $\hat\phi(k)$ and $\hat\phi(k)_{filtered}$ are the Fourier
+coefficients for the generic variable $\phi$ before and after filtering,
+and $a(k)$ are the filter coefficients defined as a function of the
+dimensionless wavenumber $k$.  The ARW polar filter coefficients $a(k)$ 
+for the Fourier amplitudes are
+%
+\begin{equation}
+a(k) = \hbox{min}\left[1.,\hbox{max}\left(0.,
+\left({\cos{\psi} \over \cos{\psi_o}}\right)^2  {1 \over \sin^2({\pi k/n)}}
+\right)\right]
+\notag
+%\label{polar-filter}
+\end{equation}
+%
+where $\psi$ is the latitude on the computational grid, $\psi_o$ is the
+latitude above which the polar filter is applied (the filter is applied
+for $ |\psi| > \psi_o$), and $n$ is the number of grid points in the latitude
+circle.  For even $n$, the grid
+admits wavenumber $k=0$ and dimensionless wavenumbers $\pm k$ for
+$k=1\to n/2 - 1$, and the $2\Delta$ wave $k=n/2$.  For odd $n$, the grid
+admits wavenumber $k=0$, and dimensionless wavenumbers $\pm k$ for
+$k=1\to (n-1)/2 $. 
+
+Polar filter applications within the split-explicit RK3 time integration
+scheme are given in Figure \ref{time_integration_figure}.
+Within the acoustic steps,
+the filter is applied to
+${U''}^{\tau+\Delta\tau}$ and ${V''}^{\tau+\Delta\tau}$ immediately
+after the horizontal momentum is advanced, to $\mu_d^{\tau+\Delta\tau}$
+and ${\Theta''}^{\tau+\Delta\tau}$ immediately after the column mass and
+the potential temperature are advanced, and to ${W''}^{\tau+\Delta\tau}$
+and ${\phi''}^{\tau+\Delta\tau}$ after the vertically implicit part of
+the acoustic step is complete.  The polar filter is also applied to the
+scalars after they are advanced every RK3 sub-step
+\eqref{rk3a}-\eqref{rk3c} and after the microphysics step.
+
+The prognostic variables are coupled with the column mass $\mu$ when
+filtered, and in this way mass is conserved.  An exception to this is
+the geopotential $\phi$ which is filtered without being coupled.  The
+Fourier filtering is conservative, but it is not monotonic or positive
+definite.  As noted in the ARW stability discussion in Section
+\ref{global_considerations}, timestep stability should be based on the longitudinal
+gridlength where the polar filters are activated, $(\Delta
+x/m_x)|_{\psi_o}$.  The positive definite transport option, presented in
+Section \ref{positive-definite-transport}, will not necessarily produce
+positive-definite results because of the converging gridlines and should
+not be used.
+
+\section{Explicit Spatial Diffusion}
+
+The ARW solver has three formulations for spatial dissipation--- diffusion
+along coordinate surfaces, diffusion in physical $(x,y,z)$ space, and 
+a sixth-order diffusion applied on horizontal coordinate surfaces.  In
+the following sections we present the diffusion operators for the the
+first two
+formulations, followed by the four separate formulations that can be
+used to compute the eddy viscosities and a description of
+the prognostic turbulent kinetic energy (TKE) equation used in one set
+of these formulations.  The sixth order spatial filter is described at
+the end of this section. In these formulations, the horizontal ($K_h$) and
+vertical ($K_v$) eddy viscosities are defined at scalar points on the 
+staggered model grid. 
+
+\subsection{Horizontal and Vertical Diffusion on Coordinate Surfaces}
+
+For any model variable, horizontal and vertical second order spatial
+filtering on model coordinate surfaces is considered part of the RHS
+terms in the continuous equations 
+\eqref{u-mom-pert} -- \eqref{scalar-pert}
+and can be expressed as follows for
+a model variable $a$:
+%
+\begin{equation}
+\partial_t  (\mu_d a)  = ... \,\,
++ \mu_d \bigl[ m_x \partial_x(m_x K_h \partial_x  a) 
+           + m_y \partial_y(m_y K_h \partial_y  a)\bigr]
++ g^2(\mu_d\alpha)^{-1} \partial_\eta(K_v \alpha^{-1} \partial_\eta  a).
+\label{dissipation_1}
+\end{equation}
+%
+For the horizontal and vertical momentum equations, 
+\eqref{dissipation_1} is spatially discretized as
+%
+\begin{align}
+\partial_t U &= ... \,\, +
+{\overline{\mu_d}}^x {\overline{m_x}}^x
+\bigl[ \delta_x(m_x K_h \delta_x u) 
++ \delta_y({\overline{m_y}}^{xy} {\overline{K_h}}^{xy} \delta_y u)  \bigr]
++ m_y^{-1} g^2({\overline{\mu_d}}^x {\overline\alpha}^x)^{-1} 
+%% \delta_\eta(K_v ({\overline \alpha}^{x\eta})^{-1} \delta_\eta u) 
+\delta_\eta({\overline K_v}^{x\eta} ({\overline \alpha}^{x\eta})^{-1} \delta_\eta u) 
+\notag \\
+%
+\partial_t V &= ... \,\, +
+{\overline{\mu_d}}^y {\overline{m_y}}^y
+\bigl[ 
+\delta_x({\overline{m_x}}^{xy} {\overline K_h}^{xy} \delta_x v)  
++\delta_y(m_y K_h \delta_y v) 
+\bigr]
++ m_x^{-1} g^2({\overline{\mu_d}}^y {\overline\alpha}^y)^{-1} 
+%% \delta_\eta(K_v ({\overline \alpha}^{y\eta})^{-1} \delta_\eta v) 
+\delta_\eta({\overline K_v}^{y\eta} ({\overline \alpha}^{y\eta})^{-1} \delta_\eta v) 
+\notag \\
+%
+\partial_t W &= ... \,\, +
+\mu_d m_x
+\bigl[ 
+\delta_x({\overline m_x}^{x} {\overline K_h}^{x\eta} \delta_x w)  
++\delta_y({\overline m_y}^{y} {\overline K_h}^{y\eta} \delta_y w)  
+\bigr]
++ m_y^{-1} g^2({\mu_d} {\overline\alpha}^\eta)^{-1} 
+\delta_\eta(K_v \alpha^{-1} \delta_\eta w).
+\notag
+\end{align}
+%
+\noindent
+The spatial discretization for a scalar $ q$, defined at the mass
+points, is
+%
+\begin{equation}
+\partial_t (\mu_d q) = ... \,\, +
+\mu_d m_x m_y
+\bigl[ 
+\delta_x({\overline m_x}^{x} P_r^{-1} {\overline K_h}^{x} \delta_x  q)  
++\delta_y({\overline m_y}^{y} P_r^{-1} {\overline K_h}^{y} \delta_y  q)  
+\bigr]
++ g^2({\mu_d} {\alpha})^{-1} 
+%% \delta_\eta(K_v \alpha^{-1} \delta_\eta  q). 
+\delta_\eta({\overline K_v}^\eta ({\overline \alpha}^\eta)^{-1} \delta_\eta  q). 
+\notag
+\end{equation}
+%
+\noindent
+In the current ARW formulation for mixing on coordinate surfaces, the
+horizontal eddy viscosity $K_h$ is allowed to vary in space, whereas the
+vertical eddy viscosity does not vary in space; hence there is no need
+for any spatial averaging of $K_v$.  Additionally, note that the
+horizontal eddy viscosity $K_h$ is multiplied by the inverse turbulent
+Prandtl number $P_r^{-1}$ for horizontal scalar mixing.
+
+\subsection{Horizontal and Vertical Diffusion in Physical Space}
+
+\subsubsection{Coordinate Metrics}
+
+We use the geometric height coordinate in this physical space
+formulation.
+The coordinate metrics are computed using the prognostic geopotential 
+in the ARW solver.  At the beginning of each Runge-Kutta time step,
+the coordinate metrics are evaluated as part of the overall 
+algorithm.  The definitions of the metrics are
+%
+\begin{equation}
+z_x = g^{-1} \delta_x \phi \,\,\, \hbox{and} \,\,\, 
+z_y = g^{-1} \delta_y \phi.
+\notag
+\end{equation}
+%
+\noindent
+These metric terms are defined on $w$ levels, and
+ $(z_x, z_y)$ are 
+horizontally  coincident with ($u$,$v$) points.
+Additionally, the vertical  diffusion terms are evaluated
+directly in terms of the geometric height, avoiding the need
+for metric terms in the vertical.
+
+\subsubsection{Continuous Equations}
+
+The continuous equations for evaluating diffusion in physical space,
+using the velocity stress tensor, are as follows for
+horizontal and vertical momentum:
+%
+\begin{align}
+\partial_t U &= ...\,\,
+- m_x \bigl[ \partial_x \tau_{11} + \partial_y \tau_{12} 
+- \partial_z ( z_x \tau_{11} + z_y \tau_{12}) \bigr]
+- \partial_z \tau_{13}
+\label{u-disp-phys} \\
+%
+\partial_t V &= ...\,\,
+- m_y \bigl[ \partial_x \tau_{12} + \partial_y \tau_{22} 
+- \partial_z ( z_x \tau_{12} + z_y \tau_{22}) \bigr]
+- \partial_z \tau_{23}
+\label{v-disp-phys} \\
+%
+\partial_t W &= ...\,\,
+- m_y \bigl[ \partial_x \tau_{13} + \partial_y \tau_{23} 
+- \partial_z ( z_x \tau_{13} + z_y \tau_{23}) \bigr]
+- \partial_z \tau_{33}.
+\label{w-disp-phys}
+\end{align}
+%
+The stress tensor $\tau$ can be written as follows:
+%
+\begin{align}
+\tau_{11} &= -\mu_d K_h D_{11} 
+\notag \\
+%
+\tau_{22} &= -\mu_d K_h D_{22} 
+\notag \\
+%
+\tau_{33} &= -\mu_d K_v D_{33} 
+\notag \\
+%
+\tau_{12} &= -\mu_d K_h D_{12} 
+\notag \\
+%
+\tau_{13} &= -\mu_d K_v D_{13} 
+\notag \\
+%
+\tau_{23} &= -\mu_d K_v D_{23}.
+\notag 
+%
+\end{align}
+%
+\noindent
+Symmetry sets the remaining tensor values;
+$\tau_{21} = \tau_{12}$, $\tau_{31} = \tau_{13}$, and $\tau_{32} = \tau_{23}$.
+The stress tensor $\tau$ is calculated from the deformation tensor
+$D$.  The continuous deformation tensor is defined as
+%
+\begin{align}
+D_{11} &= 2 \, m_x m_y \bigl[ \partial_x (m_y^{-1}u) - z_x \partial_z
+(m_y^{-1}u) \bigl] 
+\notag \\
+%
+D_{22} &= 2 \, m_x m_y \bigl[ \partial_y (m_x^{-1}v) - z_y \partial_z
+(m_x^{-1}v) \bigl] 
+\notag \\
+%
+D_{33} &= 2 \, \partial_z w
+\notag \\
+%
+D_{12} &= m_x m_y \bigl[ 
+\partial_y (m_y^{-1}u) - z_y \partial_z(m_y^{-1}u)
++ \partial_x (m_x^{-1}v) - z_x \partial_z (m_x^{-1}v)
+\bigl] 
+\notag \\
+%
+D_{13} &= m_x m_y \bigl[ 
+\partial_x (m_y^{-1}w) - z_x \partial_z(m_y^{-1}w)
+\bigl] 
++ \partial_z (u)
+\notag \\
+%
+D_{23} &= m_x m_y \bigl[ 
+\partial_y (m_y^{-1}w) - z_y \partial_z(m_y^{-1}w)
+\bigl] 
++ \partial_z (v).
+\notag 
+%
+\end{align}
+%
+\noindent
+The deformation tensor is symmetric, hence 
+$D_{21} = D_{12}$, $D_{31} = D_{13}$, and $D_{32} = D_{23}$.
+
+The diffusion formulation for scalars is
+%
+\begin{align}
+\partial_t (\mu_d q) = ...\,\, + \bigl[
+& \, m_x \bigl(\partial_x - \partial_z z_x \bigr )
+%% \bigl( \mu_d m_x K (\partial_x - z_x \partial_z ) \bigr) 
+\bigl( \mu_d m_x K_h (\partial_x - z_x \partial_z ) \bigr) 
++ 
+\notag \\
+& \, m_y \bigl(\partial_y - \partial_z z_y \bigr )
+%% \bigl( \mu_d m_y K (\partial_y - z_y \partial_z ) \bigr) 
+\bigl( \mu_d m_y K_h (\partial_y - z_y \partial_z ) \bigr) 
+%% +  \partial_z \mu_d K \partial_z 
++  \partial_z \mu_d K_v \partial_z 
+\bigr]  q.
+\label{scalar-disp-phys}
+\end{align}
+
+\subsubsection{Spatial Discretization}
+
+Using the definition of the stress tensor, the spatial discretization of the
+ARW physical-space diffusion operators for the horizontal and vertical
+momentum equations
+\eqref{u-disp-phys} - \eqref{w-disp-phys} are
+%
+\begin{align}
+\partial_t U &= ...\,\,
+- {\overline{m_x}}^x \bigl[ \delta_x \tau_{11} + \delta_y \tau_{12} 
+- \delta_z 
+( z_x {\overline{\tau_{11}}}^{x\eta} + {\overline {z_y}}^{xy} 
+{\overline{\tau_{12}}}^{y\eta}) \bigr]
+-\delta_z \tau_{13}
+\notag \\
+%
+\partial_t V &= ...\,\,
+- {\overline{m_y}}^y \bigl[ \delta_y \tau_{22} + \delta_x \tau_{12} 
+- \delta_z 
+( z_y {\overline{\tau_{22}}}^{y\eta} + {\overline {z_x}}^{xy} 
+{\overline{\tau_{12}}}^{x\eta}) \bigr]
+-\delta_z \tau_{23}
+\notag \\
+%
+\partial_t W &= ...\,\,
+- m_x \bigl[ \delta_x \tau_{13} + \delta_y \tau_{23} 
+- \delta_z ( 
+{\overline {z_x}}^{x\eta} {\overline{\tau_{13}}}^{x\eta} 
++{\overline {z_y}}^{y\eta} {\overline{\tau_{23}}}^{y\eta} 
+)
+\bigr]
+- \delta_z \tau_{33}.
+\notag
+\end{align}
+%
+\noindent
+The discrete forms of the stress tensor and deformation tensor are
+\noindent
+%
+\begin{align}
+\tau_{11} &= -\mu_d K_h D_{11} 
+\notag \\
+%
+\tau_{22} &= -\mu_d K_h D_{22} 
+\notag \\
+%
+\tau_{33} &= -\mu_d K_v D_{33} 
+\notag \\
+%
+\tau_{12} &= -\overline {\mu_d}^{xy} 
+\overline {K_h}^{xy} D_{12} 
+\notag \\
+%
+\tau_{13} &= -\overline {\mu_d}^{x} 
+\overline {K_v}^{x\eta} D_{13} 
+\notag \\
+%
+\tau_{23} &= -\overline {\mu_d}^{y} 
+\overline {K_v}^{y\eta} D_{23},
+\notag
+%
+\end{align}
+%
+\noindent
+and
+%
+\begin{align}
+D_{11} &= 2 \, m_x m_y \bigl[ \delta_x ({\overline {m_y^{-1}}}^x u) 
+- {\overline{z_x}}^{x\eta} \delta_z ({\overline {m_y^{-1}}}^x u) \bigl] 
+\notag \\
+%
+D_{22} &= 2 \, m_x m_y \bigl[ \delta_y ({\overline {m_x^{-1}}}^y v) 
+- {\overline{z_y}}^{x\eta} \delta_z ({\overline {m_x^{-1}}}^y v) \bigl] 
+\notag \\
+%
+D_{33} &= 2 \, \delta_z w
+\notag \\
+%
+D_{12} &= (\overline{m_x m_y}^{xy}) \biggl[ 
+\delta_y ({\overline {m_y^{-1}}}^x u) 
+- {\overline{z_y}}^{x\eta} 
+\delta_z {\overline{({\overline {m_y^{-1}}}^x u)}^{y\eta}} 
++ \delta_x ({\overline {m_x^{-1}}}^y v) 
+- {\overline{z_x}}^{y\eta}
+\delta_z {\overline{({\overline {m_x^{-1}}}^y v)}^{x\eta}} 
+\biggl] 
+\notag \\
+%
+D_{13} &= m_x m_y \biggl[ 
+\delta_x (m_y^{-1} w) 
+- z_x \delta_z \overline{(m^{-1} w)}^{x\eta}
+\biggl] 
++ \delta_z u
+\notag \\
+%
+D_{23} &= m_x m_y \biggl[ 
+\delta_y (m_y^{-1} w) 
+- z_y \delta_z \overline{(m_y^{-1} w)}^{y\eta}
+\biggl] 
++ \delta_z v.
+\notag
+%
+\end{align}
+
+\noindent
+The spatial discretization for the scalar diffusion
+\eqref{scalar-disp-phys} is
+%
+\begin{align}
+\partial_t (\mu_d q) = ...\,\, & 
++ m_x \bigl[
+\delta_x \bigl({\overline \mu_d}^x H_1( q) \bigr)
+- \mu_d \delta_z 
+\bigl(\overline{z_x}^x {\overline{H_1( q)}}^{x\eta} \bigr)
+\bigr] 
+\notag \\
+& + m_y \bigl[
+\delta_y \bigl({\overline \mu_d}^y H_2( q) \bigr)
+- \mu_d \delta_z 
+\bigl(\overline{z_y}^y {\overline{H_2( q)}}^{y\eta} \bigr)
+\bigr] 
+\notag \\
+& + \mu_d \delta_z \bigl({\overline{K_v}}^\eta \delta_z  q \bigr),
+\notag
+\end{align}
+%
+\noindent
+where
+\begin{align}
+H_1( q) &= \overline{m_x}^x {\overline{K_h}}^x \bigl(
+\delta_x q - z_x \delta_z( {\overline{ q}}^{x\eta} )\bigr),
+\notag \\
+H_2( q) &= \overline{m_y}^y {\overline{K_h}}^y \bigl(
+\delta_y q - z_y \delta_z( {\overline{ q}}^{y\eta} )\bigr).
+\notag
+\end{align}
+
+\subsection{Computation of the Eddy Viscosities}
+\label {eddy_section}
+
+There are four options for determining the eddy viscosities $K_h$ and
+$K_v$ in the ARW solver.
+
+\subsubsection{External specification of $K_h$ and $K_v$}
+
+Constant values for $K_h$ and $K_v$ can be input in the ARW namelist.
+
+\subsubsection{$K_h$ determined from the horizontal deformation}
+
+The horizontal eddy viscosity $K_h$ can be determined from the
+horizontal deformation using a Smagorinsky first-order closure
+approach.  In this formulation, the eddy viscosity is defined 
+and discretized as
+%
+\begin{equation}
+K_h = C_s^2 \, l^2 \biggl[ 
+0.25(D_{11}-D_{22})^2 + {\overline{D_{12}^2}}^{xy}
+\biggr]^{1 \over 2}.
+\notag
+\end{equation}
+%
+\noindent
+The deformation tensor components have been defined in the previous
+section.  The length scale $l = (\Delta x \Delta y)^{1/2}$ and $C_s$ is
+a constant with a typical value $C_s = 0.25$.  For scalar mixing, the
+eddy viscosity is divided by the turbulent Prandtl number $P_r$ that
+typically has a value of 1/3 \citep{deardorff72}.  This option is most
+often used with a planetary boundary layer scheme that independently
+handles the vertical mixing.
+
+\subsubsection{3D Smagorinsky Closure}
+
+The horizontal and vertical eddy viscosities can be determined using a 
+3D Smagorinsky turbulence closure.  This closure specifies the
+eddy viscosities as
+
+\begin{equation}
+K_{h,v} = C_s^2 \, l_{h,v}^2 \,\hbox{max}
+\biggl[ 0., \bigl( D^2 - P_r^{-1} N^2 \bigr)^{1/2}\biggr],
+\label{k_calc}
+\end{equation}
+%
+\noindent
+where 
+%
+\begin{equation}
+D^2 = 
+{1 \over 2} \biggl[
+D^2_{11} +
+D^2_{22} +
+D^2_{33} \biggr] +
+\bigl({{\overline{D_{12}}}^{xy}}\bigr)^2 +
+\bigl({{\overline{D_{13}}}^{x\eta}}\bigr)^2 +
+\bigl({{\overline{D_{23}}}^{y\eta}}\bigr)^2,
+\notag
+\end{equation}
+%
+\noindent
+and $N$ is the Brunt-V\"ais\"al\"a frequency; the computation of $N$,
+including moisture effects, is outlined in Section \ref{tke_section}.
+
+Two options are available for calculating the mixing length $l_{h,v}$ in
+%% \eqref{k_calc}.  An isotropic length scale can be chosen where $l_{h,v}
+%% = (\Delta x \Delta y \Delta z)^{1/3}$ and thus $K_h = K_v = K$.  The
+%% anisotropic option sets the horizontal mixing length $l_h = \sqrt{\Delta
+\eqref{k_calc}.  An isotropic length scale (appropriate for $\Delta x, \Delta y
+\simeq \Delta z$) can be chosen where $l_{h,v} = (\Delta x \Delta y \Delta z)^{1/3}$
+and thus $K_h = K_v = K$.  The anisotropic option (appropriate for $\Delta x, 
+\Delta y >> \Delta z$) sets the horizontal mixing length $l_h = \sqrt{\Delta
+x \Delta y}$ in the calculation of the horizontal eddy viscosity $K_h$
+using \eqref{k_calc}, and $l_v = \Delta z$ for the calculation of the
+vertical eddy viscosity $K_v$ using \eqref{k_calc}.
+
+Additionally, the eddy viscosities
+for scalar mixing are divided by the turbulent Prandtl number $P_r = 1/3$.
+
+\subsubsection{Prognostic TKE Closure}
+
+For the predicted turbulent kinetic energy option
+(TKE; see section \ref{tke_section}), the eddy viscosities are
+computed using
+%
+\begin{equation}
+K_{h,v} = C_k l_{h,v}\, \sqrt{e},
+\notag
+\end{equation}
+%
+\noindent
+where $e$ is the turbulent kinetic energy (a prognostic variable 
+in this scheme), $C_k$ is a constant (typically $0.15 < C_k < 0.25$),
+and $l$ is a length scale.  
+
+If the isotropic mixing option is chosen,
+%
+\begin{align}
+l_{h,v} & = \hbox{min} 
+\bigl[(\Delta x \Delta y \Delta z)^{1/3}, 0.76 \sqrt{e} / N\bigr]
+\quad\quad\quad
+\hbox{for } N^2 > 0, 
+\notag \\
+l_{h,v} & = (\Delta x \Delta y \Delta z)^{1/3} 
+\,\,\,\,\,
+\hphantom{hbox{min}\bigl[,0.76 \sqrt{e} / N\bigr]}
+\hbox{for } N^2 \le 0
+\notag 
+\end{align} 
+%
+(see section \ref{tke_section} for the calculation of $N^2$).
+Both the horizontal and vertical eddy viscosities are multiplied by an
+inverse turbulent
+Prandtl number $P_r^{-1} = 1 + 2l/(\Delta x \Delta y \Delta z)^{1/3}$ for
+scalar mixing.  In this case $(l_{cr} > \Delta x)$ the 
+horizontal and vertical eddy viscosities
+are equivalent.
+
+If the anisotropic mixing option is chosen, 
+then $l_h=\sqrt{\Delta x \Delta y}$ for the calculation of $K_h$.
+For calculating $K_v$, 
+%
+\begin{align} l_v &= \hbox{min} 
+\bigl[\Delta z, 0.76 \sqrt{e} / N\bigr]
+\quad\quad\quad \hbox{for } N^2 > 0,
+\notag \\
+l_v &= \Delta z \hphantom{\hbox{min} 
+\bigl[, 0.76 \sqrt{e} / N\bigr]} \quad\quad\quad \hbox{for } N^2 \le 0.
+\notag
+\end{align} 
+%
+\noindent
+The eddy viscosity used for mixing scalars is divided by a
+turbulent Prandtl number $P_r$.  
+The Prandtl number is 1/3 for the
+horizontal eddy viscosity $K_h$,
+and $P_r^{-1} = 1 + 2l/\Delta z$ for the
+vertical eddy viscosity $K_v$.
+
+\subsection{TKE equation for the 1.5 Order Turbulence Closure}
+\label{tke_section}
+
+The prognostic equation governing the evolution of the 
+turbulent kinetic energy $e$ is 
+%
+\begin{equation}
+ \partial_t (\mu_d e) + (\nabla \cdot {\bf V} e )_\eta 
+= \mu_d (\hbox{ shear production } + \hbox{ buoyancy } + \hbox{ dissipation }).
+\label{tke}
+\end{equation}
+%
+\noindent
+The time integration and the transport terms in \eqref{tke} are
+integrated in the same manner as for other scalars (as described in
+Chapter \ref{discretization_chap}). The right-hand side source and sink terms for $e$ are
+given as follows.
+
+\subsubsection{Shear Production}
+
+The shear production term in \eqref{tke} can be written as
+%
+\begin{equation}
+\hbox{shear production} =  K_h D_{11}^2
++ K_h D_{22}^2
++ K_v D_{33}^2
++ K_h {\overline{D_{12}^2}}^{xy}
++ K_v {\overline{D_{13}^2}}^{x\eta}
++ K_v {\overline{D_{23}^2}}^{y\eta}.
+\notag
+\end{equation}
+
+\subsubsection{Buoyancy}
+
+The buoyancy term in the TKE equation \eqref{tke} is written as
+%
+\begin{equation}
+\hbox{ buoyancy} = - K_v N^2,
+\notag
+\end{equation}
+%
+\noindent
+where the Brunt-V\"ais\"al\"a frequency $N$ is computed using either 
+the formula for a moist saturated or unsaturated environment:
+%
+\begin{alignat}{2}
+%% N^2 & = g \biggl[A {\partial \theta_e \over \partial z} 
+N^2 & = g \bigl[A {\partial_z \theta_e } 
+%% - {\partial q_w \over \partial z} \biggr] & \qquad
+- {\partial_z q_w } \bigr] & \qquad
+%% & \hbox{if $q_v \ge q_s$ or $q_c \ge 0.01$ g/Kg;} \notag \\
+& \hbox{if $q_v \ge q_{vs}$ or $q_c \ge 0.01$ g/Kg;} \notag \\
+%% N^2 & = g \biggl[{1 \over \theta}{\partial \theta \over \partial z}
+N^2 & = g \biggl[{1 \over \theta}{\partial_z \theta}
+%% + 1.61 {\partial q_v \over \partial z} - {\partial q_w \over \partial z}
++ 1.61 {\partial_z q_v } - {\partial_z q_w }
+\biggr]
+& \qquad 
+%% & \hbox{if $q_v < q_s$ or $q_c < 0.01$ g/Kg}.
+& \hbox{if $q_v < q_{vs}$ or $q_c < 0.01$ g/Kg}.
+\notag
+\end{alignat}
+%
+\noindent
+The coefficient $A$ is defined as
+%
+\begin{equation}
+A = \theta^{-1} 
+{ 1 + {1.61\epsilon L q_v \over R_d T} \over
+1 + {\epsilon L^2 q_v \over C_pR_v T^2} },
+\notag
+\end{equation}
+%
+\noindent
+where $q_w$ represents the total water (vapor + all liquid species 
++ all ice species), $L$ is the latent heat of condensation and
+%% $\epsilon$ is the molecular weight of water over the molecular weight of
+$\epsilon$ is the ratio of the molecular weight of water vapor to the molecular weight of
+dry air.  $\theta_e$ is the equivalent potential temperature and is
+defined as 
+%
+\begin{equation}
+%% \theta_e = \theta \biggl(1 + {\epsilon L q_{vs} \over C_p T} \biggr),
+\theta_e = \theta \biggl(1 + { L q_{vs} \over C_p T} \biggr),
+\notag
+\end{equation}
+%
+\noindent
+where $q_{vs}$ is the saturation vapor mixing ratio.
+
+\subsubsection{Dissipation}
+
+The dissipation term in \eqref{tke} is
+%
+\begin{equation}
+\hbox{dissipation} = - {Ce^{3/2} \over l},
+\notag
+\end{equation}
+%
+\noindent
+where 
+%
+\begin{equation}
+C = 1.9 \, C_k  + { (0.93 - 1.9 \, C_k)\, l \over \Delta s},
+\notag
+\end{equation}
+%
+\noindent
+$\Delta s =  (\Delta x \Delta y \Delta z)^{1/3}$,  
+and
+%
+\begin{equation}
+l = min\bigl[(\Delta x \Delta y \Delta z)^{1/3}, 0.76 \sqrt{e}/N\bigr].
+\notag
+\end{equation}
+
+\subsection{Sixth-Order Spatial Filter on Coordinate Surfaces}
+
+A sixth order spatial filter is available that is applied on horizontal
+coordinate surfaces.  
+The diffusion scheme is that proposed by \cite{xue.2000}.  Its application
+in the ARW is described by \cite{knievel.et.al.2007}.  The filter can be
+expressed as
+%
+\begin{equation}
+\partial_t (\mu_d a) = ... {\beta \, 2^{-6} \over 2 \Delta t} 
+\left[ \Delta x^6 \delta_x (\overline{\mu_d}^x F_x) + \Delta y^6 \delta_y (\overline{\mu_d}^y F_y)\right]
+\label{sixth_order_diffusion}
+\end{equation}
+%
+\noindent
+The diffusive fluxes $F_x = \delta_x^5 (a)$ and $F_y = \delta_y^5 (a)$.
+$\beta$ is a user-specified filtering coefficient representing the
+damping applied to $2\Delta$ waves for each filter application.  
+
+The user can choose to enforce monotonicity in the filtering.  In the
+monotonic option, the diffusive fluxes are set to zero if up-gradient
+diffusion is indicated -- $F_x = 0$ if $F_x \, \delta_x(a) < 0$ and $F_y
+= 0$ if $F_y \, \delta_y(a) < 0$.  Note that the filter is applied in
+computational space; map factors are not taken into account
+and the filter parameter $\beta$ is dimensionless.  Thus, the filter
+scales with the timestep and gridsize and it does not conserve scalar
+mass.  This explicit diffusion acts on all three components of wind,
+potential temperature, all moisture variables and passive scalars, and
+subgrid turbulence kinetic energy.  Further details can be found in
+\cite{knievel.et.al.2007}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%  model filters that are not turbulence based
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Filters for the Time-split RK3 scheme}
+
+Three filters are used in the ARW time-split RK3
+scheme apart from those in the model physics: three-dimensional
+divergence damping (an acoustic model filter); an external-mode filter
+that damps vertically-integrated horizontal divergence; and off-centering
+of the vertically implicit integration of the vertical momentum
+equation and geopotential equation.  Each of these is described in the
+following sections.
+
+\subsection{Three-Dimensional Divergence Damping}
+
+The damping of the full mass divergence is a filter for acoustic
+modes in the ARW solver.  This 3D mass divergence damping is described
+in \citet{skamarock92}.  The filtering is accomplished by
+forward weighting the pressure update in the acoustic step loop
+described in Section \ref{full_time_split_integration}, step (6).  The linearized equation of
+state \eqref{p-linear} is used to diagnose the pressure at the new time $\tau$
+after the $U''$, $V''$, $\mu_d''$, and $\Theta''$ have
+been advanced.  Divergence damping consists of using a modified pressure
+in the computation of the pressure gradient terms in the horizontal
+momentum equations in the acoustic steps (Equations \eqref{u-small-step}
+and \eqref{v-small-step}).  Denoting the updated value as $p^\tau$, 
+the modified pressure $p^{*\tau}$ used in \eqref{u-small-step}
+and \eqref{v-small-step}
+can be written as
+%
+\begin{equation}
+p^{*\tau} = 
+{p}^{\tau} + \gamma_d \bigl(
+{p}^{\tau} -
+{p}^{\tau - \Delta \tau}
+\bigr),
+\end{equation}
+%
+\noindent
+where $\gamma_d$ is the damping coefficient.  
+This modification is equivalent to inserting a horizontal 
+diffusion term into the equation for the 3D mass divergence,
+hence the name {\em divergence damping}.
+A divergence damping coefficient $\gamma_d = 0.1$ is
+typically used in the ARW
+applications, independent of time step or grid size.
+
+\subsection{External Mode Filter}
+
+The external modes in the solution are damped by filtering
+the vertically-integrated horizontal divergence.
+This damping is accomplished by
+adding a term to the horizontal momentum equations.  The additional
+term added to \eqref{u-small-step} and \eqref{v-small-step} are
+%
+\begin{equation}
+\delta_\tau U'' = ... \,\,
+- \gamma_e \delta_x (\delta_{\tau-\Delta \tau} \mu_d'')
+\end{equation}
+\noindent 
+and
+\begin{equation}
+\delta_\tau V'' = ... \,\, 
+- \gamma_e \delta_y (\delta_{\tau-\Delta \tau} \mu_d'').
+\end{equation}
+%
+\noindent
+The quantity $\delta_{\tau - \Delta \tau} \mu $ is the vertically-integrated 
+mass divergence (i.e., \eqref{omega}) from the previous
+acoustic step (that is computed using
+the time $\tau$ values of $U$ and $V$), and
+$\gamma_e$ is the external mode damping coefficient.  An external mode
+damping coefficient $\gamma_e = \beta{\Delta x^2\over \Delta t}$,  
+$\beta = 0.01$, is typically used in the ARW
+applications, independent of time step or grid size.
+
+\subsection{Semi-Implicit Acoustic Step Off-centering}
+\label{offcentering}
+
+Forward-in-time weighting of the vertically-implicit
+acoustic-time-step terms damps instabilities associated
+vertically-propagating sound waves.  The forward weighting also damps
+instabilities associated with sloping model levels and horizontally
+propagating sound waves
+\citep[see][]{durran_klemp83, dudhia95}.  The off-centering
+is accomplished by using a positive (non-zero) coefficient $\beta$
+\eqref{avg-operator} in the acoustic time-step vertical momentum
+equation \eqref{w-small-step} and geopotential equation
+\eqref{geo-small-step}.  An off-centering coefficient $\beta = 0.1$ is
+typically used in the ARW applications, independent of time step or
+grid size.
+
+\section{Formulations for Gravity Wave Absorbing Layers}
+
+There are three formulations for absorbing vertically-propagating
+gravity waves so as to prevent unphysical wave reflection off the
+domain upper boundary from contaminating ARW solutions.
+
+\subsection{Absorbing Layer Using Spatial Filtering}
+\label{absorbing_layer_spatial}
+
+This formulation of the absorbing layer increases the second-order
+horizontal and vertical eddy viscosities in the absorbing layer using
+the following formulation:
+%
+\begin{equation}
+K_{dh} = {\Delta x^2\over \Delta t} \gamma_g
+\cos \biggl({\pi \over 2} \,{z_{top} - z \over z_{d}} \biggr),
+\notag
+\end{equation}
+%
+\noindent
+and
+%
+\begin{equation}
+K_{dv} = {\Delta z^2\over \Delta t} \gamma_g
+\cos \biggl({\pi \over 2} \, {z_{top} - z \over z_{d}} \biggr).
+\notag
+\end{equation}
+%
+\noindent
+Here $\gamma_g$ is a user-specified damping coefficient, $z_{top}$
+is the height of the model top for a particular grid column, 
+$z_d$ is the depth of the damping layer (from the model top), 
+and $K_{dh}$ and $K_{dv}$ are the horizontal and vertical 
+eddy viscosities for the wave absorbing layer.  If other 
+spatial filters are being used, then the eddy viscosities
+that are used for the second-order horizontal and vertical
+eddy viscosities are the
+maximum of ($K_h$, $K_{dh}$) and ($K_v$, $K_{dv}$).
+The effect of this filter on gravity waves is discussed in
+\citet{klemp_and_lilly78}, where guidance on the choice of 
+the damping coefficient $\gamma_g$ can also be found.
+
+\subsection{Implicit Rayleigh Damping for the Vertical Velocity}
+\label{rayleigh-w}
+
+Implicitly damping the vertical velocity within the implicit solution
+algorithm for the vertically propagating acoustic modes has been found
+to be a very effective and robust absorbing layer formulation by
+\citet{klemp_et_al_2008}.  We recommend its use in both large-scale and
+small-scale applications, and in idealized and real-data applications.
+It has proven more effective than the spatial-filter-based absorbing
+layer described in Section \ref{absorbing_layer_spatial}, and it is more
+effective and more generally applicable than traditional Rayleigh
+damping because of its implicit nature and the fact that it does not
+need a reference state.  This formulation has been introduced in WRFV3.
+It can only be used with the nonhydrostatic dynamics option.
+
+In the vertically-implicit solution procedure for $W''^{\tau+\Delta
+\tau}$ and $\phi''^{\tau+\Delta \tau}$ in the acoustic step (step 5 in
+Figure \ref{time_integration_figure}), equation \eqref{geo-small-step}
+is used to eliminate $\phi''^{\tau+\Delta \tau}$ from
+\eqref{w-small-step} after which the tridiagonal equation in the
+vertical direction for
+$W''^{\tau+\Delta \tau}$ is solved.  Afterwards $\phi''^{\tau+\Delta \tau}$ is
+recovered using \eqref{geo-small-step}.  In the solution procedure that
+includes the implicit Rayleigh damping for $W$, after the tridiagonal
+equation for $W''$ %$W''^{\tau+\Delta \tau}$ 
+is solved and before the
+geopotential $\phi$ is updated, the implicit Rayleigh damping is
+included by calculating $W''^{\tau+\Delta \tau}$ using
+%
+\begin{equation}
+W''^{\tau+\Delta \tau} = \tilde{W}''^{\tau+\Delta \tau} 
+-\tau(z) \Delta \tau W''^{\tau+\Delta \tau}
+\label{w-rayleigh}
+\end{equation}
+%
+where $\tilde{W}''^{\tau+\Delta \tau}$ is the solution to
+\eqref{w-small-step}.  The geopotential is then updated as usual using
+\eqref{geo-small-step} with the updated damped vertical velocity from
+\eqref{w-rayleigh}.
+The perturbation pressure and specific volume
+are computed as before using \eqref{p-linear} and \eqref{small-hydro}.
+
+The variable $\tau(z)$ defines the vertical structure of the damping
+layer, and has a form similar to the Rayleigh damper in
+\citet{durran_klemp83} and also used in the traditional Rayleigh damping
+formulation discussed in Section \ref{traditional-rayleigh}
+%
+\[ \tau (z) = \left\{ \begin{array}{cc}
+         \gamma_r\sin^2 \left[ \frac{\pi}{2} 
+\left( 1 - \frac{z_{top}-z}{z_d} \right) \right] & 
+\mbox{for $z \geq (z_{top}-z_d)$};\\ 
+        0 & \mbox{otherwise}, \end{array} \right. \] 
+%
+where $\gamma_r$ is a user specified damping coeficient, $z_{top}$ is
+the height of the model top for a particular grid column, and $z_d$ is
+the depth of the damping layer (from the model top).  A typical value
+for the damping coefficient for this formulation is 
+$\gamma_r = 0.2 \,s^{-1}$ ($\sim 10N$ for typical stratospheric values of
+the Brunt-V\"ais\"all\"a frequency).
+A complete
+analysis of this filter can be found in \citet{klemp_et_al_2008}.
+
+\subsection{Traditional Rayleigh Damping Layer}
+\label{traditional-rayleigh}
+
+A traditional Rayleigh damping layer is also available in the ARW solver.  This
+scheme applies a tendency to $u$, $v$, $w$, and $\theta$ to gradually
+relax the variable back to a predetermined reference state value,
+%
+\begin{eqnarray*}
+%%   \frac{\partial u     }{\partial t} & = & -\tau (z) \left( u - \overline{u} \right) ,\\
+%%   \frac{\partial v     }{\partial t} & = & -\tau (z) \left( v - \overline{v} \right) ,\\
+%%    \frac{\partial w     }{\partial t} & = & -\tau (z)        w                        ,\\
+%%   \frac{\partial \theta}{\partial t} & = & -\tau (z) \left( \theta - \overline{\theta} \right).
+   {\partial_t u        } & = & -\tau (z) \left( u - \overline{u} \right) ,\\
+   {\partial_t v        } & = & -\tau (z) \left( v - \overline{v} \right) ,\\
+   {\partial_t w       } & = & -\tau (z)        w                        ,\\
+   {\partial_t \theta} & = & -\tau (z) \left( \theta - \overline{\theta} \right).
+\end{eqnarray*}
+%
+Overbars indicate the reference state fields, which are functions of $z$
+only and are typically defined as the initial horizontally homogeneous
+fields in idealized simulations.  The reference state vertical velocity
+is assumed to be zero.  The vertical structure of the damping layer is
+the same as that used for the implicit vertical velocity damping
+described in Section \ref{rayleigh-w}.
+Because the model surfaces change height with time in the ARW solver, the
+reference state values at each grid point need to be recalculated at
+every time step.  Thus, a linear interpolation scheme is used to
+calculate updated reference state values based on the height of the
+model levels at each time step.
+
+The effect of this filter on gravity waves is discussed in
+\citet{klemp_and_lilly78}, where guidance on the choice of 
+the damping coefficeint $\gamma_r$ can also be found.
+
+\section{Other Damping}
+
+\subsection{Vertical-Velocity Damping}
+
+This is also called $w$-damping.
+In semi-operational or operational NWP applications,
+the model robustness can be improved by detecting locations where the
+vertical motion approaches the limiting Courant number for stability,
+and applying a Rayleigh damping term in the vertical momentum equation to
+stabilize the motion.  This term is non-physical and should
+only be used in the situation where many, or long, model runs are being
+done, and there is no option for a re-run with a shorter time-step if a 
+failure occurs due to an excessively strong updraft. This might be the
+case, for example, in an operational setting where real-time forecasts 
+have to be produced on time to be useful. However, if this term activates
+frequently, consideration should be given to reducing the model time-step.
+
+The term is calculated from
+%
+\begin{equation}
+Cr = \bigg | { \Omega dt \over \mu d\eta }\bigg |.
+\notag
+\end{equation}
+%
+\noindent
+If $Cr > Cr_\beta$, then
+\begin{equation}
+%{\rm if} ~Cr > Cr_\beta ~ {\rm then:} ~~~~~
+\partial_t W = ... - \mu_d ~{\rm sign} (W) \gamma_w ( Cr - Cr_\beta ),
+\notag
+\end{equation}
+%
+\noindent 
+where $\gamma_w$ is the damping coefficient 
+(typically 0.3 ms$^{-2}$), and $Cr_\beta$ 
+is the activation Courant number (typically 1.0).  The ARW outputs
+the location of this damping when it is active.

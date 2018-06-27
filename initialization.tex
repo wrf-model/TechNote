@@ -1,0 +1,605 @@
+\chapter{Initial Conditions}
+\label{initialization_chap}
+
+The ARW may be run with user-defined initial conditions 
+for idealized simulations, or it may be run using
+interpolated data from either an external analysis or forecast for
+real-data cases.  Both 2D and 3D tests cases for idealized
+simulations are provided.  
+Several sample cases for real-data simulations are provided, which
+rely on pre-processing from an external package (usually the 
+WRF Preprocessor System, referred to as WPS) that converts
+the large-scale GriB data into a format suitable for ingest by the ARW's
+real-data processor.
+
+The programs that generate the specific initial conditions for the selected 
+idealized or real-data case function similarly. They provide the ARW with:
+\begin{itemize}\setlength{\parskip}{-5pt}
+\item input data that is on the correct horizontal and vertical staggering;
+\item hydrostatically balanced reference state and perturbation fields; and
+\item metadata specifying such information as the date, grid physical characteristics,
+and projection details.
+\end{itemize}
+\noindent For neither the idealized nor the real-data cases
+are the initial conditions enhanced with observations.  However, output from 
+the ARW system initial condition programs is suitable as input to the WRF variational
+assimilation package (see Chapter \ref{var_chap}).
+
+\section{Initialization for Idealized Conditions}
+
+The ARW comes with a number of test cases using idealized
+environments, including large eddy simulations (em\_les),
+sea breezes (em\_seabreeze2d\_x), mountain waves (em\_hill2d\_x), squall lines
+(em\_squall2d\_x, em\_squall2d\_y), supercell thunderstorms
+(em\_quarter\_ss), gravity currents (em\_grav2d\_x), baroclinic
+waves (em\_b\_wave), and global domains (em\_heldsuarez).  
+A brief description of these test cases can be
+found in the README\_test\_cases file provided in the ARW release.
+The test cases include examples of atmospheric
+flows at fine scales (e.g., the LES example has a grid-spacing of
+100 meters and a time step of 1 second) and examples of flow at large
+scales (e.g., the Held Suarez global test case uses a grid-spacing around 600 km and
+a time step of 1800 s), in addition to the traditional mesoscale and
+cloudscale model simulations.  The test suite allows an ARW user to
+easily reproduce these known solutions.  The test suite is also the
+starting point for constructing idealized flow simulations by modifying
+initializations that closely resemble a desired initialization.
+
+Most of these tests use as input a 1D sounding specified as a function of
+geometric height $z$ (except for the baroclinic wave case that uses a 2D
+profile specified in $[y,z]$), and, with the exception of the baroclinic
+wave test case, the sounding files are in text format that can be
+directly edited by the user.  The 1D specification of the sounding in
+these test files requires the surface values of pressure, potential
+temperature, and water vapor mixing ratio, followed by the potential
+temperature, vapor mixing ratio, and horizontal wind components at some
+heights above the surface.  The initialization programs for each case
+assume that this moist sounding represents an atmosphere in hydrostatic
+balance.
+
+Two sets of thermodynamic fields are needed for the model--- the
+reference state and the perturbation state (see Chapter
+\ref{equation_chap} for discussion of the equations).  The
+reference state used in the idealized initializations is computed using
+the input sounding from which the moisture is discarded (because the
+reference state is dry).  The perturbation state is computed using the full
+moist input sounding.  The procedure for computing the hydrostatically-balanced 
+ARW reference and perturbation state variables from the input
+sounding is as follows.  First, density and both a dry and full
+hydrostatic pressure are computed from the input sounding at the input
+sounding levels $z$.  This is accomplished by integrating the
+hydrostatic equation vertically up the column using the surface pressure
+and potential temperature as the lower boundary condition.  The
+hydrostatic equation is
+% 
+\begin{equation} \delta_z p = - {\overline
+\rho}^z g (1 + (R_d/R_v) {\overline q_v}^z), 
+\label{init_hydro}
+\end{equation} 
+% 
+\noindent
+where $\overline{\rho}^z$ is a two point average between input sounding
+levels, and $\delta_z p$ is the difference of the pressure between input
+sounding levels divided by the height difference.  Additionally, the
+equation of state is needed to close the system:
+% 
+\begin{equation} \alpha_d = {1 \over \rho_d} = {R_d
+\theta \over p_o} \biggl(1 + {R_d \over R_v}q_v\biggr)
+\biggl({p \over p_o}\biggr)^{-{c_v \over c_p}}, 
+\label{init_state}
+\end{equation}
+%
+\noindent
+where $q_v$ and $\theta$ are given in the input sounding.
+\eqref{init_hydro} and \eqref{init_state} are a coupled set of nonlinear
+equations for $p$ and $\rho$ in the vertical integration, and they are
+solved by iteration.  The dry pressure on input sounding levels is
+computed by integrating the hydrostatic relation down from the top,
+excluding the vapor component.
+
+Having computed the full pressure (dry plus vapor) and dry air pressure
+on the input sounding levels, the pressure at the model top ($p_{dht}$)
+is computed by linear interpolation in height (or possibly
+extrapolation) given the height of the model top (an input variable).
+The column mass $\mu_d$ is computed by interpolating the dry air
+pressure to the surface and subtracting from it $p_{dht}$.  Given the
+column mass, the dry-air pressure at each $\eta$ level is known from the
+coordinate definition \eqref{eta_def}, repeated here
+%
+\begin{equation}
+\eta = (p_{dh}-p_{dht})/\mu_d ~~~~~~~{\rm where
+                              }~~~ \mu_d = p_{dhs}-p_{dht},
+\notag
+\end{equation}
+%
+\noindent
+and the pressures $p_{dhs}$ and $p_{dht}$ refer to the dry atmosphere.
+The potential
+temperature from the input sounding is interpolated to
+each of the model pressure levels, and the equation of state
+\eqref{init_state} is used to compute the inverse density 
+$\alpha_d$.  Finally, the 
+ARW's hydrostatic relation \eqref{hydrostatic_relation},
+in discrete form
+%
+\begin{equation}
+\delta_\eta \phi = - \alpha_d \mu_d
+\notag
+\end{equation}
+\noindent
+is used to compute the geopotential.  This procedure is used to compute
+the reference state (assuming a dry atmosphere) and the full state
+(using the full moist sounding).  The perturbation variables are
+computed as the difference between the reference and full state.  It
+should also be noted that in the nonhydrostatic model integration,
+the inverse density $\alpha_d$ is diagnosed from the geopotential using
+this equation of state, and the pressure is diagnosed from the equation
+of state using the inverse density $\alpha_d$ and the prognostic potential
+temperature $\theta$.  Thus, the ARW's prognostic variables $\mu_d$,
+$\theta$, and $\phi$ are in exact hydrostatic balance for the model
+equations (to machine roundoff).
+
+\section{Initialization for Real-Data Conditions}
+
+The initial conditions for the real-data cases are pre-processed through a separate 
+package called the WRF Preprocessing System (WPS, see Fig. \ref{figure:WPS_real_wrf}).  
+The output from WPS is passed to the 
+real-data pre-processor in the ARW--- program {\it real}--- which generates initial and lateral boundary
+conditions.  This section is primarily about the steps taken to build the
+initial and the lateral boundary conditions for a real-data case.  Even though the
+WPS is outside of the ARW system, a brief description is appropriate to see how the 
+raw meteorological and static terrestrial data are brought into the model
+for real-data cases.
+
+\subsection{Use of the WRF Preprocessing System by the ARW}
+
+The WPS is a set of programs that takes
+terrestrial and meteorological data (typically in GriB format) and transforms them for input to
+the ARW pre-processor program for real-data cases ({\it real}).
+Figure \ref {figure:WPS_real_wrf} shows the flow of data into and out of the WPS system.  
+The first step for the WPS is to define a physical grid (including
+the projection type, location on the globe, 
+number of grid points, nest locations, and grid distances) and
+to interpolate static fields to the prescribed domain.
+Independent of the domain configuration,
+an external analysis or forecast is processed by the WPS GriB decoder,
+which diagnoses required fields and
+reformats the GriB data into an internal binary format.
+With a specified domain,
+WPS horizontally interpolates the meteorological data onto the projected domain(s). 
+The output data from WPS supplies a complete 3-dimensional snapshot of the atmosphere
+on the selected model grid's horizontal staggering at the selected time slices,
+which is sent to the ARW pre-processor program for real-data cases.
+
+%
+% Figure showing WPS and real and ARW
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=6in]{figures/WPS_real_wrf.pdf}
+  \caption{\label{figure:WPS_real_wrf}Schematic showing 
+the data flow and program components in WPS, and how WPS feeds initial data to the ARW.
+Letters in the rectangular boxes indicate program names.
+GEOGRID: defines the model domain and creates static files of terrestrial data.  UNGRIB:
+decodes GriB data. METGRID: interpolates meteorological data to the model domain.}
+\end{figure}
+
+The input to the ARW real-data processor from 
+WPS contains 3-dimensional fields (including
+the surface) of temperature (K), relative humidity
+(%), geopotential height (m), pressure (Pa), 
+and the horizontal components of momentum (m/s, already rotated to the model 
+projection).  
+The 2-dimensional static terrestrial fields include:
+albedo, Coriolis parameters, terrain elevation, vegetation/land-use type, 
+land/water mask, map scale factors, map rotation angle, soil texture category, vegetation greenness fraction, 
+annual mean temperature, 
+and latitude/longitude.  
+The 2-dimensional time-dependent fields from the external model, after processing by WPS, include: 
+surface pressure and sea-level pressure (Pa), layers of soil temperature (K) and  soil moisture (kg/kg, 
+either total moisture, or 
+binned into total and liquid content), 
+snow depth (m), skin temperature (K), sea surface temperature (K), and a sea ice flag.  
+
+\subsection{Reference State}
+\label{initialization_real_base_section}
+Identical to the idealized initializations, there is a partitioning of some of the 
+meteorological data into reference and perturbation fields.
+For real-data cases, the reference state is defined by terrain elevation and three constants:
+\begin{itemize}\setlength{\parskip}{-5pt}
+\item $p_{0}$ ($10^5$ Pa) reference sea level pressure; 
+\item $T_{0}$ (usually 270 to 300 K) reference sea level temperature; and
+\item $A$ (50 K) temperature difference between the pressure levels of $p_{0}$ and $p_{0}/e$.
+\end{itemize}
+
+\noindent Using these parameters, the dry reference state surface pressure is
+\begin{equation}
+p_{dhs} = p_{0}~exp\Bigg({-T_{0} \over A} + 
+                     \sqrt{ {\bigg( {T_{0} \over A } \bigg)}^2 - ~
+                            { 2\phi_{sfc} \over { A~R_d}} } \Bigg).
+\label{init_psurf}
+\end{equation}
+
+\noindent From \eqref{init_psurf}, the 3-dimensional reference pressure (dry hydrostatic pressure $p_{dh}$)
+is computed as
+a function of the vertical coordinate $\eta$ levels and the model top $p_{dht}$:
+\begin{equation}
+p_{dh} = \overline{p}_d = \eta ~( p_{dhs} - p_{dht} ) + p_{dht}.
+\label{init_pbar}
+\end{equation}
+
+\noindent With \eqref{init_pbar}, the reference temperature is a straight line on a skew-T plot, defined as
+\begin{equation}
+T = T_0 + A~ln {\overline{p}_d \over p_0}.
+\notag
+\end{equation}
+
+\noindent From the reference temperature and pressure, 
+the reference potential temperature is then defined as
+
+\noindent
+\begin{equation}
+\overline{\theta}_d = {\bigg( T_{0} + A~ln{\overline{p}_d \over p_{0} } \bigg) }
+{\bigg( {p_0 \over \overline{p}_d } \bigg) }
+^{R_d \over C_p},
+\label{init_thetad}
+\end{equation}
+
+\noindent and the reciprocal of the reference density using 
+\eqref{init_pbar} and \eqref{init_thetad} is given by
+\begin{equation}
+\overline{\alpha}_d = {1 \over \overline{\rho}_d} = {{R_d ~\overline{\theta}_d}\over p_{0} }~\bigg( 
+{\overline{p}_d \over p_{0} } \bigg)^{-{C_v \over C_p}}.
+\label{init_alphabar}
+\end{equation}
+
+\noindent The base state difference of the dry surface pressure 
+from \eqref{init_psurf} and the model top is
+given as
+\begin{equation}
+\overline{\mu}_d = p_{dhs} - p_{dht}.
+\label{init_mubar}
+\end{equation}
+
+\noindent 
+From \eqref{init_alphabar} and \eqref{init_mubar}, 
+the reference state geopotential defined from the hydrostatic relation is
+\begin{equation}
+\delta_{\eta} \overline{\phi}  = -\overline{\alpha}_d~\overline{\mu}_d.
+\notag
+\end{equation}
+
+
+\subsection{Vertical Interpolation and Extrapolation}
+The ARW real-data preprocessor vertically interpolates using functions of dry pressure.
+The input data from WPS contains both a total pressure and a moisture field (typically
+relative humidity).  Starting at the top each column of input pressure data, the integrated moisture
+is subtracted from the pressure field step-wise down to the surface.  
+Then, by removing the pressure at the model
+lid, the total dry surface pressure $p_{sd}$ diagnosed from WPS defines the
+model total dry column pressure
+\begin{equation}
+\mu_d = \overline{\mu}_d + \mu_d' = p_{sd} - p_{dht}.
+\label{init_mutotal}
+\end{equation}
+
+\noindent
+With the ARW vertical coordinate $\eta$, the model lid $p_{dht}$, and the column dry
+pressure known at each $(i,j,k)$ location, the 3-dimensional arrays are interpolated.
+
+In the free atmosphere up to the model lid, the vertical calculations are always interpolations.
+However, near the model surface, it is possible to have an inconsistency between the input
+surface pressure (based largely on the input surface elevation) and the ARW surface
+pressure (possibly with a much higher resolution topography).  These inconsistencies
+may lead to an extrapolation.  The default behavior for extrapolating the horizontal winds and
+the relative humidity below the known surface is to keep the values constant, with zero vertical gradient.
+For the potential temperature, by default a -6.5 $K/km$ lapse rate for the temperature is applied.
+The vertical interpolation of the geopotential field is optional and is
+handled separately.  Since a known lower boundary condition exists  
+(the geopotential is defined as zero at the pressure at sea-level), no extrapolation is required.
+
+
+
+\subsection{Perturbation State}
+In the real-data preprocessor, first a topographically defined reference state is computed, 
+then the input 3-dimensional data are vertically
+interpolated in dry pressure space. With the potential temperature $\theta$ and mixing ratio
+$q_v$ available on each $\eta$ level, the pressure, density, and height diagnostics are
+handled.
+\noindent  The perturbation dry column pressure
+field given the reference dry column pressure \eqref{init_mubar} is
+\begin{equation}
+\mu_d'  = \mu_d - \overline{\mu}_d,
+\label{init_muprime}
+\end{equation}
+
+\noindent where $\mu_d$ is the column total dry pressure.  
+Starting with the reference state fields 
+(\ref{init_pbar}, \ref{init_alphabar}, and \eqref{init_mubar}) and the
+dry surface pressure perturbation (\ref{init_muprime}),
+the perturbation fields for pressure and inverse density are diagnosed.
+The pressure perturbation includes moisture and is diagnosed from 
+the hydrostatic equation
+%
+\begin{equation}
+\delta_{\eta} p' = \mu'_d \bigg(1 + {\overline{q_v}^\eta} \bigg) + 
+                     \overline{q_v}^\eta~\overline \mu_d,
+%\label{init_pprime}
+\notag
+\end{equation}
+%
+\noindent 
+which is
+integrated down from 
+at the model top (where $p'= 0$) to recover $p'$.
+The total dry inverse density is given as
+\begin{equation}
+\alpha_d = {R_d \over p_{0} } ~ \theta~ \bigg( 1 + {R_v \over R_d}q_v \bigg)~ 
+                                        \bigg( {{p'_d + \overline {p}_d} \over p_{0} } \bigg )^{-{C_v \over C_p}},
+\notag
+\end{equation}
+
+\noindent which defines the perturbation field for inverse density
+
+\begin{equation}
+\alpha'_d = \alpha_d - \overline{\alpha}_d.
+\notag
+\end{equation}
+
+\noindent 
+The perturbation geopotential 
+is diagnosed from the hydrostatic relation
+\begin{equation}
+\delta_{\eta} \phi'  = - \big ( {\mu}_d \alpha'_d + \mu'_d
+\overline{\alpha}_d \big )
+\notag
+\end{equation}
+%
+by upward integration using the terrain elevation as the lower boundary condition.
+
+\subsection{Generating Lateral Boundary Data}
+
+This section deals with generating the separate lateral boundary condition file used
+exclusively for the real-data cases.  For information
+on which lateral boundary options are available for both the idealized and real-data
+cases, see Chapter \eqref{lbc_chap}.
+
+The specified 
+lateral boundary condition for the coarse grid for real-data cases is supplied by an external file that is
+generated by program {\it real}.
+This file contains 
+records for the fields $u$, $v$, $\theta$, $q_v$, $\phi'$, and $\mu'_d$ that are used by the ARW to
+constrain the lateral boundaries (other fields are in the boundary file, but are not used).   
+The lateral boundary file holds one less time period than was processed by WPS.
+Each of these variables has both
+a valid value at the initial time of the lateral boundary time and a tendency term to get to the 
+next boundary time period.  For example, assuming a 3-hourly availability of data from WPS,
+the first time period of the lateral boundary file
+for $u$ would contain data for both coupled $u$ (map scale factor and $\mu_d$ interpolated to 
+the variable's 
+staggering) at the 0 h time
+
+\begin{equation}
+%U_{0h} = {{\mu_u~u}\over{m_u}} \bigg | _{0h}
+U_{0h} = {{\overline{\mu_d}^x u}\over{\overline{m}^x}} \bigg | _{0h},
+\notag
+\end{equation}
+\noindent and a tendency value defined as
+\begin{equation}
+U_t = { U_{3h} - U_{0h} \over 3h},
+\notag
+\end{equation}
+
+\noindent which would take a grid point from the initial value to the value at the next large-scale time 
+during 3 simulation hours.
+The horizontal momentum fields are coupled both with  $\mu_d$ and the inverse map factor.  The 
+other 3-dimensional fields ($\theta$, $q_v$, and $\phi'$) are coupled only with $\mu_d$.
+The 2-dimensional $\mu'_d$ lateral boundary field is not coupled.
+
+Each lateral boundary field
+is defined along the four sides of the 
+rectangular grid (loosely referred to as the north, south, east, and west sides).  
+The boundary values and tendencies for vertical velocity and the non-vapor moisture species are included
+in the external lateral boundary file, but act as
+place-holders for the nested boundary data for the fine grids.
+The width of the lateral
+boundary along each of the four sides is user selectable at run-time.
+
+\subsection{Masking of Surface Fields}
+
+Some of the meteorological and static fields are ``masked''.  A masked field is one in which
+the values are typically defined only over water (e.g., sea surface temperature) or defined
+only over land (e.g., soil temperature).
+The need to match all of the masked fields consistently to each other requires additional steps
+for the real-data cases due to the masked data's presumed use in various physics packages in the soil, 
+at the surface, and in the boundary layer.
+If the land/water
+mask for a location is flagged as a water point, then the vegetation and soil categories must also
+recognize the location as the special water flag for each of their respective categorical indices.  
+Similarly, if the land/water mask is flagged as a land point, the vegetation and soil
+categories must be assigned to one of the available land indices.
+
+The values for the soil temperature and soil moisture come from WPS on the 
+native levels originally defined for those variables
+by an external model.  WPS does no vertical interpolation for the
+soil data.   While it is typical to try to match the ARW soil scheme with
+the incoming data, that is not a requirement.  Pre-processor {\it real} will vertically interpolate 
+(linear in depth below the ground) from the incoming levels to the requested soil layers to be
+used within the model.
+
+\section{Digital Filtering Initialization}
+
+Version 3 of the ARW provides a digital filtering initialization (DFI) to 
+remove noise, which results from imbalances between mass and wind fields, 
+from the model initial state. DFI is applied to the output of the {\it real} 
+preprocessor before the model simulation begins. If data assimilation is 
+performed using WRF-Var, DFI is applied to the analysis produced by the 
+WRF-Var system, rather than the output of program {\it real}.
+
+Under the assumption that any noise is of 
+higher frequency than meteorologically significant modes, DFI attempts to 
+remove this noise by filtering all oscillations above a specified cutoff 
+frequency. Accordingly, the filters in the ARW DFI are low-pass digital 
+filters, which are applied to time series of model fields; the {\it initialized} 
+model state is the output of the filter at some prescribed time, 
+e.g., the analysis time. Time series of model states are generated through 
+combinations of adiabatic, backward integration and diabatic, forward 
+integration in the model,  with the choice of DFI scheme determining the 
+specific combination of integrations. Three DFI schemes --- digital filter 
+launch (DFL; \cite{lynchhuang94}), diabatic DFI (DDFI; \cite{huanglynch93}), 
+and twice DFI (TDFI; \cite{lynchhuang94}) ---  are available.
+
+\subsection{Filter Design}
+
+In the ARW DFI, either nonrecursive (i.e., finite impulse response) digital 
+filters or a recursive (i.e., infinite impulse response) digital filter may 
+be used. The coefficients for the nonrecursive digital filters may be 
+computed according to one of two methods, while the coefficients for the 
+recursive filter are computed according to a single method.
+
+A general nonrecursive digital filter is of the form
+
+\begin{equation}
+y_n = \sum_{k=-N}^{N} h_k x_{n-k},
+\label{fir_filter}
+\end{equation}
+
+\noindent
+where $y_n$ is the output of the filter at time $n$, the $h_k$ are the 
+coefficients of the filter, and $\{ \ldots , x_{n-1}, x_n, x_{n+1}, \ldots \}$ 
+is the sequence of input values to be filtered; such a filter is said to have 
+span $2N+1$. 
+
+One method for deriving the coefficients of a nonrecursive digital filter is 
+the windowed-sinc method, described in the context of DFI by \cite{lynchhuang92}. 
+In the ARW DFI, either the Lanczos, Hamming, Blackman, Kaiser, Potter, or 
+Dolph-Chebyshev windows may be used; the Dolph-Chebyshev window is described 
+by \cite{lynch97}. However, when a filter with a shorter span is desired, 
+another nonrecursive digital filter, the Dolph filter, may be used. \cite{lynch97} 
+describes the construction of the Dolph filter, and demonstrates that this 
+filter has properties nearly indistinguishable from those of an optimal filter, 
+which minimizes the maximum difference between a filter's transfer function 
+and an ideal transfer function in the pass and stop bands. 
+
+The only recursive filter in the ARW DFI is the second-order Quick-Start 
+filter of \cite{lynchhuang94}. In general, a recursive digital filter that 
+depends only on past and present values of the input, and on past values of 
+the output, is of the form
+
+\begin{equation}
+y_n = \sum_{k=0}^{N} h_k x_{n-k} + \sum_{k=1}^{N} b_k y_{n-k}.
+\end{equation}
+
+\noindent
+However, this form is inconvenient when the inputs to the filter consist of 
+model states, and we wish to avoid storing many such states. \cite{lynchhuang94} 
+show how this type of recursive filter can be reformulated to have the same 
+form as a nonrecursive filter, and thus, we can think of the second-order 
+Quick-Start filter as having the same form as (\ref{fir_filter}).
+
+\subsection{DFI Schemes}
+
+The ARW supports three different DFI schemes, illustrated graphically in 
+Fig. \ref{figure:dfi_types}. The DFL scheme produces an initialized model 
+state valid some time after the model analysis time, while the DDFI and TDFI 
+schemes produce initialized states valid at the analysis time.
+
+%
+% Figure showing available DFI schemes
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=6.5in]{figures/dfi_schemes.pdf}
+  \caption{\label{figure:dfi_types}An illustration showing the three available DFI schemes: digital filter 
+  launch, diabatic digital filter initialization, and twice digital filter initialization.}
+\end{figure}
+
+\subsubsection{DFL}
+
+In the DFL scheme, forward integration with full model physics and diffusion 
+begins at the initial time and continues for $2N$ time steps, during which 
+time a filtered model state valid $N$ time steps beyond the analysis time is 
+computed as in (\ref{fir_filter}). Then, the initialized simulation is 
+launched from the midpoint of the filtering period. For any model state ${\bf X}$, 
+let $\left[ {\bf X} \right]_n^D$ give the model state after diabatically 
+integrating $n$ time steps forward in time; we emphasize that the superscript 
+$D$ indicates diabatic integration, in contrast to adiabatic integration. 
+Then, the DFL scheme is expressed as
+
+\begin{equation}
+{\bf X}_{ini} = \sum_{n=0}^{2N} h_n \left[ {\bf X}_{ana} \right]_n^D,
+\end{equation}
+
+\noindent
+where ${\bf X}_{ini}$ is the initialized model state, ${\bf X}_{ana}$ is the 
+model analysis or model initial state generated by the {\it real} preprocessor, 
+and the $h_n$ are the filter coefficients.
+
+\subsubsection{DDFI}
+
+To produce an initialized state valid at the model analysis time, the DDFI 
+scheme begins with an adiabatic, backward integration for $N$ time steps, 
+followed by a diabatic, forward integration for $2N$ time steps, during which 
+filtering takes place. This filtered state is valid at the model analysis time. 
+Letting $\left[ {\bf X}_{ana} \right]_{-n}^A$ denote the model state after 
+adiabatic, backward integration for $n$ time steps from the model analysis or 
+model initial state, ${\bf X}_{ana}$, the DDFI scheme is expressed as
+
+\begin{equation}
+{\bf X}_{ini} = \sum_{n=0}^{2N} h_n \left[    \left[ {\bf X}_{ana} \right]_{-n}^A   \right]_n^D,
+\end{equation}
+
+\noindent
+where ${\bf X}_{ini}$ is the initialized model state valid at the model analysis time.
+
+\subsubsection{TDFI}
+
+The TDFI scheme involves two applications of the digital filter. Adiabatic, 
+backward integration proceeds from the model initial time for $2N$ time steps, 
+during which a filter is applied. The filtered state is valid at time $-N \Delta t$; 
+from this filtered state, a forward, diabatic integration is launched. The 
+second integration proceeds for $2N$ time steps, during which a second filter 
+is applied, giving a filtered model state valid at this model analysis time. 
+The TDFI scheme is expressed as
+
+\begin{equation}
+{\bf X}_{ini} = \sum_{n=0}^{2N} h_n \left[    \sum_{n'=0}^{2N} h_{n'} \left[ {\bf X}_{ana} \right]_{-n}^A \right]_n^D.
+\end{equation}
+
+\subsection{Backward Integration}
+
+To diabatically integrate backward in time, it suffices to disable all 
+diabatic processes and to negate the model time step, $\Delta t$, as well as 
+the sign of the horizontal velocity, $U$, in the odd-order advection 
+operators of Section \ref{advection}, which become
+
+\begin{align}
+\hbox{3}^{rd} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+(\overline{q}^{x_{adv}})_{i-1/2}^{4^{th}} 
+\notag
+\\
+&~~~~~~~~~~~~~~~~~~~~
+- \hbox{sign}(U){1 \over 12} \bigl[
+(q_{i+1}-q_{i-2}) - 3(q_i - q_{i-1}) \bigr]
+\notag
+\\
+\hbox{5}^{th} \hbox{ order:} ~~~~ & 
+(\overline{q}^{x_{adv}})_{i-1/2} = 
+(\overline{q}^{x_{adv}})_{i-1/2}^{6^{th}} 
+\notag
+\\
+&~~~~~~~~~~~~~~~~~~~~
++ \hbox{sign}(U){1 \over 60} \bigl[
+(q_{i+2}-q_{i-3}) - 5(q_{i+1} - q_{i-2}) 
++ 10(q_i - q_{i-1})
+\bigr].
+\notag
+\end{align}
+
+When specified boundary conditions are used, as in Section \ref{lbc_spec}, 
+the model boundaries before the model initial time are taken to be the same 
+as those valid at the model initial time. We note that, with a negated time 
+step, the linear ramping functions $F_1$ and $F_2$ of (\ref{lbc_relax}) 
+change sign, and, consequently, so does the sign of the tendency for a 
+prognostic variable $\psi$.

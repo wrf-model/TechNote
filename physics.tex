@@ -1,0 +1,892 @@
+\chapter{Physics}
+\label{physics_chap}
+
+This chapter
+outlines the physics options available in the {\wrf}. 
+The WRF physics options fall into several categories, each containing
+several choices. The physics categories are (1) microphysics, 
+(2) cumulus parameterization, (3) planetary boundary layer (PBL), 
+(4) land-surface model, and (5) radiation. Diffusion, which
+may also be considered part of the physics, 
+is described in Chapter \ref{filter_chap}. The chapter will also
+address four-dimensional data assimilation (FDDA) methods that are
+available in ARW. These methods apply extra forcings to the model
+equations, and are internally treated similarly to physics.
+
+The physics section is insulated from the rest of the dynamics solver by the 
+use of physics drivers. These are between solver-dependent routines: a 
+pre-physics preparation and post-physics 
+modifications of the tendencies. The physics preparation involves filling
+arrays with physics-required variables that include the temperature,
+pressure, heights, layer thicknesses,
+and other state variables in MKS units at half-level grid points and on full levels.
+The velocities are also de-staggered so that the physics part is independent
+of the dynamical solver's velocity staggering. Physics packages 
+compute tendencies
+for the velocity components (un-staggered), potential temperature, and moisture
+fields. The solver-dependent post-physics step will re-stagger these tendencies
+as necessary, couple tendencies with coordinate metrics, and convert
+to variables or units appropriate to the dynamics solver.
+
+In the first Runge-Kutta step, prior to the acoustic steps (see Fig.
+\ref{time_integration_figure}, step(1)), tendencies are computed for
+radiation, surface, PBL, and cumulus physics. These tendencies
+are then held fixed through the Runge-Kutta steps. Microphysics is
+computed after the last Runge-Kutta step 
+(see Fig. \ref{time_integration_figure},
+step (9)) in order to maintain proper saturation conditions at the end 
+of the time-step.
+
+The initialization of the physics is
+called prior to the first model step. This initialization may include reading
+in data files for physics tables or calculating look-up tables of functions.
+Each physics module includes an initialization routine for this purpose.
+Often physics packages will have many of their own constants that should also
+be included in their own module, while common physical constants are
+passed in from the physics drivers.
+
+
+\section{Microphysics}
+
+Microphysics includes explicitly resolved water vapor, cloud, and 
+precipitation processes. The model is general enough to accommodate any 
+number of mass mixing-ratio variables, and other quantities
+such as number concentrations. Four-dimensional arrays with three spatial
+indices and one species index are used to carry such scalars.
+Memory, i.e., the size of the fourth dimension in these
+arrays, is allocated depending on the needs of the scheme chosen, 
+and advection of the species also applies to all those required 
+by the microphysics option. In the current version of the ARW, microphysics 
+is carried out at the end of the time-step as an adjustment process, 
+and so does not provide tendencies. The rationale for this is that 
+condensation adjustment should be at the end of the time-step
+to guarantee that the final saturation balance is accurate for the 
+updated temperature and moisture. However, it is also important to 
+have the latent heating forcing for potential temperature during the 
+dynamical sub-steps, and this is done by saving the microphysical 
+heating as an approximation for the next time-step as described in Section
+\ref{diabatic forcing subsection}.
+
+Currently, the sedimentation process is accounted for inside the 
+individual microphysics modules, 
+and, to prevent instability in the calculation of the vertical flux of
+precipitation, a smaller time step is allowed. The saturation adjustment is also 
+included inside the microphysics. In the future, however, it might be separated 
+into an individual 
+subroutine to enable the remaining microphysics to be called less frequently 
+than the model's advection step for efficiency.
+
+Table \ref{microphysics table} shows a summary of the options indicating the
+number of moisture variables, and whether ice-phase and mixed-phase
+processes are included. Mixed-phase processes are those that result from
+the interaction of ice and water particles, such as riming that produces
+graupel or hail.
+As a general rule, for grid sizes less than 10 km, where updrafts may be
+resolved, mixed-phase schemes should be used, particularly in convective
+or icing situations. For coarser grids the added expense of these schemes
+is not worth it because riming is not likely to be well resolved.
+
+\begin{table}
+\caption{Microphysics Options}
+\label{microphysics table}
+$$\vbox
+{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
+\hfil#\hfil \qquad & \hfil#\hfil \qquad &  \hfil#\hfil \cr
+\multispan4\hrulefill \cr
+Scheme   & Number of   &   Ice-Phase        &      Mixed-Phase          \cr
+         & Variables   &   Processes        &      Processes          \cr
+\multispan4\hrulefill \cr
+Kessler     &      3       &       N         &       N   \cr
+Purdue Lin  &      6       &       Y         &       Y   \cr
+WSM3        &      3       &       Y         &       N   \cr
+WSM5        &      5       &       Y         &       N   \cr
+WSM6        &      6       &       Y         &       Y   \cr
+Eta GCP     &      2       &       Y         &       Y   \cr
+Thompson    &      7       &       Y         &       Y   \cr
+Goddard     &      6       &       Y         &       Y   \cr
+Morrison 2-Moment     &      10      &       Y         &       Y   \cr
+\multispan4\hrulefill \cr
+}}$$
+\end{table}
+
+\subsection{Kessler scheme}
+
+This scheme \citep{kessler69}, which was taken from the COMMAS model
+\citep{wicker95}, is a simple 
+warm cloud scheme that includes water vapor, cloud water, and rain. 
+The microphysical processes included are: the production, fall, and 
+evaporation of rain; the accretion and autoconversion of cloud water;
+and the production of cloud water from condensation.
+
+\subsection{Purdue Lin scheme}
+
+Six classes of hydrometeors are included: water vapor, cloud water, rain, cloud ice, 
+snow, and graupel. All parameterization production terms are based on \citet{lin83}
+and \citet{rutledge84} with some modifications, including saturation 
+adjustment following \citet{tao89} and ice sedimentation. This is a relatively 
+sophisticated microphysics scheme in WRF, and it is most suitable for use 
+in research studies. The scheme is taken from the Purdue cloud model, and 
+the details can be found in \citet{chen02}.
+
+\subsection{WRF Single-Moment 3-class (WSM3) scheme}
+
+The WRF single-moment microphysics scheme follows \citet{hong04} including ice sedimentation and other new ice-phase parameterizations. A major difference from other approaches is that a diagnostic relation is used for ice number concentration that is based on ice mass content rather than temperature. The computational procedures are described in \citet{honglim06}. As with WSM5 and WSM6, the freezing/melting processes are computed during the fall-term sub-steps to increase accuracy in the vertical heating profile of these processes. The order of the processes is also optimized to decrease the sensitivity of the scheme to the time step of the model. The WSM3 scheme predicts three categories of hydrometers: vapor, cloud water/ice, and rain/snow, which is a so-called simple-ice scheme. It follows \citet{dudhia89} in assuming cloud water and rain for temperatures above freezing, and cloud ice and snow for temperatures below freezing. This scheme is computationally efficient for the inclusion of ice processes, but lacks supercooled water and gradual melting rates. 
+
+\subsection{WSM5 scheme}
+
+This scheme is similar to the WSM3 simple ice scheme. However, vapor, rain, snow, cloud ice,
+and cloud water are held in five different arrays. Thus, it allows supercooled water to exist, and
+a gradual melting of snow falling below the melting layer. Details can be found in 
+\citet{hong04}, and \citet{honglim06}. As with WSM6, the saturation adjustment follows \citet{dudhia89} and \citet{hong98} in separately treating ice and water saturation processes, rather than a combined saturation such as the Purdue Lin (above) and Goddard \citep{tao89} schemes. This scheme is efficient in intermediate grids between the mesoscale and cloud-resolving grids.
+
+\subsection{WSM6 scheme}
+
+The six-class scheme extends the WSM5 scheme to include graupel and its associated processes.
+Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavior is much different due to the changes of \citet{hong04}. A new method for representing mixed-phase particle fall speeds for the snow and graupel particles by assigning a single fallspeed to both that is weighted by the mixing ratios, and applying that fallspeed to both sedimentation and accretion processes is introduced \citep{dudhia08}. The behavior of the WSM3, WSM5, and WSM6 schemes differ little for coarser mesoscale grids, but they work much differently on cloud-resolving grids. Of the three WSM schemes, the WSM6 scheme is the most suitable for cloud-resolving grids, considering the efficiency and theoretical backgrounds \citep{honglim06}.
+
+\subsection{Eta Grid-scale Cloud and Precipitation (2001) scheme}
+
+This is also known as EGCP01 or the Eta Ferrier scheme. The scheme predicts changes 
+in water vapor and condensate in the forms of cloud water, rain, cloud 
+ice, and precipitation ice (snow/graupel/sleet).  The individual hydrometeor 
+fields are combined into total condensate, and it is the water vapor 
+and total condensate that are advected in the model. 
+Local storage arrays retain first-guess information that extract 
+contributions of cloud water, rain, cloud ice, and precipitation ice of 
+variable density in the form of snow, graupel, or sleet. The density of 
+precipitation ice is estimated from a local array that stores information 
+on the total growth of ice by vapor deposition and accretion of liquid water. 
+Sedimentation is treated by partitioning the time-averaged flux of 
+precipitation into a grid box between local storage in the box and 
+fall out through the bottom of the box. This approach, together with 
+modifications in the treatment of rapid microphysical processes, permits 
+large time steps to be used with stable results. The mean size of 
+precipitation ice is assumed to be a function of temperature following 
+the observational results of \citet{ryan96}. Mixed-phase processes are 
+now considered at temperatures warmer than -30$^\circ$C (previously 
+-10$^\circ$C), 
+whereas ice saturation 
+is assumed for cloudy conditions at colder temperatures. Further 
+description of the scheme can be found in Sec. 3.1 of the November 
+2001 Technical Procedures Bulletin (TPB) at 
+http://www.emc.ncep.noaa.gov/mmb/mmbpll/eta12tpb/ and 
+on the COMET page at http://meted.ucar.edu/nwp/pcu2/etapcp1.htm. 
+
+\subsection{Thompson et al. scheme}
+A new bulk microphysical parameterization (BMP) has been developed
+for use with WRF or other mesoscale models. Compared to earlier
+single-moment BMPs, the new scheme incorporates a large number of
+improvements to both physical processes and computer coding plus
+employs many techniques found in far more sophisticated spectral/bin
+schemes using look-up tables. Unlike any other BMP, the assumed snow
+size distribution depends on both ice water content and temperature
+and is represented as a sum of exponential and gamma distributions.
+Furthermore, snow assumes a non-spherical shape with a bulk density
+that varies inversely with diameter as found in observations and in
+contrast to nearly all other BMPs that assume spherical snow with
+constant density.
+
+New features specific to this version of the bulk scheme compared
+to the \citet{thompson04} paper description include:
+
+\begin{itemize}\setlength{\parskip}{-4pt}
+\item generalized gamma distribution shape for each hydrometeor species,
+\item non-spherical, variable density snow, and size distribution matching observations,
+\item y-intercept of rain depends on rain mixing ratio and whether apparent source is melted ice,
+\item y-intercept of graupel depends on graupel mixing ratio,
+\item a more accurate saturation adjustment scheme,
+\item variable gamma distribution shape parameter for cloud water droplets based on observations,
+\item look-up table for freezing of water drops,
+\item look-up table for transferring cloud ice into snow category,
+\item improved vapor deposition/sublimation and evaporation,
+\item variable collection efficiency for rain, snow, and graupel collecting cloud droplets,
+\item improved rain collecting snow and graupel.
+\end{itemize}
+
+\subsection{Goddard Cumulus Ensemble Model scheme}
+
+The Goddard Cumulus Ensemble (GCE) models \citep{tao93} one-moment bulk microphysical schemes  are mainly based on \citet{lin83} with additional processes from \citet{rutledge84}.  However, the Goddard microphysics schemes have several modifications. 
+
+First, there is an option to choose either graupel or hail as the third class of ice \citep{mccumber91}.  Graupel has a relatively low density and a high intercept value (i.e., more numerous small particles).  In contrast, hail has a relative high density and a low intercept value (i.e., more numerous large particles).  These differences can affect not only the description of the hydrometeor population and formation of the anvil-stratiform region but also the relative importance of the microphysical-dynamical-radiative processes. 
+
+Second, new saturation techniques \citep{tao89, tao03} were added.  These saturation techniques are basically designed to ensure that super saturation (sub-saturation) cannot exist at a grid point that is clear (cloudy).  
+
+Third, all microphysical processes that do not involve melting, evaporation or sublimation (i.e., transfer rates from one type of hydrometeor to another) are calculated based on one thermodynamic state.  This ensures that all of these processes are treated equally. 
+
+Fourth, the sum of all sink processes associated with one species will not exceed its mass.  This ensures that the water budget will be balanced in the microphysical calculations .
+
+The Goddard microphysics has a third option, which is equivalent to a two-ice (2ICE) scheme having only cloud ice and snow.  This option may be needed for coarse resolution simulations (i.e., $>$ 5 km grid size).  The two-class ice scheme could be applied for winter and frontal convection.
+
+\subsection {Morrison et al. 2-Moment scheme}
+
+The \citet{morrison08} scheme is based on the two-moment bulk
+microphysics scheme of \citet{morrison05} and \citet{morrison06}. Six species of
+water are included: vapor, cloud droplets, cloud ice, rain, snow, and
+graupel/hail. The code has a user-specified switch to include either graupel or hail. 
+Prognostic variables include number concentrations and mixing ratios
+of cloud ice, rain, snow, and graupel/hail, and mixing ratios of cloud
+droplets and water vapor (total of 10 variables). The prediction of two-moments (i.e., both number concentration and
+mixing ratio) allows for a more robust treatment of the particle size
+distributions, which are a key for calculating the microphysical process rates
+and cloud/precipitation evolution. Several liquid, ice, and mixed-phase
+processes are included. Particle size distributions are treated using gamma
+functions, with the associated intercept and slope parameters derived from the
+predicted mixing ratio and number concentration.
+The scheme has been extensively tested and compared with both
+idealized and real case studies covering a wide range of conditions.
+
+\section{Cumulus parameterization}
+
+These schemes are responsible for the sub-grid-scale effects of 
+convective and/or shallow clouds. The schemes are intended to 
+represent vertical fluxes due to unresolved updrafts and 
+downdrafts and compensating motion outside the clouds. They 
+operate only on individual columns where the scheme is triggered and 
+provide vertical heating and moistening profiles. Some schemes 
+additionally provide cloud and precipitation field tendencies 
+in the column, and future schemes may provide momentum tendencies 
+due to convective transport of momentum. The schemes all provide 
+the convective component of surface rainfall.
+
+Cumulus parameterizations are theoretically only valid for coarser grid sizes,
+(e.g., greater than 10 km), where they are necessary to properly
+release latent heat on a realistic time scale in the convective columns.
+While the assumptions about the convective eddies being entirely
+sub-grid-scale break down for finer grid sizes, sometimes these
+schemes have been found to be helpful in triggering convection in
+5--10 km grid applications. Generally, they should not be used when
+the model can resolve the convective eddies itself (e.g., $\le$ 5 km grid).
+
+Table \ref{cumulus table} summarizes the basic characteristics of the
+available cumulus parameterization options in the {\wrf}. 
+  
+\begin{table}
+\caption{Cumulus Parameterization Options}
+\label{cumulus table}
+$$\vbox
+{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
+#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
+\multispan4\hrulefill \cr
+Scheme   & Cloud                 &  Type of scheme    &      Closure          \cr
+         & Detrainment           &                    &                \cr
+\multispan4\hrulefill \cr
+Kain-Fritsch         &      Y    &  Mass flux    &  CAPE removal  \cr
+Betts-Miller-Janjic  &      N    &  Adjustment   &  Sounding adjustment  \cr
+Grell-Devenyi        &      Y    &  Mass flux    &  Various   \cr
+Grell-3              &      Y    &  Mass flux    &  Various   \cr
+\multispan4\hrulefill \cr
+}}$$
+\end{table}
+
+\subsection{Kain-Fritsch scheme}
+
+The modified version of the Kain-Fritsch scheme \citep{kain04} is based on 
+\citet{kain90} and \citet{kain93}, but has been modified based on 
+testing within the Eta model. As with the original KF scheme, 
+it utilizes a simple cloud model with moist updrafts and downdrafts, 
+including the effects of detrainment, entrainment, and relatively 
+simple microphysics. It differs from the original KF scheme in the following ways:
+
+\begin{itemize}\setlength{\parskip}{-4pt}
+\item
+ A minimum entrainment rate is imposed to suppress widespread convection 
+in marginally unstable, relatively dry environments.
+
+\item
+Shallow (non precipitating) convection is allowed for any updraft 
+that does not reach minimum cloud depth for precipitating clouds; 
+this minimum depth varies as a function of cloud-base temperature.
+
+\item
+The entrainment rate is allowed to vary as a function of low-level convergence.
+
+\item
+Downdraft changes:
+
+\begin{itemize}\setlength{\parskip}{-4pt}
+\item
+Source layer is the entire 150 -- 200 mb deep layer just above cloud base.
+
+\item
+Mass flux is specified as a fraction of updraft mass flux at cloud base.
+Fraction is a function of source layer RH rather than wind shear 
+or other parameters, i.e., old precipitation efficiency relationship not used.
+
+\item
+Detrainment is specified to occur in updraft source layer and below.
+\end{itemize}
+\end{itemize}
+
+
+\subsection{Betts-Miller-Janjic scheme}
+
+The Betts-Miller-Janjic (BMJ) scheme  \citep{janjic94,janjic00} 
+was derived from the Betts-Miller (BM) convective adjustment scheme 
+\citep{betts86,bettsmiller86}.  However, the BMJ scheme differs 
+from the Betts-Miller scheme in several important aspects. The deep convection 
+profiles and the relaxation time are variable and depend on the cloud 
+efficiency, a non-dimensional parameter that characterizes the convective 
+regime \citep{janjic94}. The cloud efficiency depends on the entropy change, 
+precipitation, and mean temperature of the cloud. The shallow convection 
+moisture profile is derived from the requirement that the entropy change be 
+small and nonnegative \citep{janjic94}.  The BMJ scheme has been optimized 
+over years of operational application at NCEP,
+so that, in addition to the described conceptual 
+differences, many details and/or parameter values differ from those 
+recommended in \citet{betts86} and \citet{bettsmiller86}.  Recently, attempts 
+have been made to refine the scheme for higher horizontal resolutions, 
+primarily through modifications of the triggering mechanism.  In particular:
+ 
+\begin{itemize}\setlength{\parskip}{-4pt}
+\item
+A floor value for the entropy change in the cloud is set up below which the 
+deep convection is not triggered;
+\item
+In searching for the cloud top, the ascending particle mixes with the environment; and
+\item
+The work of the buoyancy force on the ascending particle is required to exceed 
+a prescribed positive threshold.
+\end{itemize}
+
+\subsection{Grell-Devenyi ensemble scheme}
+
+\citet{grell02} introduced an ensemble cumulus scheme 
+in which effectively multiple cumulus schemes and variants are run 
+within each grid box and then the results are averaged to give the 
+feedback to the model. In principle, the averaging can be weighted 
+to optimize the scheme, but the default is an equal weight. 
+The schemes are all mass-flux type schemes, but with differing updraft 
+and downdraft entrainment and detrainment parameters, and precipitation 
+efficiencies. These differences in static control are combined with 
+differences in dynamic control, which is the method of determining 
+cloud mass flux. The dynamic control closures are based on convective 
+available potential energy (CAPE or cloud work function), low-level 
+vertical velocity, or moisture convergence. Those based on CAPE 
+either balance the rate of change of CAPE or relax the CAPE to a 
+climatological value, or remove the CAPE in a convective time scale. 
+The moisture convergence closure balances the cloud rainfall to the 
+integrated vertical advection of moisture. Another control
+is the trigger, where the maximum cap strength that permits convection
+can be varied. These controls typically provide ensembles of 144 members.
+
+\subsection{Grell-3 scheme}
+
+The Grell-3 scheme was first introduced in Version 3.0, and so is
+new, and not yet well tested in many situations. It shares a lot in
+common with the Grell-Devenyi in scheme, being based on an ensemble mean
+approach, but the quasi-equilibrium approach is no longer included
+among the ensemble members. The scheme is distinguished from other
+cumulus schemes by allowing subsidence effects to be spread to
+neighboring grid columns, making the method more suitable to grid sizes
+less than 10 km, while it can also be used at larger grid sizes where
+subsidence occurs within the same grid column as the updraft. 
+
+\section{Surface Layer}
+
+The surface layer schemes calculate friction velocities and exchange 
+coefficients that enable the calculation of surface heat and moisture 
+fluxes by the land-surface models and surface stress in the planetary 
+boundary layer scheme. Over water surfaces, the surface fluxes and surface 
+diagnostic fields are computed in the surface layer scheme itself. The schemes 
+provide no tendencies, only the stability-dependent information about 
+the surface layer for the land-surface and PBL schemes.
+Currently, each surface layer option is tied to particular boundary-layer
+options, but in the future more interchangeability and options may become
+available. Note that some boundary layer schemes (YSU and MRF) require
+the thickness of the surface layer in the model to be representative of the
+actual surface layer (e.g. 50-100 meters).
+
+\subsection{Similarity theory (MM5)}
+
+This scheme uses stability functions from \citet{paulson70}, \citet{dyer70}, 
+and \citet{webb70}
+to compute surface exchange coefficients for heat, moisture, and momentum. 
+A convective velocity following \citet{beljaars94} is used to enhance surface 
+fluxes of heat and moisture. No thermal roughness length parameterization is 
+included in the current version of this scheme. A Charnock relation relates 
+roughness length to friction velocity over water. There are four stability 
+regimes following \citet{zhanganthes82}.
+This surface layer scheme must be run in conjunction with the MRF or
+YSU PBL schemes. In Version 3, there is an option to replace the Charnock
+relation for roughness length with a Donelan relation that has lower
+drag at hurricane-force wind speeds, and may be more suitable for hurricane
+simulations. Also for water points, the Beljaars formulation for convective
+velocity is replaced by one proportional only to the vertical thermal gradient
+to help in weak-wind situations.
+
+\subsection{Similarity theory (Eta)}
+
+The Eta surface layer scheme \citep{janjic96,janjic02} is based 
+on similarity theory \citep{monin54}. The scheme 
+includes parameterizations of a viscous sub-layer. Over water surfaces, the 
+viscous sub-layer is parameterized explicitly following \citet{janjic94}. 
+Over land, the effects of the viscous sub-layer are taken into account 
+through variable roughness height for temperature and humidity as proposed by 
+\citet{zilit95}. The \citet{beljaars94} correction is applied in order 
+to avoid singularities in the case of an unstable surface layer and vanishing 
+wind speed. The surface fluxes are computed by an iterative method. 
+This surface layer scheme must be run in conjunction with the Eta
+(Mellor-Yamada-Janjic) PBL scheme, and is therefore sometimes referred to
+as the MYJ surface scheme.
+
+\subsection{Similarity theory (PX)}
+
+The PX surface layer scheme \citep{pleim06} was developed as part of the PX LSM but can be used with any LSM or PBL model.  This scheme is based on similarity theory and includes parameterizations of a viscous sub-layer in the form of a quasi-laminar boundary layer resistance accounting for differences in the diffusivity of heat, water vapor, and trace chemical species.   The surface layer similarity functions are estimated by analytical approximations from state variables.  
+
+\section{Land-Surface Model}
+
+The land-surface models (LSMs) use atmospheric information from the surface layer scheme, 
+radiative forcing from the radiation scheme, and precipitation forcing from the 
+microphysics and convective schemes, together with internal information on the 
+land's state variables and land-surface properties, to provide heat and moisture 
+fluxes over land points and sea-ice points. These fluxes provide a lower boundary 
+condition for the vertical transport done in the PBL schemes (or the vertical 
+diffusion scheme in the case where a PBL scheme is not run, such as in 
+large-eddy mode). [Note that large-eddy mode with interactive surface fluxes is 
+not yet available in the ARW, but is planned for the near future.] The land-surface 
+models have various degrees of sophistication in dealing with thermal and moisture 
+fluxes in multiple layers of the soil and also may handle vegetation, root, and 
+canopy effects and surface snow-cover prediction. The land-surface model provides 
+no tendencies, but does update the land's state variables which include the ground (skin) 
+temperature, soil temperature profile, soil moisture profile, snow cover, and 
+possibly canopy properties. There is no horizontal interaction between neighboring
+points in the LSM, so it can be regarded as a one-dimensional column model for
+each WRF land grid-point, and many LSMs can be run in a stand-alone mode.
+Table \ref{land table} summarizes the basic features of the land-surface
+treatments in {\wrf}.
+
+\begin{table}
+\caption{Land Surface Options}
+\label{land table}
+$$\vbox
+{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
+#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
+\multispan4\hrulefill \cr
+Scheme          & Vegetation   &  Soil                            & Snow               \cr
+                & Processes    &  Variables (Layers)              & Scheme               \cr
+\multispan4\hrulefill \cr
+5-layer         &      N    &  Temperature (5)                    &  none  \cr
+Noah            &      Y    &  Temperature, Water+Ice, Water (4)  &  1-layer, fractional  \cr
+RUC             &      Y    &  Temperature, Ice, Water + Ice (6)          &  multi-layer   \cr
+Pleim-Xiu       &      Y    &  Temperature, Moisture (2)          &  input only   \cr
+\multispan4\hrulefill \cr
+}}$$
+\end{table}
+
+\subsection{5-layer thermal diffusion}
+
+This simple LSM is based on the MM5 5-layer soil temperature model. Layers are 
+1, 2, 4, 8, and 16 cm thick. Below these layers, the temperature is fixed at a
+deep-layer average. The energy budget includes radiation, sensible, and 
+latent heat flux. It also allows for a snow-cover flag, but the snow 
+cover is fixed in time. Soil moisture is also fixed with a landuse- and 
+season-dependent constant value, and there are no explicit vegetation effects.
+
+\subsection{Noah LSM}
+
+The Noah LSM is the successor to the OSU LSM described by \citet{chendudhia01}. 
+The scheme was developed jointly by NCAR and NCEP, and is a unified
+code for research and operational purposes, being almost identical
+to the code used in the NCEP North American Mesoscale Model (NAM). This has the benefit of 
+being consistent with the time-dependent soil fields provided in the analysis datasets.
+This is a 4-layer soil temperature and moisture model with canopy 
+moisture and snow cover prediction. The layer thickness are 10, 30, 60 and 100 cm
+(adding to 2 meters) from the top down. It includes root zone, evapotranspiration,
+soil drainage, and runoff, taking into account vegetation categories,
+monthly vegetation fraction, and soil texture. The scheme provides sensible and latent 
+heat fluxes to the boundary-layer scheme. The Noah LSM additionally predicts 
+soil ice, and fractional snow cover effects, has an improved urban treatment,
+and considers surface emissivity properties, which are all new since the OSU
+scheme.
+
+\subsection{Rapid Update Cycle (RUC) Model LSM}
+
+The RUC LSM has a multi-level soil model (6 levels is default, could be 9 or more) with higher resolution in the top part of soil domain 
+(0, 5, 20, 40, 160, 300 cm is default). The soil model solves heat diffusion and Richards moisture transfer equations, and in the cold season
+takes into account phase changes of soil water \citep{smirnova97, smirnova00}. 
+The RUC LSM also has a multi-layer snow model with changing snow density, refreezing liquid water 
+percolating through the snow pack, snow depth and temperature dependent albedo, melting algorithms applied at both 
+snow-atmosphere interface and snow-soil interface, and simple parameterization of fractional snow cover with possibility of 
+grid averaged skin temperature going above freezing. It also includes vegetation effects and canopy water.
+The RUC LSM has a layer approach to the solution of energy and moisture budgets. 
+The layer spans the ground surface and includes half of the first atmospheric layer and half of the top soil layer with the 
+corresponding properties (density, heat capacity, etc.) The residual of the incoming fluxes (net radiation, latent and sensible heat fluxes, 
+soil heat flux, precipitation contribution into heat storage, etc.) modify the heat storage of this layer. 
+An implicit technique is applied to the solution of these equations.
+Prognostic variables include soil temperature, volumetric liquid, frozen and total soil moisture contents, 
+surface and sub-surface runoff, canopy moisture, evapotranspiration, latent, sensible and soil heat fluxes, 
+heat of snow-water phase change, skin temperature, snow depth and density, and snow temperature. 
+
+\subsection{Pleim-Xiu LSM}
+
+The PX LSM \citep{pleim95, xiu01}, originally based on the ISBA model \citet{noilhan89}, includes a 2-layer force-restore soil temperature and moisture model.  The top layer is taken to be 1 cm thick, and the lower layer is 99 cm. The PX LSM features three pathways for moisture fluxes: evapotranspiration, soil evaporation, and evaporation from wet canopies.  Evapotranspiration is controlled by bulk stomatal resistance that is dependent on root zone soil moisture, photosynthetically active radiation, air temperature, and the relative humidity at the leaf surface.   Grid aggregate vegetation and soil parameters are derived from fractional coverages of land use categories and soil texture types.  There are two indirect nudging schemes that correct biases in 2-m air temperature and RH by dynamic adjustment of soil moisture \citep{pleim03} and deep soil temperature \citep{pleim08}.  Note that a small utility program (ipxwrf) can be used to propagate soil moisture and temperature between consecutive runs to create a continuous simulation of these quantities.
+
+\subsection{Urban Canopy Model}
+
+This can be run as an option with the Noah LSM.
+In order to represent the city scale effects on the mesoscale,
+an urban canopy model (UCM) originally developed by \citet{kusaka01}
+and \citet{kusaka04} and later on modified
+by \citet{chen06}, is coupled to the WRF model via
+Noah Land surface model. In the UCM, all the urban effects in the
+vertical are assumed to be subgrid scale meaning that the urban
+processes are occurring below the lowest model level. The urban
+canopy model includes:
+\begin{itemize}\setlength{\parskip}{-4pt}
+\item (i) Parameterization of Street canyons to represent the urban
+geometry.
+\item (ii) Shadowing from building and radiation reflection.
+\item (iii) An exponential wind profile in the canopy layer
+\item (iv) multilayer heat equation from roof wall and road surfaces.
+\end{itemize}
+
+The urban canopy model estimates the surface temperature and heat
+fluxes from the roof, wall and road surface. It also calculates
+the momentum exchange between the urban surface and the atmosphere.
+If they are available, the UCM can take three dfferent densities
+of urban development using special land-use categories.
+In Version 3, an anthropogenic heating diurnal cycle was added as
+an option.
+
+\subsection{Ocean Mixed-Layer Model}
+
+This can be selected with the 5-layer option, and is designed for
+hurricane modeling in order to simulate the cooling of the ocean underneath
+hurricanes. The ocean mixed-layer model is based on that of \citet{pollard73}. Each column is independently coupled to the local atmospheric column, so the model is one-dimensional. The ocean part consists of a time-varying layer, representing the variable-depth mixed layer over a fixed layer acting as a reservoir of cooler water with a specified thermal lapse rate. In the mixed layer, the prognostic variables are its depth, vector horizontal current, and mean temperature taken to be the sea-surface temperature (SST). The hurricane winds drive the current, which in turn leads to mixing at the base of the mixed layer when the Richardson number becomes low enough. This mixing deepens and cools the mixed layer, and hence the cooler sea-surface temperature impacts the heat and moisture fluxes at the surface, and has a negative feedback on hurricane intensity. The model includes Coriolis effects on the current, which are important in determining the location of maximum cooling on the right side of the hurricane track. It also includes a mixed-layer heat budget, but the surface fluxes and radiation have much less impact than the hurricane-induced deep mixing on the thermal balance at the time scales considered during a forecast. The ocean mixed-layer model is initialized using the observed SST for the mixed layer, and with a single depth representative of known conditions in the hurricane's vicinity that may be replaced with a map of the mixed-layer depth, if available. The initial current is set to zero, which is a reasonable assumption given that the hurricane-induced current is larger than pre-existing ones.
+
+
+\subsection{Specified Lower Boundary Conditions}
+
+For long simulation periods, in excess of about a week, as in applications such as 
+regional climate, ARW has a capability to specify lower boundary conditions 
+on non-prognostic fields as
+a function of time. Foremost among these is the specification of the 
+sea-surface temperature during the simulation. The Noah, RUC and PX LSMs also
+need to consider variations in vegetation fraction and albedo with season, so
+monthly datasets are interpolated to also be read in with the lower boundary file.
+Sea-ice cover variation can also be specified by this method in Version 3.
+The lower boundary conditions are simply read in typically at the
+same frequency as the lateral boundary conditions, and the fields are
+updated with new current values at each read.
+
+\section{Planetary Boundary Layer}
+
+The planetary boundary layer (PBL) is responsible for vertical sub-grid-scale 
+fluxes due to eddy transports in the whole atmospheric column, not just the 
+boundary layer. Thus, when a PBL scheme is activated, explicit vertical 
+diffusion is de-activated with the assumption that the PBL scheme will 
+handle this process. The most appropriate horizontal diffusion choices
+(Section \ref{eddy_section}) are those based on horizontal deformation
+or constant $K_h$ values where horizontal and vertical mixing are treated
+independently. The surface fluxes are provided by the surface layer 
+and land-surface schemes. The PBL schemes determine the flux profiles 
+within the well-mixed boundary layer and the stable layer, and thus provide 
+atmospheric tendencies of temperature, moisture (including clouds), and 
+horizontal momentum in the entire atmospheric column. Most PBL schemes 
+consider dry mixing, but can also include saturation effects in the vertical 
+stability that determines the mixing. The schemes are one-dimensional, and 
+assume that there is a clear scale separation between sub-grid eddies and 
+resolved eddies. This assumption will become less clear at grid sizes below a 
+few hundred meters, where boundary layer eddies may start to be resolved, and
+in these situations the scheme should be replaced by a fully three-dimensional
+local sub-grid turbulence scheme such as the TKE diffusion scheme (Section
+\ref{tke_section}.)
+Table \ref{pbl table} summarizes the basic features of the PBL schemes
+in {\wrf}.
+
+
+\begin{table}
+\caption{Planetary Boundary Layer Options}
+\label{pbl table}
+$$\vbox
+{\halign{#\hfil \quad & #\hfil \quad &
+#\hfil \quad & #\hfil \quad &  #\hfil \cr
+\multispan4\hrulefill \cr
+Scheme          & Unstable PBL      &  Entrainment         & PBL Top              \cr
+                & Mixing            &  treatment           &                      \cr
+\multispan4\hrulefill \cr
+MRF  & K profile + countergradient term    &  part of PBL mixing &  from critical bulk $Ri$  \cr
+YSU  & K profile + countergradient term   &  explicit term &  from buoyancy profile  \cr
+MYJ  & K from prognostic TKE                        &  part of PBL mixing  &  from TKE   \cr
+ACM2  & transilient mixing up, local K down         &  part of PBL mixing  &  from critical bulk $Ri$   \cr
+\multispan4\hrulefill \cr
+}}$$
+\end{table}
+
+\subsection {Medium Range Forecast Model (MRF) PBL}
+
+The scheme is described by \citet{hong96}. 
+This PBL scheme employs a so-called counter-gradient flux for heat and moisture 
+in unstable conditions. It uses enhanced vertical flux coefficients in the PBL, 
+and the PBL height is determined from a critical bulk Richardson number. 
+It handles vertical diffusion with an implicit local scheme, and it is based 
+on local $Ri$ in the free atmosphere.
+
+\subsection{Yonsei University (YSU) PBL}
+
+The Yonsei University PBL \citep{hong06} is the next generation of the MRF PBL, also using the countergradient terms to represent fluxes due to non-local gradients. This adds to the MRF PBL \citep{hong96} an explicit treatment of the entrainment layer at the PBL top. The entrainment is made proportional to the surface buoyancy flux in line with results from studies with large-eddy models \citep{noh03}. The PBL top is defined using a critical bulk Richardson number of zero (compared to 0.5 in the MRF PBL), so is effectively dependent on the buoyancy profile, in which the PBL top is defined at the maximum entrainment layer (compared to the layer at which the diffusivity becomes zero). A smaller magnitude of the counter-gradient mixing in the YSU PBL produces a well-mixed boundary-layer profile, whereas there is a pronounced over-stable structure in the upper part of the mixed layer in the case of the MRF PBL. Details are available in \citet{hong06}, including the analysis of the interaction between the boundary layer and precipitation physics. In version 3.0, an enhanced stable boundary-layer diffusion algorithm \citep{hong07} is also devised that allows deeper mixing in windier conditions.
+
+\subsection{Mellor-Yamada-Janjic (MYJ) PBL}
+
+This parameterization of turbulence in the PBL and in the free atmosphere 
+\citep{janjic90,janjic96,janjic02} represents a nonsingular implementation of 
+the Mellor-Yamada Level 2.5 turbulence closure model \citep{melloryamada82} 
+through the full range of atmospheric turbulent regimes. 
+In this implementation, an upper limit is imposed on the master length scale. 
+This upper limit depends on the TKE as well as the buoyancy and shear of the driving flow. 
+In the unstable range, the functional form of the upper limit is derived from the 
+requirement that the TKE production be nonsingular in the case of growing turbulence. 
+In the stable range, the upper limit is derived from the requirement that the 
+ratio of the variance of the vertical velocity deviation and TKE cannot be 
+smaller than that corresponding to the regime of vanishing turbulence. 
+The TKE production/dissipation differential equation is solved iteratively. 
+The empirical constants have been revised as well \citep{janjic96,janjic02}. 
+
+\subsection{Asymmetrical Convective Model version 2 (ACM2) PBL}
+
+The ACM2 \citep{pleim07} is a combination of the ACM, which is a simple transilient model that was originally a modification of the Blackadar convective model, and an eddy diffusion model.  Thus, in convective conditions the ACM2 can simulate rapid upward transport in buoyant plumes and local shear induced turbulent diffusion.  The partitioning between the local and non-local transport components is derived from the fraction of non-local heat flux according to the model of \citet{holtslag93}.  The algorithm transitions smoothly from eddy diffusion in stable conditions to the combined local and non-local transport in unstable conditions.  The ACM2 is particularly well suited for consistent PBL transport of any atmospheric quantity including both meteorological (u, v,$\theta$ , qv) and chemical trace species.
+
+\section{Atmospheric Radiation}
+
+The radiation schemes provide atmospheric heating due to radiative 
+flux divergence and surface downward longwave and shortwave 
+radiation for the ground heat budget. Longwave radiation includes 
+infrared or thermal radiation absorbed and emitted by gases and surfaces. 
+Upward longwave radiative flux from the ground is determined by the surface 
+emissivity that in turn depends upon land-use type, as well as the ground (skin) 
+temperature. Shortwave radiation includes visible and surrounding wavelengths 
+that make up the solar spectrum. Hence, the only source is the Sun, but 
+processes include absorption, reflection, and scattering in the atmosphere 
+and at surfaces. For shortwave radiation, the upward flux is the reflection due to surface 
+albedo. Within the atmosphere the radiation responds to model-predicted 
+cloud and water vapor distributions, as well as specified carbon dioxide, 
+ozone, and (optionally) trace gas concentrations. All the radiation schemes 
+in WRF currently are column (one-dimensional) schemes, so each column is 
+treated independently, and the fluxes correspond to those in 
+infinite horizontally uniform  planes, which
+is a good approximation if the vertical thickness of the model layers is much 
+less than the horizontal grid length. This assumption would become less 
+accurate at high horizontal resolution.
+Table \ref{radiation table} summarizes the basic features of the radiation schemes
+in the {\wrf}.
+
+\begin{table}
+\caption{Radiation Options}
+\label{radiation table}
+$$\vbox
+{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
+\hfil#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
+\multispan4\hrulefill \cr
+Scheme          &   Longwave/      &  Spectral      & CO$_2$, O$_3$, clouds              \cr
+                &   Shortwave      &  Bands         &                      \cr
+\multispan4\hrulefill \cr
+RRTM            &  LW   &  16 &  CO$_2$, O$_3$, clouds  \cr
+GFDL LW         &  LW   &  14 &  CO$_2$, O$_3$, clouds  \cr
+CAM3 LW         &  LW   &  2  &  CO$_2$, O$_3$, clouds  \cr
+GFDL SW         &  SW   &  12 &  CO$_2$, O$_3$, clouds  \cr
+MM5  SW         &  SW   &  1  &   clouds   \cr
+Goddard         &  SW   &  11  &  CO$_2$, O$_3$, clouds  \cr
+CAM3 SW         &  SW   &  19  &  CO$_2$, O$_3$, clouds  \cr
+\multispan4\hrulefill \cr
+}}$$
+\end{table}
+
+\subsection{Rapid Radiative Transfer Model (RRTM) Longwave}
+
+This RRTM, which is taken from MM5, is based on \citet{mlawer97} 
+and is a spectral-band scheme using the correlated-$k$ method. 
+It uses pre-set tables to accurately represent longwave processes due 
+to water vapor, ozone, CO$_2$, and trace gases (if present), as well as 
+accounting for cloud optical depth.
+
+\subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Longwave}
+
+This longwave radiation scheme is from GFDL. It follows the simplified exchange 
+method of \citet{fels75} and \citet{schwarzkopf91}, 
+with calculation over spectral bands associated with carbon dioxide, water vapor, 
+and ozone. Included are \citet{schwarzkopf85} transmission coefficients for carbon 
+dioxide, a \citet{roberts76} water vapor continuum, and the effects of 
+water vapor-carbon dioxide overlap and of a Voigt line-shape correction.
+The \citet{rodgers68} formulation is adopted for ozone absorption. 
+Clouds are randomly overlapped. 
+This scheme is implemented to conduct comparisons with the operational Eta model.
+
+\subsection {CAM Longwave}
+
+A spectral-band scheme used in the NCAR Community Atmosphere
+Model (CAM 3.0) for climate simulations. It has the potential to handle
+several trace gases. It interacts with resolved clouds and cloud fractions,
+ and is documented fully by \citet{collins04}.
+
+\subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Shortwave}
+
+This shortwave radiation is a GFDL version of the \citet{lacis74}
+parameterization. Effects of atmospheric water vapor, ozone 
+\citep[both from][]{lacis74}, and carbon dioxide \citep{sasamori72}
+are employed. Clouds are randomly overlapped. Shortwave calculations are made 
+using a daylight-mean cosine solar zenith angle over the time interval 
+(given by the radiation call frequency). 
+
+\subsection {MM5 (Dudhia) Shortwave}
+
+This scheme is base on \citet{dudhia89} and is taken from MM5. It has a simple 
+downward integration of solar flux, accounting for clear-air scattering, 
+water vapor absorption \citep{lacis74}, and cloud albedo and absorption. 
+It uses look-up tables for clouds from \citet{stephens78}. In Version 3,
+the scheme has an option to account for terrain slope and shadowing effects
+on the surface solar flux.
+
+\subsection {Goddard Shortwave}
+
+This scheme is based on \citet{chou94}. It has a total of 11 spectral 
+bands and considers diffuse and direct solar radiation components in a two-stream 
+approach that accounts for scattered and reflected components. Ozone is considered 
+with several climatological profiles available.
+
+\subsection {CAM Shortwave}
+
+A spectral-band scheme used in the NCAR Community Atmosphere
+Model (CAM 3.0) for climate simulations. It has the ability to handle optical properties of
+several aerosol types and trace gases. It uses cloud fractions and overlap assumptions
+in unsaturated regions, and has a monthly zonal ozone climatology. It is documented fully by 
+\citet{collins04}.
+The CAM radiation scheme is especially suited for regional climate simulations by having a 
+ozone distribution that varies during the simulation according
+to monthly zonal-mean climatological data.
+
+\section {Physics Interactions}
+
+\begin{table}
+\caption{Physics Interactions. Columns correspond to 
+model physical processes: radiation (Rad),
+microphysics (MP), cumulus parameterization (CP), planetary boundary layer/vertical diffusion
+(PBL), and surface physics (Sfc). Rows corresponds to
+model variables where {\em i} and {\em o} indicate whether a variable is
+input or output (updated) by a physical process.}
+\label{physics interaction table}
+$$\vbox
+{\halign{#\hfil \qquad & #\hfil \qquad & \hfil#\hfil \qquad & \hfil#\hfil 
+\qquad & \hfil#\hfil \qquad &  \hfil#\hfil \qquad & \hfil#\hfil \cr
+\multispan7\hrulefill \cr
+                &              & Rad       & MP           & CP           & PBL      &   Sfc   \cr
+\multispan7\hrulefill \cr
+Atmospheric     &  Momentum    &           &              &      i       &  io     &           \cr
+State or        &  Pot. Temp.  &   io      &     io       &     io       &  io     &           \cr
+Tendencies      &  Water Vapor &    i      &     io       &     io       &  io     &           \cr
+                &  Cloud       &    i      &     io       &      o       &  io     &           \cr
+                &  Precip      &    i      &     io       &      o       &         &           \cr
+\multispan7\hrulefill \cr
+Surface         &  Longwave Up &    i      &              &              &         &    o      \cr
+Fluxes          &  Longwave Down &  o      &              &              &         &    i      \cr
+                &  Shortwave Up &   i      &              &              &         &    o      \cr
+                &  Shortwave Down & o      &              &              &         &    i      \cr
+                &  Sfc Convective Rain &   &              &      o       &         &    i      \cr
+                &  Sfc Resolved Rain &     &      o       &              &         &    i      \cr
+                &  Heat Flux &             &              &              &   i     &    o      \cr
+                &  Moisture Flux &         &              &              &   i     &    o      \cr
+                &  Surface Stress &        &              &              &   i     &    o      \cr
+\multispan7\hrulefill \cr
+}}$$
+\end{table}
+
+While the model physics parameterizations are categorized in a modular way,
+it should be noted that there are many interactions between them via the
+model state variables (potential temperature, moisture, wind, etc.)
+and their tendencies, and via the surface fluxes.
+Table \ref {physics interaction table} summarizes how the various physics
+processes interact in the model. In the table, {\em i} indicates that the 
+state variable or flux is required input for the physics scheme, and {\em o}
+indicates that the tendency or flux is a probable output of the scheme.
+It can be seen that all the physical schemes interact in some way with the surface
+physics (land-surface models, and, potentially, coupled ocean models).
+The surface physics, while not explicitly producing tendencies of atmospheric
+state variables, is responsible for updating the land-state variables.
+
+Note also that, as mentioned, the microphysics does not output tendencies,
+but updates the atmospheric state at the end of the model time-step. 
+However, the rest of the {\em o}'s in the upper half of the table are
+representative of the physical tendencies of these variables in the model.
+
+The radiation, cumulus parameterization, and boundary-layer schemes all
+output tendencies, but the tendencies are not added until later in the solver, so
+from this perspective the order of call is not important. Moreover, these
+physics schemes do not have to be called at the same frequency as each other
+or the model time step. When lower frequencies are used, their tendencies
+are kept constant between calls. This is typically done for the radiation schemes,
+which are too expensive to call every time, and for the cumulus schemes, for
+which it is also not necessary. However, the surface/boundary-layer schemes are
+normally called every step in the ARW because this is likely to give the best results.
+
+The radiation is called first because of the required radiative fluxes
+that are input to the land-surface scheme. The land-surface also requires rainfall
+from the microphysics and cumulus schemes, but that is from the previous time-step.
+The boundary-layer scheme is necessarily after the land-surface scheme
+because it requires the heat and moisture fluxes.
+
+\section{Four-Dimensional Data Assimilation}
+
+Four-dimensional data assimilation (FDDA), also known as nudging, is a method of keeping
+simulations close to analyses and/or observations over the course of an
+integration. There are two types of FDDA that can be used separately or in
+combination. Grid- or analysis-nudging simply forces the model simulation 
+towards a series of analyses grid-point by grid-point. Observational- or station-nudging
+locally forces the simulation towards observational data. These methods
+provide a four-dimensional analysis that is somewhat balanced dynamically,
+and in terms of continuity,
+while allowing for complex local topographical or convective variations.
+Such datasets can cover long periods, and have particular value in driving
+off-line air quality or atmospheric chemistry models.
+
+\subsection{Grid Nudging or Analysis Nudging}
+
+Grid nudging is a major component of so-called Four-Dimensional Data Assimilation (FDDA). (Other components are surface-analysis nudging to be developed soon, and observational nudging, developed and released in WRF Version 2.2).
+
+The grid-nudging method is specifically three-dimensional analysis nudging, whereby the atmospheric model is nudged towards time- and space-interpolated analyses using a point-by-point relaxation term. \citet{stauffer90} originally developed the technique for MM5.
+
+The grid-nudging technique has several major uses.
+
+{\it a) Four-dimensional datasets.} The model is run with grid-nudging for long periods, e.g. months, to provide a four-dimensional meteorologically self-consistent dataset that also stays on track with the driving analyses. In this way, the model is used as an intelligent interpolator of analyses between times, and also accounting better for topographic and convective effects. As mentioned, the primary use for such datasets is in air quality where the wind fields may be used to drive off-line chemistry models.
+
+{\it b) Boundary conditions.} A nested simulation is run with the outer domain nudged towards analyses, and the nest running un-nudged. This provides better temporal detail at the nest boundary than driving it directly from linearly interpolated analyses, as it would be if it were the outer domain. This technique could also be used in forecasting, where an outer domain is nudged towards global forecast fields that are available in advance of the regional forecast.
+
+{\it c) Dynamic initialization.} A pre-forecast period (e.g., -6 hours to 0 hours) is run with nudging using analyses at those times that are already available. This is probably better than a cold-start using just the 0 hour analysis because it gives the model a chance to spin up. In particular, the model will have six hours to adjust to topography, and produce cloud fields by hour 0, whereas with a cold start there would be a spin-up phase where waves are produced and clouds are developed. This method could also be combined with 3D-Var techniques that may provide the hour 0 analysis.
+
+Grid nudging has been added to ARW using the same input analyses as the WPS pre-processing systems can provide. Since it works on multiple domains in a nesting configuration, it requires multiple time-periods of each nudged domain as input analyses. Given these analyses, the {\it real} program produces another input file which is read by the model as nudging is performed. This file contains the gridded analysis 3d fields of the times bracketing the current model time as the forecast proceeds. The four nudged fields are the two horizontal wind components (u and v), temperature, and specific humidity. 
+
+The method is implemented through an extra tendency term in the nudged variable's equations, e.g.
+
+$$ {\partial \theta \over \partial t} = F(\theta) + G_{\theta} W_{\theta} ( \hat \theta_0 - \theta)  $$
+where $F(\theta)$ represents the normal tendency terms due to physics, advection, etc., $G_{\theta}$ is a time-scale controlling the nudging strength, and $W_{\theta}$ is an additional weight in time or space to limit the nudging as described more below, while $\hat \theta_0$ is the time- and space-interpolated analysis field value towards which the nudging relaxes the solution.
+
+Several options are available to control the nudging.
+
+{\it a)} Nudging end-time and ramping. Nudging can be turned off during the simulation, as in dynamical initialization. Since turning nudging off suddenly can lead to noise, there is a capability for ramping the nudging down over a period, typically 1-2 hours to reduce the shock.
+
+{\it b)} Strength of nudging. The timescale for nudging can be controlled individually for winds, temperature and moisture. Typically the namelist value of  0.0003 s-1 is used, corresponding to a timescale of about 1 hour, but this may be reduced for moisture where there may be less confidence in the analysis versus the details in the model.
+
+{\it c)} Nudging in the boundary layer. Sometimes, since the analysis does not resolve the diurnal cycle, it is better not to nudge in the boundary layer to let the model PBL evolve properly, particularly the temperature and moisture fields. Each variable can therefore be selectively not nudged in the model boundary layer, the depth of which is given by the PBL physics.
+
+{\it d)} Nudging at low levels. Alternatively the nudging can be deactivated for any of the variables below a certain layer throughout the simulation. For example, the lowest ten layers can be free of the nudging term. 
+
+{\it e)} Nudging and nesting. Each of these controls is independently set for each domain when nesting, except for the ramping function, which has one switch for all domains.
+
+\subsection{Observational or Station Nudging}
+
+The observation-nudging FDDA capability allows the model to effectively assimilate temperature, wind and moisture observations from all platforms, measured at any location within the model domains and any time within a given data assimilation periods With the observation-nudging formulation, each observation directly interacts with the model equations and thus the scheme yields dynamically and diabatically initialized analyses to support the applications that need regional 4-D full-field weather and/or to start regional NWP with spun-up initial conditions. The observation-nudging scheme, which is an enhanced version of the standard MM5 observation-nudging scheme, was implemented into WRF-ARW and has been in the model since WRF Version 2.2. 
+More details of the methods can be found in \citet{liu08}.
+The most significant modifications to the standard MM5 observation-nudging scheme \citep{stauffer94} that are included in the WRF observation-nudging scheme are summarized as follows:
+
+(1) Added capability to incorporate all, conventional and  non-conventional, synoptic and asynoptic data resources, including the twice daily radiosondes; hourly surface, ship and buoy observations, and special observations from GTS/WMO; NOAA/NESDIS satellite winds derived from cloud, water vapor and IR imageries; NOAA/FSL ACARS, AMDAR, TAMDAR and other aircraft reports; NOAA/FSL NPN (NOAA Profiler Network) and CAP (Corporative Agencies Profilers) profilers; the 3-hourly cloud-drifting winds and water-vapor-derived winds from NOAA/NESDIS; NASA Quikscat sea surface winds; and high-density, high-frequency observations from various mesonets of government agencies and private companies. In particular, special weights are assigned to the application-specific data, such as the SAMS network, special soundings and wind profilers located at and operated by the Army test ranges. 
+
+(2) Added capability to assimilate multi-level upper-air observations, such as radiosondes, wind profilers and radiometers, in a vertically coherent way, which is in contrast to the algorithm for single point observations such as aircraft reports and satellite derived winds. 
+
+(3) Surface temperature (at 2 m AGL) and winds (at 10 m AGL) observations are first adjusted to the first model level according to the similarity theory that is built in the model surface-layer physics and the surface-layer stability state at the observation time. The adjusted temperature and wind innovations at the lowest model level are then used to correct the model through the mixing layer, with weights gradually reduced toward the PBL top. 
+
+(4) Steep mountains and valleys severely limit the horizontal correlation distances. For example, weather variables on the upwind slope are not correlated with those on the downwind slope. To take account this effect, a terrain-dependent nudging weight correction is designed to eliminate the influence of an observation to a model grid point if the two sites are physically separated by a mountain ridge or a deep valley. More details about the scheme and numerical test results can be found in \citet{xu02}. Essentially, for a given observation and grid point, a terrain search is done along the line connecting the grid point and the observation site. If there is a terrain blockage or a valley (deeper than a given depth), the nudging weight for the observation at the given grid point is set to zero. Currently, this algorithm is applied for surface observations assimilation only.  
+
+(5) The scheme was adjusted to accomplish data assimilation on multi-scale domains. Two adjustments among many are noteworthy. The first is an addition of grid-size-dependent horizontal nudging weight for each domain and the corresponding inflation with heights.  The second is adding the capability of double-scans, a two-step observation-nudging relaxation. The idea is similar to the successive corrections: the first scan, with large influence radii and smaller weights, allows observations to correct large scale fields, while the second scan, with smaller influence radii and large weights, permits the observation to better define the smaller-scale feature. 
+
+(6) Observation-nudging allows the observation correction to be propagated into the model state in a given time influence window. One technical difficulty with this is that the model state is not known at the observation time for computing the observation increment, or innovation, during the first half of the time window. In the \citet{stauffer94} scheme, at each time step within the time influence window, the innovation is calculated (or approximated) by differing the observation from the model state at the time step. This obviously leads to dragging the future forecasts toward previous (observation) states. To reduce this error, the innovation calculation is kept the same as before up to the observation time (this is OK since the model state is gradually tacking toward the observation state), but the true innovation s kept and used during the later half of the time influence window.  
+
+(7) An ability for users to set different nudging time-windows and influence radii for different (nested) domains has been added into WRF since the WRF V3.0 release. 
+ 
