@@ -402,6 +402,9 @@ Noilhan, J., and S. Planton, 1989:
 Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere,
   {\em J. Atmos. Sci.}, {\bf 47}, 2580--2593.
 
+\bibitem[Park et al. (2013)]{park13}%
+Park, S.-H., W. Skamarock, J. Klemp, L. Fowler, and M. Duda, 2013: Evaluation of global atmospheric solvers using extensions of the Jablonowski and Williamson baroclinic wave test case. {\em Mon. Wea. Rev.}, {\bf 141}, 3116--3129.
+
 \bibitem[Parrish and Derber(1992)]{parrish92}%
 Parrish, D. F., and J. C. Derber, 1992: The National Meteorological Center's Spectral
   Statistical Interpolation analysis system. 
@@ -589,6 +592,9 @@ Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to
 Wu, W. -S., R. J. Purser, and D. F. Parrish, 2002: Three-Dimensional Variational
   Analysis with Spatially Inhomogeneous Covariances. 
   {\em Mon. Wea. Rev.}, {\bf 130}, 2905--2916.
+
+\bibitem[Xiao et al. (2015)]{xiao15}%
+Xiao, H, S. Endo, M. Wong, W. C. Skamarock, J. B. Klemp, J. D. Fast, W. I. Gustafson Jr., A. M. Vogelmann, H. Wang, Y. Liu, 2015: Modifications to WRF's dynamical core to improve the treatment of  moisture for large-eddy simulations. {\em J. Adv. Model Earth Syst.}, {\bf 7}, 1627--1642. (DOI: 10.1002/2015MS000532) 
 
 \bibitem[Xiao et al.(2005)]{xiao05}%
 Xiao, Q. N., Y. H. Kuo, J. Sun, W. C. Lee, E. Lim, Y. R. Guo, and D. M. Barker, 2005:
