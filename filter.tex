@@ -719,28 +719,56 @@ l = min\bigl[(\Delta x \Delta y \Delta z)^{1/3}, 0.76 \sqrt{e}/N\bigr].
 A sixth order spatial filter is available that is applied on horizontal
 coordinate surfaces.  
 The diffusion scheme is that proposed by \cite{xue.2000}.  Its application
-in the ARW is described by \cite{knievel.et.al.2007}.  The filter can be
-expressed as
+in the ARW is described by \cite{knievel.et.al.2007}.  With the release of WRF Version 4, the 6th order filter was recast into conservative form and an optional limiter for diffusive fluxes based on the coordinate surface slope was introduced.  For the staggered velocities $u$ and $v$, and for the cell centered variables $a$, the filter can be expressed as
+%
+%\begin{equation}
+%\partial_t (\mu_d a) = ... {\beta \, 2^{-6} \over 2 \Delta t} 
+%\left[ \Delta x^6 \delta_x (\overline{\mu_d}^x F_x) + \Delta y^6 \delta_y (\overline{\mu_d}^y F_y)\right]
+%\label{sixth_order_diffusion}
+%\end{equation}
+%
+\begin{align}
+\partial_t (\mu_d u) &= \cdots \, \beta {2^{-6} \over 2 \Delta t} 
+\Big[ \Delta x^6 \, \overline{m_x}^x \delta_x \big({\mu_d} F_x(u)\big) + \Delta y^6  \,\overline{m_y}^x \delta_y \big(\overline{\mu_d}^{xy} F_y(u)\big)\Big],
+\label{filter6_u} \\
+%
+\partial_t (\mu_d v) &= \cdots \, \beta {2^{-6} \over 2 \Delta t} 
+\Big[ \Delta x^6 \, \overline{m_x}^y \delta_x \big(\overline{\mu_d}^{xy} F_x(v)\big) + \Delta y^6  \,\overline{m_y}^y \delta_y \big({\mu_d} F_y(v)\big)\Big],
+\label{filter6_v} \\
+%
+\partial_t (\mu_d a) &= \cdots \, \beta {2^{-6} \over 2 \Delta t} 
+\Big[ \Delta x^6 \, {m_x} \delta_x \big(\overline{\mu_d}^{x} F_x(a)\big) + \Delta y^6  \,{m_y} \delta_y \big(\overline{\mu_d}^y F_y(a)\big)\Big].
+\label{filter6_a}
+\end{align}
+%
+\noindent
+$\beta$ is a user-specified filtering coefficient representing the
+damping applied to $2\Delta$ waves for each filter application.  
+The diffusive fluxes $\Delta x^5 F_x = \Delta x^5 \delta_x^5 (a)$, i.e.
+%
+\begin{equation} 
+ \Delta x^5 F_x (a) {\Big|}_{i+1/2} = \gamma_s \Big\{ 10 \big[ a(i+1) - a(i) \big] - 5 \big[ a(i+2) - a(i-1) \big] + \big[ a(i+3) - a(i-2) \big] \Big\}.
+\notag
+\end{equation}
+ %
+\noindent
+$\gamma_s$ is a flux limiting factor that reduces the diffusive flux where the terrain slope is steep.  $\gamma_s = 1$ if the limiter is inactive.  When activated by the user, the flux limiting factor
 %
 \begin{equation}
-\partial_t (\mu_d a) = ... {\beta \, 2^{-6} \over 2 \Delta t} 
-\left[ \Delta x^6 \delta_x (\overline{\mu_d}^x F_x) + \Delta y^6 \delta_y (\overline{\mu_d}^y F_y)\right]
-\label{sixth_order_diffusion}
+\gamma_s = \hbox{max} \,\left(1 - \left| \left({\partial z \over \partial x} \right) \left( {\partial z \over \partial x}\right)^{-1}_{cr} \right| , 0 \right).
+\notag
 \end{equation}
 %
 \noindent
-The diffusive fluxes $F_x = \delta_x^5 (a)$ and $F_y = \delta_y^5 (a)$.
-$\beta$ is a user-specified filtering coefficient representing the
-damping applied to $2\Delta$ waves for each filter application.  
+$(dz/dx)$ is the slope of the coordinate surface, and it is approximated using the reference state geopotential in WRF.   $(dz/dx)_{cr}$ is a user specified critical value of the coordinate surface slope at which the diffusive flux is completely removed.  By design, $ 0 \le \gamma_s \le 1$.
 
 The user can choose to enforce monotonicity in the filtering.  In the
-monotonic option, the diffusive fluxes are set to zero if up-gradient
-diffusion is indicated -- $F_x = 0$ if $F_x \, \delta_x(a) < 0$ and $F_y
-= 0$ if $F_y \, \delta_y(a) < 0$.  Note that the filter is applied in
-computational space; map factors are not taken into account
-and the filter parameter $\beta$ is dimensionless.  Thus, the filter
-scales with the timestep and gridsize and it does not conserve scalar
-mass.  This explicit diffusion acts on all three components of wind,
+monotonic option, the diffusive fluxes are set to zero if the diffusion is up-gradient, e.g. $F_x(a) = 0$ if $F_x (a) \, \delta_x(a) < 0$ and  $F_y(a) = 0$ if $F_y (a) \, \delta_y(a) < 0$.   
+
+Note that the diffusive fluxes are computed in
+computational space; map factors are not taken into account except in the flux divergence terms in (\ref{filter6_u}) - (\ref{filter6_a}) where they serve to guarantee scalar mass conservation.
+The filter parameter $\beta$ is dimensionless, thus the filter
+scales with the timestep and gridsize.  This explicit diffusion acts on all three components of wind,
 potential temperature, all moisture variables and passive scalars, and
 subgrid turbulence kinetic energy.  Further details can be found in
 \cite{knievel.et.al.2007}.
