@@ -73,24 +73,24 @@ and potential temperature as the lower boundary condition.  The
 hydrostatic equation is
 % 
 \begin{equation} \delta_z p = - {\overline
-\rho}^z g (1 + (R_d/R_v) {\overline q_v}^z), 
+\rho_d}^z g (1 + {\overline q_v}^z), 
 \label{init_hydro}
 \end{equation} 
 % 
 \noindent
-where $\overline{\rho}^z$ is a two point average between input sounding
+where $\overline{\rho_d}^z$ is a two point average between input sounding
 levels, and $\delta_z p$ is the difference of the pressure between input
 sounding levels divided by the height difference.  Additionally, the
 equation of state is needed to close the system:
 % 
 \begin{equation} \alpha_d = {1 \over \rho_d} = {R_d
-\theta \over p_o} \biggl(1 + {R_d \over R_v}q_v\biggr)
+\theta_m \over p_o} 
 \biggl({p \over p_o}\biggr)^{-{c_v \over c_p}}, 
 \label{init_state}
 \end{equation}
 %
 \noindent
-where $q_v$ and $\theta$ are given in the input sounding.
+where $q_v$ and $\theta_m$ are given in the input sounding.
 \eqref{init_hydro} and \eqref{init_state} are a coupled set of nonlinear
 equations for $p$ and $\rho$ in the vertical integration, and they are
 solved by iteration.  The dry pressure on input sounding levels is
@@ -98,45 +98,29 @@ computed by integrating the hydrostatic relation down from the top,
 excluding the vapor component.
 
 Having computed the full pressure (dry plus vapor) and dry air pressure
-on the input sounding levels, the pressure at the model top ($p_{dht}$)
+on the input sounding levels, the pressure at the model top ($p_{t}$)
 is computed by linear interpolation in height (or possibly
 extrapolation) given the height of the model top (an input variable).
-The column mass $\mu_d$ is computed by interpolating the dry air
-pressure to the surface and subtracting from it $p_{dht}$.  Given the
+The column mass $p_c=p_s-p_t$ is computed by interpolating the dry air
+pressure to the surface and subtracting from it $p_{t}$.  Given the
 column mass, the dry-air pressure at each $\eta$ level is known from the
-coordinate definition \eqref{eta_def}, repeated here
-%
-\begin{equation}
-\eta = (p_{dh}-p_{dht})/\mu_d ~~~~~~~{\rm where
-                              }~~~ \mu_d = p_{dhs}-p_{dht},
-\notag
-\end{equation}
-%
-\noindent
-and the pressures $p_{dhs}$ and $p_{dht}$ refer to the dry atmosphere.
-The potential
-temperature from the input sounding is interpolated to
+hybrid coordinate definition \eqref{hyb_def} and the coordinate metric 
+$\mu_d$ is computed from \eqref{mu_def}.
+The potential temperature from the input sounding is interpolated to
 each of the model pressure levels, and the equation of state
 \eqref{init_state} is used to compute the inverse density 
 $\alpha_d$.  Finally, the 
-ARW's hydrostatic relation \eqref{hydrostatic_relation},
-in discrete form
-%
-\begin{equation}
-\delta_\eta \phi = - \alpha_d \mu_d
-\notag
-\end{equation}
-\noindent
+ARW's dry hydrostatic relation \eqref{pd_eq}
 is used to compute the geopotential.  This procedure is used to compute
-the reference state (assuming a dry atmosphere) and the full state
+the reference state (based on a dry atmosphere) and the full state
 (using the full moist sounding).  The perturbation variables are
 computed as the difference between the reference and full state.  It
 should also be noted that in the nonhydrostatic model integration,
 the inverse density $\alpha_d$ is diagnosed from the geopotential using
-this equation of state, and the pressure is diagnosed from the equation
+this dry hydrostatic relation, and the pressure is diagnosed from the equation
 of state using the inverse density $\alpha_d$ and the prognostic potential
-temperature $\theta$.  Thus, the ARW's prognostic variables $\mu_d$,
-$\theta$, and $\phi$ are in exact hydrostatic balance for the model
+temperature $\theta_m$.  Thus, the ARW's prognostic variables $\mu_d$,
+$\theta_m$, and $\phi$ are in exact hydrostatic balance for the model
 equations (to machine roundoff).
 
 \section{Initialization for Real-Data Conditions}
@@ -214,17 +198,17 @@ For real-data cases, the reference state is defined by terrain elevation and thr
 
 \noindent Using these parameters, the dry reference state surface pressure is
 \begin{equation}
-p_{dhs} = p_{0}~exp\Bigg({-T_{0} \over A} + 
+\bar p_{s} = p_{0}~exp\Bigg({-T_{0} \over A} + 
                      \sqrt{ {\bigg( {T_{0} \over A } \bigg)}^2 - ~
                             { 2\phi_{sfc} \over { A~R_d}} } \Bigg).
 \label{init_psurf}
 \end{equation}
 
-\noindent From \eqref{init_psurf}, the 3-dimensional reference pressure (dry hydrostatic pressure $p_{dh}$)
+\noindent From \eqref{init_psurf}, the 3-dimensional reference pressure (dry hydrostatic pressure $p_{d}$)
 is computed as
-a function of the vertical coordinate $\eta$ levels and the model top $p_{dht}$:
+a function of the vertical coordinate $\eta$ levels and the model top $p_{t}$:
 \begin{equation}
-p_{dh} = \overline{p}_d = \eta ~( p_{dhs} - p_{dht} ) + p_{dht}.
+p_{d} = \overline{p}_d = B(\eta) ~( \bar p_{s} - p_{t} ) +[\eta-B(\eta)](p_0-p_t) + p_{t}.
 \label{init_pbar}
 \end{equation}
 
@@ -253,14 +237,13 @@ the reference potential temperature is then defined as
 \label{init_alphabar}
 \end{equation}
 
-\noindent The base state difference of the dry surface pressure 
-from \eqref{init_psurf} and the model top is
-given as
+\noindent Using \eqref{init-pbar}, the base state coordinate metric is given as
+%
 \begin{equation}
-\overline{\mu}_d = p_{dhs} - p_{dht}.
+\bar\mu_d= {\partial \bar p_d\over\partial\eta} = B_\eta(\eta)(\bar p_s-p_t)+\bigl[1-B_\eta(\eta)\bigr](p_0-p_t).
 \label{init_mubar}
 \end{equation}
-
+%
 \noindent 
 From \eqref{init_alphabar} and \eqref{init_mubar}, 
 the reference state geopotential defined from the hydrostatic relation is
@@ -271,20 +254,20 @@ the reference state geopotential defined from the hydrostatic relation is
 
 
 \subsection{Vertical Interpolation and Extrapolation}
+
 The ARW real-data preprocessor vertically interpolates using functions of dry pressure.
 The input data from WPS contains both a total pressure and a moisture field (typically
 relative humidity).  Starting at the top each column of input pressure data, the integrated moisture
 is subtracted from the pressure field step-wise down to the surface.  
 Then, by removing the pressure at the model
-lid, the total dry surface pressure $p_{sd}$ diagnosed from WPS defines the
-model total dry column pressure
+lid, the total dry surface pressure $p_{s}$ diagnosed from WPS defines the vertical coordinate metric
 \begin{equation}
-\mu_d = \overline{\mu}_d + \mu_d' = p_{sd} - p_{dht}.
+\mu_d = \overline{\mu}_d + \mu_d' = B_\eta(\eta)(p_s-p_t)+\bigl[1-B_\eta(\eta)\bigr](p_0-p_t).
 \label{init_mutotal}
 \end{equation}
 
 \noindent
-With the ARW vertical coordinate $\eta$, the model lid $p_{dht}$, and the column dry
+With the ARW vertical coordinate $\eta$, the model lid $p_{t}$, and the column dry
 pressure known at each $(i,j,k)$ location, the 3-dimensional arrays are interpolated.
 
 In the free atmosphere up to the model lid, the vertical calculations are always interpolations.
@@ -301,22 +284,21 @@ handled separately.  Since a known lower boundary condition exists
 
 
 \subsection{Perturbation State}
+
 In the real-data preprocessor, first a topographically defined reference state is computed, 
 then the input 3-dimensional data are vertically
 interpolated in dry pressure space. With the potential temperature $\theta$ and mixing ratio
 $q_v$ available on each $\eta$ level, the pressure, density, and height diagnostics are
 handled.
-\noindent  The perturbation dry column pressure
-field given the reference dry column pressure \eqref{init_mubar} is
+\noindent  The perturbation $\mu_d'$
+given the reference value \eqref{init_mubar} is
 \begin{equation}
 \mu_d'  = \mu_d - \overline{\mu}_d,
 \label{init_muprime}
 \end{equation}
 
-\noindent where $\mu_d$ is the column total dry pressure.  
-Starting with the reference state fields 
-(\ref{init_pbar}, \ref{init_alphabar}, and \eqref{init_mubar}) and the
-dry surface pressure perturbation (\ref{init_muprime}),
+\noindent Starting with the reference state fields 
+(\ref{init_pbar}, \ref{init_alphabar}, and \eqref{init_mubar}) and the perturbation (\ref{init_muprime}),
 the perturbation fields for pressure and inverse density are diagnosed.
 The pressure perturbation includes moisture and is diagnosed from 
 the hydrostatic equation
@@ -334,7 +316,7 @@ integrated down from
 at the model top (where $p'= 0$) to recover $p'$.
 The total dry inverse density is given as
 \begin{equation}
-\alpha_d = {R_d \over p_{0} } ~ \theta~ \bigg( 1 + {R_v \over R_d}q_v \bigg)~ 
+\alpha_d = {R_d \over p_{0} } ~ \theta_m~ 
                                         \bigg( {{p'_d + \overline {p}_d} \over p_{0} } \bigg )^{-{C_v \over C_p}},
 \notag
 \end{equation}
@@ -394,7 +376,7 @@ U_t = { U_{3h} - U_{0h} \over 3h},
 during 3 simulation hours.
 The horizontal momentum fields are coupled both with  $\mu_d$ and the inverse map factor.  The 
 other 3-dimensional fields ($\theta$, $q_v$, and $\phi'$) are coupled only with $\mu_d$.
-The 2-dimensional $\mu'_d$ lateral boundary field is not coupled.
+The $\mu'_d$ lateral boundary field is not coupled.
 
 Each lateral boundary field
 is defined along the four sides of the 
