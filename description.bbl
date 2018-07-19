@@ -513,6 +513,9 @@ Skamarock W. C., 2005: Timesplitting techniques for multidimensional transport,
   http://www.mmm.ucar.edu/individual/skamarock/advect3d\_2005.pdf},
   26 pp.
 
+\bibitem[Skamarock et al.(2012)]{skamarock12}%
+Skamarock, W. C, J. B. Klemp, M. G. Duda, L. Fowler, S.-H. Park, and T. D. Ringler, 2012: A Multi-scale Nonhydrostatic Atmospheric Model Using Centroidal Voronoi Tesselations and C-Grid Staggering. {\em Mon. Wea. Rev.}, {\bf 240}, 3090-3105, doi: 10.1175/MWR-D-11-00215.1.
+
 \bibitem[Smirnova et al.(1997)]{smirnova97}%
 Smirnova, T. G., J. M. Brown, and S. G. Benjamin, 1997: Performance of
   different soil model configurations in simulating ground surface temperature

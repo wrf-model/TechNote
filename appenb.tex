@@ -53,10 +53,9 @@ $N$            & Brunt-V\"ais\"al\"a frequency \\
 $p$            & pressure \\
 $p'$           & perturbation pressure \\
 $p_0$          & reference sea-level pressure \\
-$p_h$          & hydrostatic pressure \\
-$p_{ht,hs}$    & hydrostatic pressure at the top and surface of the model \\
-$p_{dht,dhs}$  & dry hydrostatic pressure at the top and surface of the model \\
-$p_s$          & surface pressure \\
+$p_c$        & dry hydrostatic pressure difference between the surface and the model top \\
+$p_d$          & dry hydrostatic pressure \\
+$p_{t,s}$  & dry hydrostatic pressure at the top and surface of the model \\
 $P_r$          & Prandtl number \\
 $q$            & generic scalar \\
 $q_{c,i,r,s}$  & mixing ratios for cloud water, ice, rain water and snow \\
@@ -109,15 +108,14 @@ $\gamma_g$     & damping coefficient for upper boundary gravity wave absorbing l
 $\gamma_r$     & Rayleigh damping coefficient \\
 $\epsilon$     & molecular weight of water over the molecular weight of dry air (Chapter \ref{filter_chap}); true background error (Chapter \ref{var_chap}) \\
 
-$\eta$         & terrain-following hydrostatic-pressure vertical coordinate \\
+$\eta$         & terrain-following hybrid sigma-pressure vertical coordinate \\
 $\dot\eta$     & contravariant `vertical' velocity or coordinate velocity \\
 $\theta$       & potential temperature  \\
 $\theta_e$     & equivalent potential temperature  \\
 $\theta_m$     & moist potential temperature  \\
-$\Theta$       & coupled potential temperature  \\  
-$\mu$          & hydrostatic pressure difference between surface and top of the model  \\  
-$\bar\mu$      & reference state hydrostatic pressure difference between surface and top of the model  \\  
-$\mu_d$        & dry hydrostatic pressure difference between surface and top of the model  \\  
+$\Theta_m$       & coupled moist potential temperature  \\  
+$\bar\mu_d$      & reference state vertical coordinate metric \\  
+$\mu_d$        & vertical coordinate metric \\  
 $\tau$         & acoustic time (Chapter \ref{discretization_chap}), vertical structure function for Rayleigh damping (Chapter \ref{filter_chap}) \\  
 $\tau_{nm}$    & stress tensor (Chapter \ref{filter_chap}) where $n. m$ = 1, 2 and 3 \\  
 $\Delta \tau$  & acoustic time step \\  
