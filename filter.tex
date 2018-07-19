@@ -76,8 +76,8 @@ scheme are given in Figure \ref{time_integration_figure}.
 Within the acoustic steps,
 the filter is applied to
 ${U''}^{\tau+\Delta\tau}$ and ${V''}^{\tau+\Delta\tau}$ immediately
-after the horizontal momentum is advanced, to $\mu_d^{\tau+\Delta\tau}$
-and ${\Theta''}^{\tau+\Delta\tau}$ immediately after the column mass and
+after the horizontal momentum is advanced, to $p_c^{\tau+\Delta\tau}$
+and ${\Theta_m''}^{\tau+\Delta\tau}$ immediately after the column mass and
 the potential temperature are advanced, and to ${W''}^{\tau+\Delta\tau}$
 and ${\phi''}^{\tau+\Delta\tau}$ after the vertically implicit part of
 the acoustic step is complete.  The polar filter is also applied to the
@@ -797,7 +797,7 @@ in \citet{skamarock92}.  The filtering is accomplished by
 forward weighting the pressure update in the acoustic step loop
 described in Section \ref{full_time_split_integration}, step (6).  The linearized equation of
 state \eqref{p-linear} is used to diagnose the pressure at the new time $\tau$
-after the $U''$, $V''$, $\mu_d''$, and $\Theta''$ have
+after the $U''$, $V''$, $\mu_d''$, and $\Theta_m''$ have
 been advanced.  Divergence damping consists of using a modified pressure
 in the computation of the pressure gradient terms in the horizontal
 momentum equations in the acoustic steps (Equations \eqref{u-small-step}

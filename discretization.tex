@@ -33,7 +33,7 @@ correction to the RK3 integration.
 The RK3 scheme, described in \citet{wicker02},
 integrates a set of ordinary differential equations using a
 predictor-corrector formulation.  Defining the prognostic variables in
-the ARW solver as $\Phi = (U,V,W,\Theta,\phi', \mu', Q_m)$ and the 
+the ARW solver as $\Phi = (U,V,W,\Theta_m,\phi', \mu_d', Q_m)$ and the 
 model equations as $\Phi_t = R(\Phi)$, the RK3
 integration takes the form of 3 steps to advance a solution 
 $\Phi(t)$ to $\Phi(t+\Delta t)$:
@@ -57,9 +57,8 @@ This scheme is not a true Runge-Kutta scheme {\it per se} because, while it is
 third-order accurate for linear equations, it is only second-order accurate
 for nonlinear equations.  With respect to the ARW equations, the 
 time derivatives $\Phi_t$ are the partial time derivatives (the leftmost
-terms) in equations \eqref{u-mom-pert} -- \eqref{scalar-pert}, and
-$R(\Phi)$ are the remaining terms in \eqref{u-mom-pert} --
-\eqref{scalar-pert}.
+terms) in equations \eqref{tm_full}, \eqref{qm_full}, and \eqref{u-mom-pert} -- \eqref{phi_pert}, and
+$R(\Phi)$ are the remaining terms in those equations.
 
 \subsection{Acoustic Integration}
 \label{acoustic_equations}
@@ -79,8 +78,8 @@ $\Phi^t$, $\Phi^*$, or $\Phi^{**}$ in \eqref{rk3a} -- \eqref{rk3c}):
 %
 \begin{align} 
 \hbox{\bf V}'' &= \hbox{\bf V} -\hbox{\bf V}^{t^*}, ~~~~~~
-\Omega'' = \Omega - \Omega^{t^*}, ~~~~~~ \Theta'' = \Theta -
-\Theta^{t^*}, \notag \\ \phi'' &= \phi' - {\phi'}^{t^*}, 
+\Omega'' = \Omega - \Omega^{t^*}, ~~~~~~ \Theta_m'' = \Theta_m -
+\Theta_m^{t^*}, \notag \\ \phi'' &= \phi' - {\phi'}^{t^*}, 
 ~~~~~~ \alpha_d''= \alpha_d' - {\alpha_d'}^{t^*}, ~~~~~~
 \mu_d''= \mu_d' - {\mu'}_d^{t^*}.  \notag 
 \end{align} 
@@ -98,7 +97,7 @@ The hydrostatic relation (i.e., the vertical coordinate definition) becomes
 Additionally, we also
 introduce a version of the equation of state that is linearized about $t^*$, 
 %
-\begin{equation} p'' = {c_s^2\over\alpha_d^{t^*}} \biggl({\Theta''\over\Theta^{t^*}}
+\begin{equation} p'' = {c_s^2\over\alpha_d^{t^*}} \biggl({\Theta_m''\over\Theta_m^{t^*}}
 -{\alpha_d''\over\alpha_d^{t^*}} - {\mu_d''\over\mu_d^{t^*}}\biggr), 
 \label{p-linear}
 \end{equation} 
@@ -118,18 +117,18 @@ pressure gradient can be expressed as
      \partial_\eta (C \partial_\eta \phi'') 
    +
 \partial_\eta\biggl({c_s^2\over\alpha_d^{t^*}}
-{\Theta''\over\Theta^{t^*}}\biggr),
+{\Theta_m''\over\Theta_m^{t^*}}\biggr),
 \label{pz-linear}
 \end{equation}
 %
 \noindent
-where $C=c_s^2/\mu^{t^*}{\alpha^{t^*}_d}^2$. This linearization about the most
+where $C=c_s^2/\mu_d^{t^*}{\alpha^{t^*}_d}^2$. This linearization about the most
 recent large time step should be highly accurate over the time interval of
 the several small time steps.
 
 These variables along with \eqref{pz-linear} 
-are substituted into the prognostic equations
-\eqref{u-mom-pert} -- \eqref{scalar-pert} and lead to the 
+are substituted into equations
+\eqref{tm_full} and \eqref{u-mom-pert} -- \eqref{hydro-pert} and lead to the 
 acoustic time-step equations:
 %
 \begin{align}
@@ -160,18 +159,18 @@ acoustic time-step equations:
 + m_y \partial_\eta {\Omega''^{\tau+\Delta \tau}} &= {R_\mu}^{t^*}  
 \label{mu-small-step}
 \\
- \delta_\tau \Theta'' 
-+ m_x m_y[  \partial_x (U''\theta^{t^*}) 
-      + \partial_y (V''\theta^{t^*})]^{\tau+\Delta \tau} 
-+ m_y \partial_\eta (\Omega''^{\tau+\Delta \tau} \theta^{t^*})
-                                                &= {R_\Theta}^{t^*}  
+ \delta_\tau \Theta_m'' 
++ m_x m_y[  \partial_x (U''\theta_m^{t^*}) 
+      + \partial_y (V''\theta_m^{t^*})]^{\tau+\Delta \tau} 
++ m_y \partial_\eta (\Omega''^{\tau+\Delta \tau} \theta_m^{t^*})
+                                                &= {R_{\Theta_m}}^{t^*}  
 \label{theta-small-step}
 \\
  \delta_\tau W'' 
 - m_y^{-1} g\overline{\left\{(\alpha/\alpha_d)^{t^*} \left[
      \partial_\eta (C \partial_\eta \phi'') 
    +
-\partial_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta''\over\Theta^{t^*}}\biggr)
+\partial_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta_m''\over\Theta_m^{t^*}}\biggr)
 \right]
 - \mu_d''\right\}}^\tau
                                                    &= {R_W}^{t^*}  
@@ -223,9 +222,9 @@ R_{\mu_d}^{t^*} = &
 - m_x m_y[\partial_x U + \partial_y V] - m_y \partial_\eta \Omega
 \label{mu-rhs}
 \\
-R_\Theta^{t^*} = &
-- m_x m_y [\partial_x (U\theta) + \partial_y (V\theta)] - m_y \partial_\eta
-(\Omega \theta) + F_\Theta
+R_{\Theta_m}^{t^*} = &
+- m_x m_y [\partial_x (U\theta_m) + \partial_y (V\theta_m)] - m_y \partial_\eta
+(\Omega \theta_m) + F_{\Theta_m}
 \label{theta-rhs}
 \\
 %
@@ -264,7 +263,8 @@ acoustic time-step operator
 %
 \noindent
 where $\Delta \tau$ is the acoustic time step, 
-and an acoustic time-step averaging operator 
+and terms averaged in time over an acoustic time step are slightly forward centered
+using an averaging operator 
 %
 \begin{equation}
 \overline{a}^\tau = {1 + \beta \over 2}a^{\tau+\Delta \tau} +
@@ -287,24 +287,43 @@ This is
 accomplished by first integrating \eqref{mu-small-step} 
 vertically from the surface to the
 material surface at the top of the domain, which removes the $\partial_\eta
-\Omega''$ term such that 
+\Omega''$ term. Recalling that $\mu_d=\partial p_d/\partial\eta$ and that $p_d$
+for the hybrid vertical coordinate is defined by \eqref{hyb_def}, the vertical 
+integral of \eqref{mu-small-step} becomes,
 %
 \begin{equation}
-  \delta_\tau\mu_d = m_x m_y \int_1^0 
+  \delta_\tau{p_c}'' = m_x m_y \int_1^0 
  [\partial_x U'' + \partial_y V'']^{\tau+\Delta \tau} 
-d\eta.
+d\eta,
 \label{omega}
 \end{equation}
 %
-After computing ${\mu_d''}^{\tau+\Delta\tau}$ from \eqref{omega},
-${\Omega''}^{\tau+\Delta\tau}$ is recovered by using
-\eqref{mu-small-step} 
-to integrate the
-$\partial_\eta \Omega''$ term vertically using the lower boundary 
+where $p_c(x,y)=p_s-p_t$ is the dry hydrostatic pressure difference (mass) in the
+vertical column at $(x,y)$.
+After computing $\delta_\tau{p_c''}$ from \eqref{omega},
+${\Omega''}^{\tau+\Delta\tau}$ is obtained by vertically integrating the
+$\partial_\eta \Omega''$ term \eqref{mu-small-step} (with $\delta_\tau\mu=B_\eta\delta _\tau p_c$) using the lower boundary 
 condition $\Omega''=0$ at the
-surface. Equation \eqref{theta-small-step} is then stepped forward to calculate
-${\Theta''}^{\tau+\Delta\tau}$. Equations \eqref{w-small-step} and 
-\eqref{geo-small-step}
+surface, which yields
+ %
+\begin{equation}
+{\Omega''}^{\tau+\Delta\tau} = m_y^{-1}\bigl[1-B(\eta)\bigr]\delta_\tau p_c- m_x\int_1^\eta 
+ [\partial_x U'' + \partial_y V'']^{\tau+\Delta \tau} 
+d\eta,
+\label{omega_int}
+\end{equation}
+%
+and $\mu_d''^{\tau+\Delta\tau}$ is recovered using \eqref{hyb_def}: 
+ %
+\begin{equation}
+{\mu_d''}^{\tau+\Delta\tau}(x,y,\eta) = B_\eta(\eta){p_c''}^{\tau+\Delta\tau}(x,y)+\bigl[1-B_\eta(\eta)\bigr](p_0-p_t).
+\label{mu_from_pc}
+\end{equation}
+%
+From \eqref{mu_from_pc}, it is evident that $\mu$ need not be stored as a three-dimensional array, but can readily constructed when needed from the two-dimensional $p_c(x,y)$ array together with the one-dimensional $B_\eta(\eta)$ profile.
+
+Knowing ${\Omega''}^{\tau+\Delta\tau}$, \eqref{theta-small-step} can be stepped forward to calculate
+${\Theta_m''}^{\tau+\Delta\tau}$. Equations \eqref{w-small-step} and \eqref{geo-small-step}
 are combined to form a vertically implicit equation that is solved for
 ${W''}^{\tau+\Delta\tau}$ subject to the boundary condition
 %$W''={\hbox{\bf V}''}\cdot{\nabla}h$ 
@@ -316,7 +335,7 @@ ${\alpha_d''}^{\tau+\Delta\tau}$ are recovered from \eqref{p-linear}
 and \eqref{small-hydro}.
  
 \noindent
-\begin{figure}[h]
+\begin{figure}  % [h]
 \setlength{\fboxrule}{.75pt}
 \framebox[\columnwidth]{
 \parbox{6.5truein}{
@@ -363,11 +382,11 @@ and $V''^{\tau+\Delta \tau}$.
 \hphantom{BeginBeginBegini}
 (4) Advance $\mu_d$ \eqref{mu-small-step} and compute 
 ${\Omega''}^{\tau+\Delta \tau}$ then
-advance $\Theta$ 
+advance $\Theta_m$ 
 \eqref{theta-small-step} \hfill\break
 \hphantom{BeginBeginBegini(4) }
 Global: Apply polar filter to $\mu_d^{\tau+\Delta \tau}$ 
-and $\Theta''^{\tau+\Delta \tau}$. \hfill\break
+and $\Theta_m''^{\tau+\Delta \tau}$. \hfill\break
 %
 \hphantom{BeginBeginBegini}
 (5) Advance $W$ and $\phi$ \eqref{w-small-step} 
@@ -386,7 +405,7 @@ and $\phi''^{\tau+\Delta \tau}$. \hfill\break
 \hfill \break
 %
 \hphantom{BeginBegin} 
-(7) Scalar transport: Advance scalars \eqref{scalar-pert} 
+(7) Scalar transport: Advance scalars \eqref{qm_full} 
 \hfill \break \hphantom{BeginBeginBegin} over RK3
 substep \eqref{rk3a}, \eqref{rk3b} or \eqref{rk3c} \hfill \break
 \hphantom{BeginBeginBegin} 
@@ -398,7 +417,7 @@ Global: Apply polar filter to scalars. \smallskip\hfill\break
 \hphantom{BeginBegin} 
 (8) Compute $p'$ and $\alpha'$ using
 updated prognostic variables in
-\eqref{moist-state-equation} and \eqref{hydro-pert}
+\eqref{ideal_gas_law} and \eqref{hydro-pert}
 \medskip \hfill \break
 %
 \hphantom{Begin} {\bf End RK3 Loop} 
@@ -457,7 +476,7 @@ evaluations are only performed in the less-frequent RK3 steps.
 \label{diabatic forcing subsection}
 
 Within the RK3 integration sequence outlined in Fig.
-\ref{time_integration_figure}, the RHS term $R_\Theta^{t^*}$ in the
+\ref{time_integration_figure}, the RHS term $R_{\Theta_m}^{t^*}$ in the
 thermodynamic equation \eqref{theta-small-step} contains contributions
 from the diabatic physics tendencies that are computed in step (1) at
 the beginning of the first RK3 step.  This diabatic forcing is
@@ -467,7 +486,7 @@ Additional diabatic contributions
 are integrated in an additive-time-split manner in step (9) after the RK3
 update is complete.  Thus, the diabatic forcing computed in step (9) (the
 microphysics in the current release of the ARW) does not appear in
-$R_\Theta^{t^*}$ from \eqref{theta-small-step} in the acoustic
+$R_{\Theta_m}^{t^*}$ from \eqref{theta-small-step} in the acoustic
 integration.  We have discovered that this time splitting can excite
 acoustic waves and can give rise to noise in the solutions for some
 applications.  Note that the non-RK3 physics are integrated in step (9)
@@ -480,11 +499,11 @@ We have found that the excitation of the acoustic modes can be
 circumvented while leaving the non-RK3 physics in step (9) by using the
 following procedure that is implemented in the ARW.  In step (1) of the
 integration procedure (Fig. \ref{time_integration_figure}), an
-estimate of the diabatic forcing of $\Theta$ arising from the non-RK3
+estimate of the diabatic forcing in the $\Theta_m$ equation arising from the non-RK3
 physics in step (9) is included in the diabatic forcing term
-$R_\Theta^{t^*}$ in \eqref{theta-small-step} (which is advanced in step
+$R_{\Theta_m}^{t^*}$ in \eqref{theta-small-step} (which is advanced in step
 4).  This estimated diabatic forcing is then removed from the updated
-$\Theta$ after the RK3 integration is complete and before the evaluation
+$\Theta_m$ after the RK3 integration is complete and before the evaluation
 of the non-RK3 physics in step (9).  We use the diabatic forcing from
 the previous time step as the estimated forcing; hence this procedure
 results in few additional computations outside of saving the diabatic
@@ -498,8 +517,7 @@ is retained, including the acoustic
 step loop.  Steps (5) and (6) in the acoustic-step loop,  where
 $W$ and $\phi$ are advanced and $p''$ and $\alpha''$ are diagnosed, are 
 replaced by the following three steps.  
-(1) Diagnose the hydrostatic pressure using the definition of
-the vertical coordinate
+(1) Diagnose the pressure from the full hydrostatic equation (including moisture)
 %
 \begin{equation}
 \delta_\eta p_h = {\alpha_d \over \alpha} \mu_d = \bigl(1 + \sum q_m \bigr)\mu_d.
@@ -508,17 +526,10 @@ the vertical coordinate
 %
 \noindent
 (2) Diagnose $\alpha_d$ using
-the equation of state \eqref{moist-state-equation}
-and the prognosed $\theta$.
+the equation of state \eqref{ideal_gas_law}
+and the prognosed $\theta_m$.
 (3) Diagnose
-the geopotential using the hydrostatic equation
-%
-\begin{equation}
-\delta_\eta \phi' = - \bar \mu_d \alpha_d' - \mu_d' \alpha_d.
-\notag
-\end{equation}
-%
-\noindent
+the geopotential using the dry hydrostatic equation \eqref{hydro-pert}.
 The vertical velocity
 $w$ can be diagnosed from the geopotential equation, but it is not needed
 in the solution procedure.  The acoustic step loop advances gravity waves,
@@ -536,10 +547,10 @@ $(x,y,\eta) = (i\Delta x, j\Delta y, k \Delta \eta)$.  We will denote
 the points where $\theta$ is located as being {\it mass} points, and
 likewise we will denote locations where $u$, $v$, and $w$ are defined as
 $u$ points, $v$ points, and $w$ points, respectively.  Not shown in Fig.
-\ref{figure:2} are the column mass $\mu$, defined at the $(i,j)$ points
-(mass points) on the discrete grid, the geopotential $\phi$ that is
-defined at the $w$ points, and the moisture variables $q_m$ are defined
-at the mass points.  The diagnostic variables used in the model, the
+\ref{figure:2} are the moisture 
+variables $q_i$, and the coordinate metric $\mu$, defined at the
+mass points on the discrete grid, and the geopotential $\phi$ that is
+defined at the $w$ points.  The diagnostic variables used in the model, the
 pressure $p$ and inverse density $\alpha$, are computed at mass points.
 The grid lengths $\Delta x$ and $\Delta y$ are constants in the model
 formulation; changes in the physical grid lengths associated with the
@@ -633,18 +644,18 @@ acoustic step equations \hfill\break
 R_\mu^{t^*}
 \label{mu-discrete}
 \\
- \delta_\tau \Theta'' 
-+ m_x m_y[  \delta_x (U''\overline{\theta^{t^*}}^x)
-      + \delta_y (V''\overline{\theta^{t^*}}^y)]^{\tau+\Delta \tau} 
-+ m_y \delta_\eta (\Omega''^{\tau+\Delta \tau} \overline{\theta^{t^*}}^\eta)
-                                                &= {R_\Theta}^{t^*}  
+ \delta_\tau \Theta_m'' 
++ m_x m_y[  \delta_x (U''\overline{\theta_m^{t^*}}^x)
+      + \delta_y (V''\overline{\theta_m^{t^*}}^y)]^{\tau+\Delta \tau} 
++ m_y \delta_\eta (\Omega''^{\tau+\Delta \tau} \overline{\theta_m^{t^*}}^\eta)
+                                                &= {R_{\Theta_m}}^{t^*}  
 \label{theta-discrete}
 \\
  \delta_\tau W'' 
 - m_y^{-1} g\overline{\left\{\overline{(\alpha/\alpha_d)^{t^*}}^\eta 
   \left[ \delta_\eta (C \delta_\eta \phi'') 
    +
-\delta_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta''\over\Theta^{t^*}}\biggr)
+\delta_\eta\biggl({c_s^2\over\alpha^{t^*}}{\Theta_m''\over\Theta_m^{t^*}}\biggr)
 \right]
 - \mu_d''\right\}}^\tau
  &= {R_W}^{t^*}  
@@ -732,11 +743,10 @@ R_W^{t^*} = ~ m_y^{-1} g \overline{(\alpha/\alpha_d)}^\eta [\delta_\eta p'
 The terms $F_{U_{cor}}$, $F_{V_{cor}}$, and $F_{W_{cor}}$ in 
 \eqref{u-pg-discrete} -- \eqref{w-pg-discrete}
 represent Coriolis and
-curvature effects in the equations using the isotropic map projections 
-(Lambert conformal, polar stereographic, and Mercator) where $m_x=m_y=m$.
-These terms in continuous form are given in
-\eqref{u-mom-rhs} --
-\eqref{w-mom-rhs}.  Their spatial discretization is
+curvature effects in the momentum equations and are written in continuous form in
+\eqref{u-mom-rhs} -- \eqref{w-mom-rhs}. Using the isotropic map projections 
+(Lambert conformal, polar stereographic, and Mercator) where $m_x=m_y=m$,
+ their spatial discretization is
 %
 \begin{align}
 F_{U_{cor}} & =  + 
@@ -780,9 +790,7 @@ Here the operators $\overline{()}^{xy} = \overline{\overline{()}^{x}}^y
 $, and likewise for $\overline{()}^{x\eta}$ and $\overline{()}^{y\eta}$.
 
 For the non-isotropic latitude longitude projection, the Coriolis and
-curvature terms given in 
-\eqref{u-mom-rhs-global} and 
-\eqref{v-mom-rhs-global} are discretized as
+curvature terms are discretized as
 %
 \begin{align}
 F_{U_{cor}} & =  {m_x \over m_y} \biggl[\hphantom{-}{\overline f}^x 
@@ -837,8 +845,8 @@ R_{\mu_{adv}}^{t^*} = &
 - m_x m_y[\partial_x U + \partial_y V] + m_y \partial_\eta\Omega
 \\
 R_{\Theta_{adv}}^{t^*} = &
-- m_x m_y [\partial_x (U\theta) + \partial_y (V\theta)] - m_y \partial_\eta
-(\Omega \theta) 
+- m_x m_y [\partial_x (U\theta_m) + \partial_y (V\theta_m)] - m_y \partial_\eta
+(\Omega \theta_m) 
 \\
 %
 R_{W_{adv}}^{t^*} = &
