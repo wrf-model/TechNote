@@ -76,9 +76,9 @@ is a short-range (typically 1--6 hour) ARW forecast.
 \vspace{0.5cm}
 
 b) Observations ${\bf y^{o}}$--- In the current version of WRFDA, observations may be 
-supplied either in PREPBUFR format ({\it ob\_format=1}) or an ASCII "little\_r" format
+supplied either in PREPBUFR format ({\it ob\_format=1}) or an ASCII ``little\_r" format
 ({\it ob\_format=2}). An observation preprocessor (OBSPROC) 
-is supplied with the code release to perform basic quality control, assign "total" 
+is supplied with the code release to perform basic quality control, assign ``total" 
 observation errors (${\bf R = E+F}$ in Fig. \ref{var-sketch}), and reformat observations from the MM5 {\it little$\_$r} text 
 format into WRFDA's own text format. Details can be found in \citet{barker03, barker04}.
 
@@ -154,7 +154,7 @@ background and analysis at high resolution and ensemble input at lower resolutio
 
 It is worth noting that the hybrid-EnVar algorithm produces a single deterministic analysis with flow-dependent background
 error covariance formed by the ensemble input, which can be obtained in different ways.
-The easiest way is to obtain the ensemble input from a "third-party" ensemble prediction system (EPS), e.g.,
+The easiest way is to obtain the ensemble input from a ``third-party" ensemble prediction system (EPS), e.g.,
 NCEP's Global Ensemble Forecast System (GEFS). In that case, computational cost is significantly reduced
 because there is no need to run the own ensemble forecasts.
 An arguably better way is to produce your own ensemble analysis and forecast with your choice of model and resolution.
@@ -188,7 +188,7 @@ For radiance assimilation under clear-sky condition, two advanced cloud detectio
 such as AIRS and IASI were implemented in WRFDA \citep{xu13, xu14, xu15, auligne14a, auligne14b}, 
 which allows the assimilation of the channels peaking above the cloud.
 In version 3.9, all-sky radiance assimilation capability was introduced for AMSR2 radiance data \citep{yang16} 
-with the development of the so-called "symmetric error model" for all-sky data \citep{geer11}.
+with the development of the so-called ``symmetric error model" for all-sky data \citep{geer11}.
 
 \subsection{Radar Data Assimilation}
 
@@ -226,7 +226,7 @@ ${\rm U}_{p}$ through statistical regression.
 
 The components of ${\bf v}$ are chosen so that their error cross-correlations are negligible, 
 thus permitting the matrix ${\bf B}$ to be block-diagonalized. There are three choices of control variables in WRFDA
-through a namelist parameter "cv\_options":
+through a namelist parameter ``cv\_options":
 \begin{itemize}\setlength{\parskip}{-4pt}
 \item
  cv\_options=5: Streamfunction $\psi'$, unbalanced velocity potential $\chi_u'$, 
@@ -257,7 +257,7 @@ In addition to five control variables whose setting is controlled by {\bf cv\_op
 to the hydrometeors ($qcloud$, $qrain$, $qice$, $qsnow$, and $qgraupel$) and vertical velocity $w$. These control variables
 are needed for assimilating cloud/precipitation-affected observations (e.g., radar reflectivity, all-sky radiances) and 
 radar radial velocity data. The analysis of hydrometeor variables and vertical velocity is controlled by the namelist parameters
-{\bf cloud\_cv\_options} (=0, 1, 2, or 3) and {\bf use\_cv\_w} (=true or false)", respectively.
+{\bf cloud\_cv\_options} (=0, 1, 2, or 3) and {\bf use\_cv\_w} (=true or false), respectively.
 
 \subsection{Other improvements}
 
@@ -265,7 +265,7 @@ Several other improvements are briefly described below.
 
 \vspace{0.5cm}
 
-a) Introduced in Version 3.8, the "weak penalty constraint" (WPEC) option \citep{li15} aims to enforce quasi-gradient balance on the analysis. 
+a) Introduced in Version 3.8, the ``weak penalty constraint" (WPEC) option \citep{li15} aims to enforce quasi-gradient balance on the analysis. 
 It was designed with the specific purpose of improving the assimilation of radar data within tropical cyclones, but may be useful 
 for other weather phenomena of similar scales. It can be used with 3D-Var or hybrid-3DEnVar (4D-Var is not compatible with this capability).
 
