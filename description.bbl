@@ -410,10 +410,16 @@ Lynch, P., and X.-Y. Huang, 1994:  Diabatic initialization using recursive filte
 \bibitem[Lynch(1997)]{lynch97}%,
 Lynch, P., 1997: The Dolph-Chebyshev Window: A Simple Optimal Filter. 
   {\em Mon. Wea. Rev.}, {\bf 125}, 655--660.
+
+\bibtech[Mahalov and Moustaoui(2009)]{mahalovmoustaoui09}%
+Mahalov, A., and M. Moustaoui, 2009: 
+  Vertically nested nonhydrostatic model for multiscale resolution of flows in the 
+  upper troposphere and lower stratosphere. 
+  {\em J. Comput. Phys.}, {\bf 228}, 1294--–1311, doi:10.1016/j.jcp.2008.10.030.
   
 \bibitem[McCumber et al.(1991)]{mccumber91}
 McCumber, M., W.-K. Tao, J. Simpson, R. Penc, and S.-T. Soong, 1991:
-Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection,
+Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection.
   {\em J. Appl. Meteor.}, {\bf 30}, 985--1004.
 
 \bibitem[Mellor and Yamada(1982)]{melloryamada82}%
