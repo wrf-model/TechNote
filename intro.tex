@@ -81,8 +81,8 @@ The association of a component of the WRF system with
 the ARW subset does not preclude it from being a
 component of WRF configurations involving the NMM solver.  
 The following section highlights the major features of the 
-ARW, Version 3, and reflects elements of WRF Version 3, 
-which was first released in April 2008.
+ARW, Version 4, and reflects elements of WRF Version 4, 
+which was first released in May 2018.
 
 This technical note focuses on the scientific and algorithmic 
 approaches in the ARW, including the solver, physics options,
@@ -90,7 +90,7 @@ initialization capabilities, boundary conditions, and grid-nesting techniques.
 The WSF provides the software infrastructure.  
 WRF-Var, a component of the broader WRF system, was  
 adapted from MM5 3DVAR \citep{barker04} and is encompassed within the ARW.
-While WRF-Chem is part of the ARW, Version 3, it is described 
+While WRF-Chem is part of the ARW, Version 4, it is described 
 outside of this technical note.  Those seeking details on 
 WRF-Chem may consult \citet{Grelletal05} and 
 http://ruc.fsl.noaa.gov/wrf/WG11/status.htm . 
@@ -98,7 +98,7 @@ For those seeking information on running the ARW system,
 the {\wrf} User's Guide \citep{wang08} 
 has the details on its operation. 
 
-\section {Major Features of the ARW System, Version 3}
+\section {Major Features of the ARW System, Version 4}
 
 \vskip 12pt
 {\noindent\bf ARW Solver}
@@ -119,7 +119,8 @@ such as water vapor mixing ratio, rain/snow mixing ratio,
 cloud water/ice mixing ratio, and chemical species and tracers.
 %
 \item{$\bullet$} {\em Vertical Coordinate:}
-Terrain-following, dry hydrostatic-pressure, with vertical grid stretching permitted.
+Terrain-following, hybrid sigma-pressure coordinate based on dry hydrostatic presure, 
+with vertical grid stretching permitted.
 Top of the model is a constant pressure surface.
 %
 \item{$\bullet$} {\em Horizontal Grid:}
