@@ -105,6 +105,12 @@ NCAR Technical Note, NCAR/TN-464+STR, 226pp.
 Daley, R., and E. Barker, 2001: NAVDAS: Formulation and Diagnostics. 
   {\em Mon. Wea.  Rev.}, {\bf 129}, 869--883.
 
+\bibitem[Daniels et al.(2016)]{daniels16}%
+Daniels, M., K. Lundquist, J. Mirocha, D. Wiersema, and F. Chow, 2016. 
+  A new vertical grid nesting capability in the Weather Research and 
+  Forecasting (WRF) model. 
+  {\em Mon. Wea.  Rev.}, {\bf 144}, 3725---3747. DOI:10.1175/MWR-D-16-0049.1
+
 \bibitem[Davies and Turner(1977)]{daviesturner77}%
 Davies, H. C., and R. E. Turner, 1977: Updating prediction models by dynamical relaxation: An
   examination of the technique.
