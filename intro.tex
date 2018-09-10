@@ -1,59 +1,61 @@
 \chapter{Introduction}
 \label{introduction_chap}
-The Weather Research and Forecasting (WRF) model is
-a numerical weather prediction (NWP) and atmospheric simulation 
-system designed for both 
-research and operational applications.  WRF is supported 
-as a common tool for the university/research and operational 
-communities to promote closer ties between them and to 
-address the needs of both.  The development of WRF has been a 
-multi-agency effort to build a next-generation mesoscale forecast model 
-and data assimilation system to advance the understanding and prediction 
-of mesoscale weather and accelerate the transfer of research 
-advances into operations.  The WRF effort has been a collaborative one 
-among the National Center for Atmospheric Research's (NCAR) 
-Mesoscale and Microscale Meteorology (MMM) Division, the 
-National Oceanic and Atmospheric Administration's 
-(NOAA) National Centers for Environmental Prediction (NCEP) and 
-Earth System Research Laboratory (ESRL), the Department of Defense's 
-Air Force Weather Agency (AFWA) and Naval Research Laboratory (NRL), 
-the Center for Analysis and Prediction of Storms (CAPS) at the University 
-of Oklahoma, and the Federal Aviation Administration (FAA), 
-with the participation of university scientists. 
+The Weather Research and Forecasting (WRF) Model is
+an atmospheric modeling system designed for both research and numerical 
+weather prediction.  WRF is an open-source community model, and has been 
+adopted for research at universities and governmental laboratories, 
+for operational forecasting by governmental and private entities,
+and for commercial applications by industry.  WRF took shape in the latter 
+half of the 1990's with the ideas of building a system shared by research 
+and operations and of creating a next-generation NWP capability moving 
+past existing limitations.  The new model would be a 
+common platform on which the broad research community 
+could develop capabilities that could transition to operations, 
+while the extra scrutiny of performance in operations
+could guide and accelerate development.  The WRF system was developed
+through a partnership of the National 
+Center for Atmospheric Research (NCAR), the National Oceanic and Atmospheric 
+Administration (NOAA) (represented by the National Centers for Environmental 
+Prediction (NCEP) and, currently, the NOAA Earth System Research Laboratory (ESRL)), 
+the United States Air Force, the Naval Research Laboratory, the 
+University of Oklahoma, and the Federal Aviation Administration.  
+Since the mid-late 2000's, a top-down management structure 
+of the original partners has shifted to NCAR being responsible for system 
+oversight and support, with developments reflecting community input. 
 
-WRF reflects flexible, state-of-the-art, portable code that is 
-efficient in computing environments ranging from massively-parallel
-supercomputers to laptops. 
-Its modular, single-source code can be configured for both 
-research and operational applications.  Its spectrum of physics
-and dynamics options reflects the experience and input of the 
-broad scientific community.  Its WRF-Var variational data assimilation 
-system can ingest a host of observation types in pursuit of 
-optimal initial conditions, while its WRF-Chem  
-model provides a capability for air chemistry modeling.
+WRF consists of flexible, modular, portable code that is 
+efficient in computing environments ranging from laptops to 
+massively-parallel supercomputers and is readily-configurable for 
+a variety of applications.  Its extensive menu of physics
+and dynamics options reflect wide community input
+and make it a powerful NWP tool.  WRF has a data assimilation system (WRFDA)
+that offers a variety of DA approaches and can ingest a spectrum of 
+observation types.  In addition, for earth system prediction needs 
+beyond basic weather forecasting, WRF supports a number of tailored capabilities.  
+These include WRF-Chem (atmospheric chemistry), 
+WRF-Hydro (hydrological modeling), WRF-Fire (wildland fire modeling), 
+and WRF-Solar (solar energy forecasting).
 
-WRF is maintained and 
-supported as a community model to facilitate wide use internationally, 
-for research, operations, and teaching.
-It is suitable for a broad span of applications across 
-scales ranging from large-eddy to global simulations.  Such applications 
-include real-time NWP, data assimilation 
-development and studies, parameterized-physics research, regional 
-climate simulations, air quality modeling, atmosphere-ocean coupling, and 
-idealized simulations.  As of this writing, 
-the number of registered WRF users exceeds 6000, and WRF is in 
-operational and research use around the world.
+WRF is supported as a community model, facilitating system development
+and broad use for research, operations, and education.  It supports  
+atmospheric simulations across scales from large-eddy to global.  
+WRF's applications include real-time NWP, weather event and 
+atmospheric process studies, data assimilation development, 
+parameterized-physics development, regional climate simulation, air 
+quality modeling, atmosphere-ocean coupling, and idealized-atmosphere studies.  
 
-The principal components of the WRF system are depicted in Figure 1.1. 
-The WRF Software Framework (WSF) provides the infrastructure 
-that accommodates the dynamics solvers, physics packages 
-that interface with the solvers, programs for initialization,   
-WRF-Var, and WRF-Chem.  There are two dynamics solvers in the WSF: the 
+Figure 1.1 depicts the principal components of the WRF system. 
+The WRF Software Framework (WSF) is the infrastructure 
+that contains the dynamics solvers, physics packages, utilities
+for initialization, WRFDA, and integrated capabilities such as WRF-Chem.  
+Within the WSF there are two dynamics solver options: the 
 Advanced Research WRF (ARW) solver (originally referred to
 as the Eulerian mass or $``$em" solver) developed primarily at NCAR, and
 the NMM (Nonhydrostatic Mesoscale Model) solver developed at NCEP.
-Community support for the former is provided by the MMM Division of NCAR 
-and that for the latter is provided by the Developmental Testbed Center (DTC).
+The Mesoscale and Microscale Meteorology Laboratory of NCAR provides
+support for the ARW, and oversees the WRF repository and releases.
+This document describes the ARW (Version 4) and the system components 
+shared by both solvers.
 
 
 %
@@ -65,40 +67,43 @@ and that for the latter is provided by the Developmental Testbed Center (DTC).
   \caption{\label{figure:1}WRF system components.}
 \end{figure}
 
-\section {Advanced Research WRF}
+\section {Advanced Research WRF (ARW)}
 
-The ARW is the ARW dynamics solver together with other
-components of the WRF system compatible with that solver and 
-used in producing a simulation.  Thus, it is a subset of 
-the WRF modeling system that, in addition to the ARW solver, 
+The ARW is a configuration of the WRF system featuring
+the ARW dynamics solver together with other compatible components 
+to produce a simulation.  Thus, 
+it is a subset of the WRF system that, in addition to the specific solver, 
 encompasses physics schemes, numerics/dynamics options, 
-initialization routines, and a data assimilation package (WRF-Var).  
-The ARW solver shares the WSF with the NMM solver and all other 
-WRF components within the framework.  Physics packages are 
-largely shared by both the ARW and NMM solvers, although specific 
+initialization routines, and a data assimilation package (WRFDA).  
+The ARW solver has the WSF in common with the NMM solver and all other 
+WRF components within the framework.  While physics packages are 
+largely shared by both the ARW and NMM solvers, specific 
 compatibility varies with the schemes considered.  
-The association of a component of the WRF system with 
-the ARW subset does not preclude it from being a
-component of WRF configurations involving the NMM solver.  
+Note that the association of a component of the WRF system with 
+the ARW does not preclude the component from being in
+WRF configurations that use the NMM solver.  
 The following section highlights the major features of the 
-ARW, Version 3, and reflects elements of WRF Version 3, 
-which was first released in April 2008.
+ARW Version 4, first released in May 2018.
 
 This technical note focuses on the scientific and algorithmic 
 approaches in the ARW, including the solver, physics options,
 initialization capabilities, boundary conditions, and grid-nesting techniques.  
 The WSF provides the software infrastructure.  
-WRF-Var, a component of the broader WRF system, was  
-adapted from MM5 3DVAR \citep{barker04} and is encompassed within the ARW.
-While WRF-Chem is part of the ARW, Version 3, it is described 
-outside of this technical note.  Those seeking details on 
+WRFDA, the data assimilation system for WRF, was  
+originally adapted from the MM5 
+(Pennsylvania State University--NCAR Mesoscale Model 5) 
+3DVAR (3-dimensional variational data assimilation) system 
+\citep{barker04} and is encompassed within the ARW.
+While WRF-Chem and other tailored systems 
+(e.g., WRF-Hydro, etc.) use the ARW solver, they are 
+not covered by this technical note.  Those seeking details on 
 WRF-Chem may consult \citet{Grelletal05} and 
-http://ruc.fsl.noaa.gov/wrf/WG11/status.htm . 
-For those seeking information on running the ARW system, 
-the {\wrf} User's Guide \citep{wang08} 
-has the details on its operation. 
+https://ruc.noaa.gov/wrf/wrf-chem/.  Furthermore, for information on 
+actually running the ARW system, the ARW Version 4 Modeling System User's Guide 
+(http://www2.mmm.ucar.edu/wrf/users/docs/user_guide_V4/WRFUsersGuide.pdf) 
+covers model operation. 
 
-\section {Major Features of the ARW System, Version 3}
+\section {Major Features of the ARW System, Version 4}
 
 \vskip 12pt
 {\noindent\bf ARW Solver}
@@ -112,14 +117,15 @@ a run-time hydrostatic option available. Conservative for scalar variables.
 %
 \item{$\bullet$} {\em Prognostic Variables:}
 Velocity components $u$ and $v$ in Cartesian coordinate, vertical velocity $w$, 
-perturbation potential temperature, perturbation geopotential, 
+perturbation moist potential temperature, perturbation geopotential, 
 and perturbation surface pressure of dry air.
 Optionally, turbulent kinetic energy and any number of scalars
 such as water vapor mixing ratio, rain/snow mixing ratio,
 cloud water/ice mixing ratio, and chemical species and tracers.
 %
 \item{$\bullet$} {\em Vertical Coordinate:}
-Terrain-following, dry hydrostatic-pressure, with vertical grid stretching permitted.
+Terrain-following, mass-based, hybrid sigma-pressure vertical coordinate based on dry hydrostatic presure, 
+with vertical grid stretching permitted.
 Top of the model is a constant pressure surface.
 %
 \item{$\bullet$} {\em Horizontal Grid:}
@@ -185,11 +191,11 @@ periodic east-west conditions.
 \begin{description}
 \setlength{\itemsep}{-5pt}
 \item{$\bullet$} {\em Microphysics:} Schemes ranging from simplified
-physics suitable for idealized studies to sophisticated mixed-phase
-physics suitable for process studies and NWP.
+physics suitable for idealized studies to mixed-phase, multi-moment, and aerosol-aware
+approaches to support process studies and accurate NWP.
 %
 \item{$\bullet$} {\em Cumulus parameterizations:}
-Adjustment and mass-flux schemes for mesoscale modeling.
+Adjustment, mass-flux, and scale-aware schemes available.
 %
 \item{$\bullet$} {\em Surface physics:}
 Multi-layer land surface models ranging from a simple thermal model to full
@@ -205,12 +211,12 @@ Cloud effects and surface fluxes are included.
 \end{description}
 
 \vskip 12pt
-{\noindent\bf WRF-Var System}
+{\noindent\bf WRFDA System}
 \vskip 12pt
 
 \begin{description}
 \setlength{\itemsep}{-5pt}
-\item{$\bullet$} WRF-Var merged into WRF software framework.
+\item{$\bullet$} Data assimilation capability merged into WRF software framework.
 %
 \item{$\bullet$} Incremental formulation of the model-space cost function.
 %
@@ -218,8 +224,8 @@ Cloud effects and surface fluxes are included.
 %
 \item{$\bullet$} Analysis increments on unstaggered Arakawa-A grid.
 %
-\item{$\bullet$} Representation of the horizontal component of background error ${\bf B}$ via
-recursive filters (regional) or power spectra (global). The
+\item{$\bullet$} Representation of the horizontal component of background 
+error ${\bf B}$ via recursive filters (regional) or power spectra (global). The
 vertical component is applied through projection onto climatologically-averaged 
 eigenvectors of vertical error. Horizontal/vertical errors are
 non-separable (horizontal scales vary with vertical eigenvector).
@@ -229,12 +235,12 @@ via a control variable transform ${\rm U}$ defined as ${\bf B}={\rm U} {\rm U}^T
 %
 \item{$\bullet$} Flexible choice of background error model and control variables.
 %
-\item{$\bullet$} Climatological background error covariances estimated via either the
-NMC-method of averaged forecast differences or suitably averaged
+\item{$\bullet$} Background error covariances estimated via either the
+NMC-method of averaged forecast differences or suitably-averaged
 ensemble perturbations.
 %
-\item{$\bullet$} Unified 3D-Var (4D-Var under development), global 
-and regional, multi-model capability.
+\item{$\bullet$} 3DVAR, 4DVAR, hybrid ensemble-3DVAR approaches available. 
+Global and regional, multi-model DA capability.
 %
 \end{description}
 
@@ -295,10 +301,10 @@ shared-memory generality.
 %
 \item{$\bullet$}
 Separation of scientific codes from parallelization and other 
-architecture-specific issues.
+architecture-specific aspects.
 %
 \item{$\bullet$}
-Input/Output Application Program Interface (API) enabling various external
+Input/output Application Program Interface (API) enabling various external
 packages to be installed with WRF, thus allowing WRF
 to easily support various data formats.
 %

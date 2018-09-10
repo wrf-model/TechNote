@@ -1,9 +1,28 @@
 \begin{thebibliography}{}
 
+
+\bibitem[Auligne(2014a)]{auligne14a}%
+Auligne, T. D., 2014: Multivariate minimum residual method for cloud retrieval. Part I: Theoretical aspects and simulated observation
+ experiments.
+   {\em Mon. Wea. Rev.}, {\bf 142}, 4383--4398.
+
+\bibitem[Auligne(2014b)]{auligne14b}%
+Auligne, T. D., 2014: Multivariate minimum residual method for cloud retrieval. Part II: Real observations experiments.
+{\em Mon. Wea. Rev.}, {\bf 142}, 4399--4415.
+
+\bibitem[Auligne et al.(2007)]{auligne07}%
+Auligne, T., A. P. McNally, and D. P. Dee, 2007: Adaptive bias correction for satellite data in a numerical weather prediction system.
+ {\em Q. J. R. Meteorol. Soc.}, {\bf 133}, 631--642.
+
+\bibitem[Ban et al.(2017)]{ban17}%
+Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data assimilation in WRFDA 4D-Var: implementation and
+ application to convection-permitting forecasts over United States. 
+ {\em Tellus A: Dynamic Meteorology and Oceanography}, {\bf 69:1}, 1368310, DOI: 10.1080/16000870.2017.1368310.
+
 \bibitem[Barker et al.(2003)]{barker03}%
-Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: A Three-Dimensional
-   Variational (3DVAR) Data Assimilation System For Use With MM5. 
-   NCAR Tech Note, NCAR/TN-453+STR, 68 pp. [Available from UCAR Communications, P.O.
+Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: A Description of the
+Advanced Research WRF Version 3.
+   NCAR Tech Note, NCAR/TN-475+STR,  pp. [Available from UCAR Communications, P.O.
    Box 3000, Boulder, CO, 80307.].
 
 \bibitem[Barker et al.(2004)]{barker04}%
@@ -12,6 +31,12 @@ Barker, D. M., W. Huang, Y.-R. Guo, A. Bourgeois, and X. N. Xiao, 2004:
    Implementation and Initial Results
    {\em Mon. Wea. Rev.}, {\bf 132}, 897--914.
 
+\bibitem[Barker et al.(2012)]{barker12}%
+Barker, D. M., X.-Y. Huang, Z. Liu, T. Auligne, X. Zhang, S. Rugg, A. A. AL KATHERI, A. Bourgeios, J. Bray, Y. Chen, M. Demirtas, Y. Guo, T.
+   Henderson, W. Huang, H.-C. Lin, J. Michalakes, S. Rizvi, X.-Y. Zhang, 2012: The Weather Research and Forecasting (WRF) Model's
+   Community Variational/Ensemble Data Assimilation System: WRFDA
+   {\em Bull. Amer. Meteor. Soc.}, {\bf 93}, 831--843.
+   
 \bibitem[Beljaars(1994)]{beljaars94}%
 Beljaars, A.C.M., 1994: The parameterization of surface fluxes in 
   large-scale models under free convection, 
@@ -39,6 +64,12 @@ Chen, F., and J. Dudhia, 2001: Coupling an advanced land-surface/ hydrology mode
   Part I: Model description and implementation. 
   {\em Mon. Wea. Rev.}, {\bf 129}, 569--585.
 
+\bibitem[Chen et al.(2009)]{chen09}%
+Chen, S. Y., C. Y. Huang, Y. H. Kuo, Y. R. Guo, and S. Sokolovskiy, 2009: Assimilation of GPS refractivity from 
+FORMOSAT-3/COSMIC using a nonlocal operator with WRF 3DVAR and its impact on the prediction of a 
+typhoon event. 
+{\em Terr. Atmos. Ocean. Sci.}, {\bf 20}, 133--154.
+
 \bibitem[Chen et al.(2006)]{chen06}%
 Chen, F., M. Tewari, H. Kusaka, and T. T. Warner, 2006:
  Current status of urban modeling in the community Weather Research and Forecast (WRF) model. 
@@ -49,6 +80,11 @@ Meteor. Soc., CD-ROM. J1.4.
 \bibitem[Chen and Sun(2002)]{chen02}%
 Chen, S.-H., and W.-Y. Sun, 2002: A one-dimensional time dependent cloud model. 
   {\em J. Meteor. Soc. Japan}, {\bf 80}, 99--118.
+
+\bibitem[Chen et al.(2013)]{chen13}%
+Chen, Y., S. R. H. Rizvi, X.-Y. Huang, J. Min, and X. Zhang, 2013: Balance characteristics of multivariate background error covariances and
+ their impact on analyses and forecasts in tropical and Arctic regions. 
+  {\em Meteor. Atmos. Phys.}, {\bf 121}, 79?98.
 
 \bibitem[Chou and Suarez(1994)]{chou94}%
 Chou M.-D., and M. J. Suarez, 1994: An efficient thermal infrared radiation 
@@ -77,6 +113,10 @@ Davies, H. C., and R. E. Turner, 1977: Updating prediction models by dynamical r
 \bibitem[Deardorff(1972)]{deardorff72}%
 Deardorff, J. W., 1972 Numerical investigation of neutral and unstable
   planetary boundary layers, {\em J. Atmos. Sci.}, {\bf 29}, 91--115.
+
+\bibitem[Dee(2004)]{dee04}%
+Dee, D. P.,2004: Variational bias correction of radiance data in the ECMWF system. 
+{em In: Proc. of the ECMWF Workshop on Assimilation of High Spectral Resolution Sounders in NWP}, Reading, U. K., 28 June--1 July.
 
 \bibitem[Desroziers(1997)]{desroziers97}%
 Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
@@ -128,6 +168,15 @@ Fisher, M., 2003: Background error covariance modeling.
 \bibitem[Fletcher(1962)]{fletcher62}%
 Fletcher, N. H., 1962: {\em The Physics Of Rain Clouds.} Cambridge University Press, 
   386 pp.
+
+\bibitem[Gao et al.(2015)]{gao15}%
+Gao, F., X.-Y. Huang, N. A. Jacobs, and H. Wang, 2015: Assimilation of wind speed and direction observations: 
+results from real observation experiments. 
+{\em Tellus A}, {\bf 67}, 27132, doi:10.3402/tellusa.v67.27132.
+
+\bibitem[Geer and Bauer(2011)]{geer11}%
+Geer, A. J. and Bauer, P., 2011: Observation errors in all-sky data assimilation. 
+{\em Q. J. Roy. Meteorol. Soc.}, {\bf 137}, 2024--2037.
 
 \bibitem[Grell and Devenyi(2002)]{grell02}%
 Grell, G. A., and D. Devenyi, 2002: A generalized approach to parameterizing convection
@@ -189,7 +238,16 @@ A new vertical diffusion package with an explicit treatment of entrainment proce
 Huang, X.-Y. and P. Lynch, 1993:
   Diabatic Digital-Filtering Initialization: Application to the HIRLAM Model.,
   {\em Mon. Wea. Rev.}, {\bf 121}, 589--603.
-  
+
+\bibitem[Huang et al.(2009)]{huang09}%
+Huang, X.-Y., Q. Xiao, D. M. Barker, X. Zhang, J. Michalakes, W. Huang, T. Henderson, J. Bray, Y. Chen, Z. Ma, J. Dudhia, Y. Guo, 
+X. Zhang, D.-J. Won, H.-C. Lin, and Y.-H. Kuo, 2009: Four-Dimensional Variational Data Assimilation for WRF: Formulation and Preliminary Results. {\em Mon. Wea. Rev.}, {\bf 137}, 299--314.
+
+\bibitem[Huang et al.(2013)]{huang13}%
+Huang, X.-Y., F. Gao, N. A. Jacobs, and H. Wang, 2013: Assimilation of wind speed and direction observations: a new formulation 
+and results from idealised experiments. 
+{\em Tellus A}, {\bf 65}, 19936, doi:10.3402/tellusa.v65i0.19936.
+
 \bibitem[Ide et al.(1997)]{ide97}%
 Ide, K., P. Courtier, M. Ghil, and A. C. Lorenc, 1997: Unified notation for data
   assimilation: Operational, sequential and variational. 
@@ -296,6 +354,12 @@ Lee, M.-S., D. Barker, W. Huang and Y.-H. Kuo, 2004: First Guess at
 Appropriate Time (FGAT) with WRF 3DVAR. {\em WRF/MM5 Users Workshop},
 22--25 June 2004, Boulder, Colorado.
 
+\bibitem[Li et al.(2015)]{li15}%
+Li, X., J. Ming, M. Xue, Y. Wang, and K. Zhao, 2015: Implementation of a dynamic equation constraint based on the steady state momentum
+ equations within the WRF hybrid ensemble-3DVar data assimilation system and test with radar T-TREC wind assimilation for tropical
+  Cyclone Chanthu (2010). 
+  {\em J. Geophys. Res. Atmos.}, {\bf 120}, 4017--4039.
+
 \bibitem[Lin et al.(1983)]{lin83}%,
 Lin, Y.-L., R. D. Farley, and H. D. Orville, 1983:
   Bulk parameterization of the snow field in a cloud model. 
@@ -310,12 +374,19 @@ Lin, S.-J., and R. B. Rood, 1996: Multidimensional flux-form
 Liu, Y., T.T. Warner, J. F. Bowers, L. P. Carson, F. Chen, C. A. Clough,
 C. A. Davis, C. H. Egeland, S. Halvorson, T.W. Huck Jr., L. Lachapelle,
 R.E. Malone, D. L. Rife, R.-S. Sheu, S. P. Swerdlin, and D.S. Weingarten,
-2008:
- The operational mesogamma-scale analysis and forecast system of the
+2008: The operational mesogamma-scale analysis and forecast system of the
 U.S. Army Test and Evaluation Command.  Part 1: Overview of the modeling
 system, the forecast products.  
 {\em J. Appl. Meteor. Clim.}, {\bf 47}, 1077--1092.
 
+\bibitem[Liu and Barker(2006)]{liu06}%
+Liu Z. and Barker D. M., 2006: Radiance Assimilation in WRF-Var: Implementation and Initial Results, 
+{\em Preprints, 7th WRF Users' Workshop}, Boulder, CO, National Center for Atmospheric Research.
+
+\bibitem[Liu et al.(2012)]{liu12}%
+Liu, Z., C. S. Schwartz, C. Snyder, and S.-Y. Ha, 2012: Impact of assimilating AMSU-A radiances on forecasts of 2008 
+Atlantic tropical cyclones initialized with a limited-area ensemble Kalman filter. 
+{\em Mon. Wea. Rev.}, {\bf 140}, 4017--4034.
 
 \bibitem[Lorenc(1986)]{lorenc86}%
 Lorenc, A. C., 1986: Analysis methods for numerical weather prediction. 
@@ -487,6 +558,9 @@ Sasamori, T., J. London, and D. V. Hoyt, 1972: Radiation budget of the
   Southern Hemisphere.
  {\em Meteor. Monogr.}, {\bf 13}, No. 35, 9--23.
 
+\bibitem[Schwartz et al.(2015)]{schwartz15}%
+Schwartz, C. S., Z. Liu, X.-Y. Huang, 2015: Sensitivity of Limited-Area Hybrid Variational-Ensemble Analyses and Forecasts to Ensemble Perturbation Resolution. {\em Mon. Wea. Rev.}, {\bf 143}, 3454--3477. 
+
 \bibitem[Schwarzkopf and Fels(1985)]{schwarzkopf85}%
 Schwarzkopf, M. D., and S. B. Fels, 1985: Improvements to the algorithm for computing CO2
  transmissivities and cooling rates. 
@@ -501,6 +575,13 @@ Schwarzkopf, M. D., and S. B. Fels, 1991: The simplified exchange method revisit
 Skamarock W. C. and J. B. Klemp, 1992: The Stability of Time-Split Numerical 
   Methods for the Hydrostatic and the Nonhydrostatic Elastic Equations, 
   {\em Mon. Wea. Rev.}: {\bf 120}, 2109--2127.
+
+\bibitem[Skamarock et al.(2008)]{skamarock08}%
+Skamarock, W. C., J. B. Klemp, J. Dudhia, D. O. Gill, D. M. Barker, M. G. Duda,
+X.-Y. Huang, W. Wang, J. G. Powers, 2008: A Three-Dimensional
+   Variational (3DVAR) Data Assimilation System For Use With MM5. 
+   NCAR Tech Note, NCAR/TN-453+STR, 113 pp. [Available from UCAR Communications, P.O.
+   Box 3000, Boulder, CO, 80307.].
 
 \bibitem[Skamarock and Weisman(2008)]{skamarock-weisman-08}%
 Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
@@ -546,6 +627,16 @@ Stephens, G. L., 1978: Radiation profiles in extended water clouds.
   Part II: Parameterization schemes,
   {\em J. Atmos. Sci.}, {\bf 35}, 2123--2132.
 
+\bibitem[Sun and Wang(2013)]{sun13}%
+Sun, J., and H. Wang, 2013: Radar Data Assimilation with WRF 4D-Var. Part II: Comparison with 3D-Var for a Squall Line 
+over the U.S. Great Plains. 
+ {\em Mon. Wea. Rev.}, {\bf 141}, 2245?-2264.
+
+\bibitem[Sun et al.(2015)]{sun15}%
+Sun, J., H. Wang, W. Tong, Y. Zhang, C. Lin, and D. Xu, 2016: Comparison of the Impacts of Momentum Control Variables on High-Resolution
+ Variational Data Assimilation and Precipitation Forecasting.
+ {\em Mon. Wea. Rev.}, {\bf 144}, 149--169.
+
 \bibitem[Tao and Simpson(1993)]{tao93}%
 Tao, W.-K., and J. Simpson, 1993:
  The Goddard cumulus ensemble model. Part I: Model description.
@@ -556,7 +647,6 @@ Tao, W.-K,, J. Simpson, D. Baker, S. Braun, M.-D. Chou, B. Ferrier, D. Johnson, 
 Microphysics, radiation and surface processes in the Goddard Cumulus Ensemble (GCE) model.
 {\em Meteor. and Atmos. Phys.}, {\bf 82}, 97--137.
 
-
 \bibitem[Tao et al.(1989)]{tao89}%
 Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment, 
   {\em Mon. Wea. Rev.}, {\bf 117}, 231--235.
@@ -565,6 +655,16 @@ Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment
 Thompson, G., R. M. Rasmussen, and K. Manning, 2004: Explicit forecasts of winter precipitation
   using an improved bulk microphysics scheme. Part I: Description and sensitivity analysis.
   {\em Mon. Wea. Rev.}, {\bf 132}, 519--542.
+
+\bibitem[Tong et al.(2016)]{tong16}%
+Tong, W., G. Li, J. Sun, X. Tang and Y. Zhang, 2016: Design Strategies of an Hourly Update 3DVAR Data Assimilation System for 
+Improved Convective Forecasting. 
+ {\em Weather and Forecasting}, {\bf 31}, 1673--1695.
+
+\bibitem[Vendrasco et al.(2016)]{ven16}%
+Vendrasco, E. P., J. Sun, D. L. Herdies, and C. F. de Angelis, 2016: Constraining a 3DVAR Radar Data Assimilation System with 
+ Large-Scale Analysis to Improve Short-Range Precipitation Forecasts. 
+ {\em J. Appl. Meteor. Climatol.}, {\bf 55}, 673--690.
 
 \bibitem[Walko et al.(1995)]{walko95}%
 Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS cloud microphysics
@@ -575,6 +675,25 @@ Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS 
 Wang, W., D. Barker, C. Bruy\`ere, M. Duda, J. Dudhia, D. Gill, J. Michalakes, and S. Rizvi, 2008: 
 WRF Version 3 Modeling System User's Guide.
   {\em http://www.mmm.ucar.edu/wrf/users/docs/user$\_$guide$\_$V3/}.
+
+\bibitem[Wang et al.(2013a)]{wang13a}%
+Wang, H., J. Sun, S. Fan, and X.-Y. Huang, 2013: Indirect Assimilation of Radar Reflectivity with WRF 3D-Var and Its Impact on Prediction of
+ Four Summertime Convective Events. 
+ {\em J. Appl. Meteor. Climatol.}, {\bf 52}, 889--902.
+
+\bibitem[Wang et al.(2013b)]{wang13b}%
+Wang, H., J. Sun, X. Zhang, X.-Y. Huang, and T. Auligne, 2013: Radar data assimilation with WRF 4D-Var: Part I. 
+System development and preliminary testing. 
+ {\em Mon. Wea. Rev.}, {\bf 141}, 2224--2244.
+
+\bibitem[Wang et al.(2008a)]{wang08a}%
+Wang, X., D. M. Barker, C. Snyder, and T. M. Hamill, 2008: A hybrid ETKF-3DVAR data assimilation scheme for the WRF model. Part I: Observing system simulation experiment. 
+{\em Mon. Wea. Rev.}, {\bf 136}, 5116--5131.
+
+\bibitem[Wang et al.(2008b)]{wang08b}%
+Wang, X., D. M. Barker, C. Snyder, and T. M. Hamill, 2008: A Hybrid ETKF-3DVAR Data Assimilation Scheme for the WRF Model. 
+Part II: Real Observation Experiments. 
+{\em Mon. Wea. Rev.}, {\bf 136}, 5132--5147.
 
 \bibitem[Webb(1970)]{webb70}%
 Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to strong stability, 
@@ -593,7 +712,7 @@ Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to
 
 \bibitem[Wu et al.(2002)]{wu02}%
 Wu, W. -S., R. J. Purser, and D. F. Parrish, 2002: Three-Dimensional Variational
-  Analysis with Spatially Inhomogeneous Covariances. 
+ Analysis with Spatially Inhomogeneous Covariances. 
   {\em Mon. Wea. Rev.}, {\bf 130}, 2905--2916.
 
 \bibitem[Xiao et al. (2015)]{xiao15}%
@@ -626,7 +745,21 @@ Xiao, Q. N., Y. H. Kuo, J. Sun, W. C. Lee, E. Lim, Y. R. Guo, and D. M. Barker, 
 \bibitem[Xiu and Pleim(2001)]{xiu01}
 Xiu, A. and J. E. Pleim, 2001:
  Development of a land surface model part I: Application in a mesoscale meteorology model. 
-{\em J. Appl. Meteor.}, {\bf 40}, 192--209
+{\em J. Appl. Meteor.}, {\bf 40}, 192--209.
+
+\bibitem[Xu et al.(2013)]{xu13}
+Xu, D., Z. Liu, X.-Y. Huang, J. Min, and H. Wang, 2013: Impact of Assimilating IASI Radiance Observations on 
+Forecasts of Two Tropical Cyclones. 
+{\em Meteorology and Atmospheric Physics}, {\bf 122}, 1--18.
+
+\bibitem[Xu et al.(2014)]{xu14}
+Xu, D., Huang, X.-Y., Liu, Z., Min, J. 2014: Comparisons of Two Cloud Detection Schemes for Infrared Radiance Observations. 
+{\em Atmospheric and Oceanic Science Letters}, {\bf 7(4)}, 358--363.
+
+\bibitem[Xu et al.(2015)]{xu15}
+Xu, D., T. D. Auligne, and X. -Y. Huang, 2015: A validation of the multivariate and minimum residual method for cloud retrieval using radiance
+ from multiple satellites. 
+ {\em Advances in Atmospheric Sciences}, {\bf 32}, 349--362.
 
 \bibitem[Xu et al.(2002)]{xu02}
 Xu, M., Y. Liu, C. Davis and T. Warner, 2002:
@@ -639,10 +772,38 @@ Xu, M., Y. Liu, C. Davis and T. Warner, 2002:
 Xue, M., 2000: High-order monotonic numerical diffusion and smoothing. {\em
   Mon.\ Wea.\ Rev.}, {\bf 128}, 2853--2864.
 
+\bibitem[Yang et al.(2016)]{yang16}
+Yang, C., Z. Liu, J. Bresch, S.R.H. Rizvi, X.-Y. Huang, and J. Min, 2016: AMSR2 all-sky radiance assimilation and its impact 
+on the analysis and forecast of Hurricane Sandy with a limited-area data assimilation system. 
+{\em Tellus A}, {\bf 68}, 30917.
+
+\bibitem[Yang et al.(2017)]{yang17}
+Yang, C., Z. Liu, F. Gao, P. P. Childs, and J. Min, 2017: Impact of assimilating GOES imager clear-sky radiance with a rapid refresh assimilation system for convection-permitting forecast over Mexico. 
+{\em J. Geophys. Res. Atmos.}, {\bf 122}, 5472--5490.
+
 \bibitem[Zhang and Anthes(1982)]{zhanganthes82}%
 Zhang, D.-L., and R.A. Anthes, 1982: A high-resolution model of the
   planetary boundary layer--sensitivity tests and comparisons with SESAME--79 data. 
   {\em J. Appl. Meteor.}, {\bf 21}, 1594--1609.
+
+\bibitem[Zhang et al.(2013)]{zhang13}%
+Zhang, X., X.-Y. Huang, and N. Pan., 2013: Development of the Upgraded Tangent Linear and Adjoint of the Weather Research and Forecasting (WRF) Model. 
+{\em J. Atmos. Oceanic Technol.} {\bf 30}, 1180--1188.
+
+\bibitem[Zhang et al.(2014a)]{zhang14a}%
+Zhang, X., , X.-Y. Huang, J. Liu, J. Poterjoy, Y. Weng, F. Zhang, and H. Wang, 2014: Development of an Efficient Regional 
+Four-Dimensional Variational Data Assimilation System for WRF. 
+{\em J. Atmos. Oceanic Technol.}, {\bf 31}, 2777--2794.
+
+\bibitem[Zhang et al.(2014b)]{zhang14b}%
+Zhang, X.,Y.-H. Kuo, S.-Y. Chen, X.-Y. Huang, and L.F. Hsiao, 2014: Parallelization Strategies for the GPS Radio Occultation Data
+ Assimilation with a Nonlocal Operator in the Weather Research and Forecasting Model. 
+ {\em J. Atmos. Oceanic Technol.}, {\bf 31}, 2008--2014.
+
+\bibitem[Zhang et al.(2015)]{zhang15}%
+Zhang, X., H. Wang, X.-Y. Huang, F. Gao, and N. A. Jacobs, 2015: Using Adjoint-Based Forecast Sensitivity Method to Evaluate TAMDAR 
+  Data Impacts on Regional Forecasts. 
+  {\em Adv. Meteorol.}, {\bf 2015}, doi:10.1155/2015/427616.
 
 \bibitem[Zilitinkevich(1995)]{zilit95}%
 Zilitinkevich, S.~S., 1995: Non-local turbulent transport: pollution dispersion 
