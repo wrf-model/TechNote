@@ -1,6 +1,5 @@
 \begin{thebibliography}{}
 
-
 \bibitem[Auligne(2014a)]{auligne14a}%
 Auligne, T. D., 2014: Multivariate minimum residual method for cloud retrieval. Part I: Theoretical aspects and simulated observation
  experiments.
@@ -42,6 +41,29 @@ Beljaars, A.C.M., 1994: The parameterization of surface fluxes in
   large-scale models under free convection, 
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 121}, 255--270.
 
+\bibitem[{Berner et~al.(2015)Berner, Fossell, Ha, Hacker,, and Snyder}]{Be15}
+Berner, J., K.~R. Fossell, S.-Y. Ha, J.~P. Hacker, and C.~Snyder, 2015:
+  Increasing the skill of probabilistic forecasts: Understanding performance
+  improvements from model-error representations. \textit{Mon. Wea. Rev.},
+  \textbf{143}, 1295--1320.
+
+\bibitem[{Berner et~al.(2011)Berner, Ha, Hacker, Fournier,, and Snyder}]{Be11}
+Berner, J., S.-Y. Ha, J.~P. Hacker, A.~Fournier, and C.~Snyder, 2011: Model
+  uncertainty in a mesoscale ensemble prediction system: Stochastic versus
+  multi-physics representations. \textit{Mon. Wea. Rev.}, \textbf{139},
+  1972--1995.
+
+\bibitem[{Berner et~al.(2009)Berner, Shutts, Leutbecher,, and Palmer}]{Be09}
+Berner, J., G.~Shutts, M.~Leutbecher, and T.~Palmer, 2009: A spectral
+  stochastic kinetic energy backscatter scheme and its impact on flow-dependent
+  predictability in the {ECMWF} ensemble prediction system. \textit{J. Atmos.
+  Sci.}, \textbf{66}, 603--626.
+
+\bibitem[{Berner et~al.(2017)}]{berner2017stochastic}
+Berner, J., and Coauthors, 2017: Stochastic parameterization: Toward a new view
+  of weather and climate models. \textit{Bulletin of the American
+  Meteorological Society}, \textbf{98~(3)}, 565--588.
+
 \bibitem[Betts(1986)]{betts86}%
 Betts, A. K., 1986: A new convective adjustment scheme. 
   Part I: Observational and theoretical basis. 
@@ -51,6 +73,16 @@ Betts, A. K., 1986: A new convective adjustment scheme.
 Betts, A. K., and M. J. Miller, 1986: A new convective adjustment scheme. 
   Part II: Single column tests using GATE wave, BOMEX, and arctic air-mass data sets. 
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 693--709.
+
+\bibitem[{Bowler et~al.(2008)Bowler, Arribas, Mylne, Robertson,, and
+  Beare}]{Bo08}
+Bowler, N.~E., A.~Arribas, K.~R. Mylne, K.~B. Robertson, and S.~E. Beare, 2008:
+  The {MOGREPS} short-range ensemble prediction system. \textit{Quart. J. Roy.
+  Meteor. Soc.}, \textbf{134}, 703--722.
+
+\bibitem[{Buizza et~al.(1999)Buizza, Miller,, and Palmer}]{Bu99}
+Buizza, R., M.~Miller, and T.~N. Palmer, 1999: Stochastic representation of
+  model uncertainties in the {{ECMWF} Ensemble Prediction System}.
 
 \bibitem[Carpenter et al.(1990)]{carpenter1990}%
 Carpenter, R. L., K. K. Droegemeier, P. R. Woodward, and C. E. Hane, 1990:
@@ -188,6 +220,11 @@ Grell, G.A., S.E. Peckham, R. Schmitz, S.A. McKeen, G. Frost,
 W.C. Skamarock and B. Eder, 2005: Fully coupled online chemistry
 within the WRF model. {\em Atmos. Environ.}, {\bf 39}, 6957-6975.
 
+\bibitem[{Hacker et~al.(2011)Hacker, Snyder, Ha,, and Pocernich}]{Ha11a}
+Hacker, J.~P., C.~Snyder, S.-Y. Ha, and M.~Pocernich, 2011: Linear and
+  nonlinear response to parameter variations in a mesoscale model.
+  \textit{Tellus A}, \textbf{63}, 429--444.
+
 \bibitem[Haltiner and Williams(1980)]{haltiner_and_williams}%
 Haltiner, G. J., and R. T. Williams, 1980: 
   {\em Numerical prediction and dynamic meteorology.}
@@ -257,6 +294,11 @@ Ide, K., P. Courtier, M. Ghil, and A. C. Lorenc, 1997: Unified notation for data
 Ingleby, N. B., 2001: The statistical structure of forecast errors and its representation in
   the Met. Office global 3-D variational data assimilation scheme. 
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 127}, 209--232.
+
+\bibitem[{Jankov et~al.(2017)}]{jankov2017performance}
+Jankov, I., and Coauthors, 2017: A performance comparison between multiphysics
+  and stochastic approaches within a north american rap ensemble.
+  \textit{Monthly Weather Review}, \textbf{145}, 1161--1179.
 
 \bibitem[Janjic(1990)]{janjic90}%
 Janjic, Z. I., 1990: The step-mountain coordinate: physical package,
@@ -353,6 +395,11 @@ Laprise R., 1992: The Euler Equations of motion with hydrostatic pressure
 Lee, M.-S., D. Barker, W. Huang and Y.-H. Kuo, 2004: First Guess at
 Appropriate Time (FGAT) with WRF 3DVAR. {\em WRF/MM5 Users Workshop},
 22--25 June 2004, Boulder, Colorado.
+
+\bibitem[{Leutbecher et~al.(2017)}]{leutbecher2017stochastic}
+Leutbecher, M., and Coauthors, 2017: Stochastic representations of model
+  uncertainties at ECMWF: State of the art and future vision. \textit{Quart. J.
+  Roy. Meteor. Soc.},{\bf 143}, 2315-2339.
 
 \bibitem[Li et al.(2015)]{li15}%
 Li, X., J. Ming, M. Xue, Y. Wang, and K. Zhao, 2015: Implementation of a dynamic equation constraint based on the steady state momentum
@@ -473,6 +520,13 @@ Noilhan, J., and S. Planton, 1989:
 Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere,
   {\em J. Atmos. Sci.}, {\bf 47}, 2580--2593.
 
+\bibitem[{Palmer et~al.({2009})Palmer, Buizza, Doblas-Reyes, Jung, Leutbecher,
+  Shutts, Steinheimer,, and Weisheimer}]{Pa09}
+Palmer, T.~N., R.~Buizza, F.~Doblas-Reyes, T.~Jung, M.~Leutbecher, G.~Shutts,
+  M.~Steinheimer, and A.~Weisheimer, {2009}: {Stochastic Parametrization and 
+  Model Uncertainty}. \textit{{{ECMWF Technical Memorandum}}}, \textbf{{598}},
+  {available at http://www.ecmwf.int/publications/}.
+
 \bibitem[Park et al. (2013)]{park13}%
 Park, S.-H., W. Skamarock, J. Klemp, L. Fowler, and M. Duda, 2013: Evaluation of global atmospheric solvers using extensions of the Jablonowski and Williamson baroclinic wave test case. {\em Mon. Wea. Rev.}, {\bf 141}, 3116--3129.
 
@@ -570,6 +624,11 @@ Schwarzkopf, M. D., and S. B. Fels, 1985: Improvements to the algorithm for comp
 Schwarzkopf, M. D., and S. B. Fels, 1991: The simplified exchange method revisited --- An accurate,
   rapid method for computation of infrared cooling rates and fluxes.
  {\em J. Geophys. Res.}, {\bf 96} (D5), 9075--9096.
+
+\bibitem[{Shutts(2005)}]{Sh05}
+Shutts, G.~J., 2005: {A kinetic energy backscatter algorithm for use in
+  ensemble prediction systems}. {\it Quart. J. Roy. Meteor. Soc.\/}, {\bf 612},
+  3079--3102.
 
 \bibitem[Skamarock and Klemp(1992)]{skamarock92}%
 Skamarock W. C. and J. B. Klemp, 1992: The Stability of Time-Split Numerical 
