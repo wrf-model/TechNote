@@ -10,9 +10,11 @@ forecast error, ensemble prediction systems now use routinely stochastic
 parameterization schemes.
 Stochastic parameterization schemes have been shown to improve the
 probabilistic skill of weather forecasts on short and medium forecast
-timescales (e.g., Berner et al 2009, 2011, Leutbecher et al. 2018).  Less
-known is the fact that stochastic parameterization schemes have also the
-potential to reduce systematic model error (e.g., Berner et al. 2017).
+timescales 
+\citep[e.g.][]{Be09,Be11,leutbecher2017stochastic}.
+Less known is the fact that stochastic parameterization schemes have also the
+potential to reduce systematic model error 
+\citep[e.g.][]{berner2017stochastic}.
 
 The stochastic parameterization suite in WRF comprises a number of
 stochastic parameterization schemes, targeted at representing different aspects 
@@ -24,15 +26,12 @@ correlations, which can be prescribed.
 
 The benefits of stochastic parameterization schemes are most evident in ensemble 
 prediction systems, where the added ensemble diversity leads to a more reliable 
-ensemble spread and improved probabilistic forecast skill (e.g., Berner et al 2015).
-
-% \citep{kessler69}
+ensemble spread and improved probabilistic forecast skill \citep[e.g.][]{Be15}.
 
 %--------------------------------------------------------------------------------------------
 \begin{table}[h!]
 \begin{center}
 \caption{Stochastic parameterization suite}
-\label{stoch table}
 \begin{tabular}{ | l | l | l |}
 \hline
 Scheme          & Name & Perturbations to \\ 
@@ -48,6 +47,7 @@ RPF & Random perturbation           &  interface must be \\
 \hline
 \end{tabular}
 \end{center}
+\label{stoch_table}
 \end{table}
 
 %--------------------------------------------------------------------------------------------
@@ -56,8 +56,7 @@ RPF & Random perturbation           &  interface must be \\
 The Stochastically Perturbed Parameterization Tendency scheme
 (SPPT) is based on the assumption that there is uncertainty
 in the parameterized physics tendencies and that this 
-uncertainty is proportional to the net physics tendency 
-(Buizza et al.\ 1999, Palmer et al.\ 2009).
+uncertainty is proportional to the net physics tendency \citep{Bu99,Pa09}.
 Consequently, SPPT perturbs the net physical tendency of temperature, 
 humidity and wind components at each time step with a multiplicative 
 random coefficient:
@@ -73,7 +72,7 @@ Depending on
 the implementation, the SPPT scheme can use up to three patterns with
 different spatial and time scales and a vertical tapering function which 
 tapers perturbations near the surface and for the highest model levels.
-The WRF implementation uses by default only a single perturbation field (Berner et al., 2015)
+The WRF implementation uses by default only a single perturbation field \citep{Be15}.
 and perturbs the tendencies from the PBL and convection schemes, but not radiation
 or micro-physics.
 
@@ -85,13 +84,14 @@ the interactions of turbulent eddies near or below the
 truncation level with the resolved state. Some of the eddy-eddy interactions will
 will dissipate, but others lead to a resolved-scale effect.
 Originally developed for large eddy simulation applications, these ideas were 
-adapted for numerical weather prediction by Shutts (2005) and Berner et al. (2009).
+adapted for numerical weather prediction by
+\citet{Sh05} and \citet{Be09}.
 SKEBS generates streamfunction perturbations with spatio-temporal correlations. These
 can be weighted with the dissipation rate from numerical diffusion, convection and orographic 
 wave drag. 
 
 In the WRF implementation, no dissipation weighting is used and the 
-perturbations can be extended to the potential temperature field (Berner et al. 2011).  
+perturbations can be extended to the potential temperature field \citep{Be11}.
 Wind perturbations are proportional to the square
 root of the kinetic-energy backscatter rate, and temperature
 perturbations are proportional to the potential energy backscatter rate.
@@ -99,7 +99,7 @@ perturbations are proportional to the potential energy backscatter rate.
 A comparison of SKEBS and SPPT shows that SKEBS introduces most model diversity in the 
 free atmosphere and for dynamical variables, 
 while SPPT is most active in regions with large tendencies, e.g., in areas with convection 
-and near the surface (Berner et al. 2015).
+and near the surface \citep{Be15}.
 %--------------------------------------------------------------------------------------------
 \section {Stochastically perturbed parameterization scheme (SPP)}
 %--------------------------------------------------------------------------------------------
@@ -115,7 +115,7 @@ scheme.
 The stochastically perturbed parameterization scheme (SPP)
 perturbs the values of uncertain key parameters and provides 
 thus a way to represent uncertainties within a particular parameterization scheme
-(Bowler et al. 2009, Hacker et al. 2011).
+\citep{Bo08,Ha11a}.
 Perturbations to e.g. the vertical mass flux profile 
 in the convection scheme or the shape parameter of the particle size distribution in the
 micro-physics scheme allow in principle to represent structural model error.
@@ -127,10 +127,11 @@ rather than ``Stochastically perturbed {/it parameter} scheme''.
 The SPP released in WRF is designed in close collaborations with the physical
 parameterization developers and under active development. Hence it is only
 available for selected physics packages, namely the Grell Freitas convection
-scheme and the the MYNN boundary layer scheme (Jankov et al. 2017).
+scheme and the the MYNN boundary layer scheme \citep{jankov2017performance}.
 
 The member diversity introduced by SPP tends to be smaller than that of SKEBS and SPPT 
-and is in itself typically not enough to generate reliable ensemble spread (Berner et al. 2015).
+and is in itself typically not enough to generate reliable ensemble spread 
+\citep{Be15}.
 SPP can be augmented by one of the other model-error schemes or used in itself to study 
 forecast sensitivity to a particular parameter setting.
 
@@ -149,8 +150,6 @@ The stochastic tendencies in WRF are typically treated as physics-tendencies and
 perturbed fields at each time step within the WRF domain. However, since the stochastic
 perturbation field is also generated on the boundary, it can be used to perturb the lateral boundary 
 boxes. We refer to the user guide for details.
-
-\nocite{ Be11, Be15, Be09, Bo08, Bu99, Ha11, berner2017stochastic, jankov2017performance, leutbecher2017stochastic}
 
 %--------------------------------------------------------------------------------------------
 \section {Stochastic Perturbations to the lateral boundary conditions}
