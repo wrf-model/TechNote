@@ -130,7 +130,7 @@ the details can be found in \citet{chen02}.
 
 \subsection{WRF Single-Moment 3-class (WSM3) scheme}
 
-The WRF single-moment microphysics scheme follows \citet{hong04} including ice sedimentation and other new ice-phase parameterizations. A major difference from other approaches is that a diagnostic relation is used for ice number concentration that is based on ice mass content rather than temperature. The computational procedures are described in \citet{honglim06}. As with WSM5 and WSM6, the freezing/melting processes are computed during the fall-term sub-steps to increase accuracy in the vertical heating profile of these processes. The order of the processes is also optimized to decrease the sensitivity of the scheme to the time step of the model. The WSM3 scheme predicts three categories of hydrometers: vapor, cloud water/ice, and rain/snow, which is a so-called simple-ice scheme. It follows \citet{dudhia89} in assuming cloud water and rain for temperatures above freezing, and cloud ice and snow for temperatures below freezing. This scheme is computationally efficient for the inclusion of ice processes, but lacks supercooled water and gradual melting rates. 
+The WRF single-moment microphysics scheme follows \citet{hong04} including ice sedimentation and other new ice-phase parameterizations. A major difference from other approaches is that a diagnostic relation is used for ice number concentration that is based on ice mass content rather than temperature. The computational procedures are described in \citet{honglim06}. As with WSM5 and WSM6, the fall terms are computed using a Lagrangian technique instead of time-splitting that was used in earlier versions of these schemes. The WSM3 scheme predicts three categories of hydrometers: vapor, cloud water/ice, and rain/snow, which is a so-called simple-ice scheme. It follows \citet{dudhia89} in assuming cloud water and rain for temperatures above freezing, and cloud ice and snow for temperatures below freezing. This scheme is computationally efficient for the inclusion of ice processes, but lacks supercooled water and gradual melting rates. 
 
 \subsection{WSM5 scheme}
 
@@ -142,7 +142,11 @@ a gradual melting of snow falling below the melting layer. Details can be found 
 \subsection{WSM6 scheme}
 
 The six-class scheme extends the WSM5 scheme to include graupel and its associated processes.
-Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavior is much different due to the changes of \citet{hong04}. A new method for representing mixed-phase particle fall speeds for the snow and graupel particles by assigning a single fallspeed to both that is weighted by the mixing ratios, and applying that fallspeed to both sedimentation and accretion processes is introduced \citep{dudhia08}. The behavior of the WSM3, WSM5, and WSM6 schemes differ little for coarser mesoscale grids, but they work much differently on cloud-resolving grids. Of the three WSM schemes, the WSM6 scheme is the most suitable for cloud-resolving grids, considering the efficiency and theoretical backgrounds \citep{honglim06}.
+Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavior is much different due to the changes of \citet{hong04}. A new method for representing mixed-phase particle fall speeds for the snow and graupel particles by assigning a single fallspeed to both that is weighted by the mixing ratios, and applying that fallspeed to both sedimentation and accretion processes is introduced \citep{dudhia08}. The behavior of the WSM3, WSM5, and WSM6 schemes differ little for coarser mesoscale grids, but they work much differently on cloud-resolving grids. Of the three WSM schemes, the WSM6 scheme is the most suitable for cloud-resolving grids, considering the efficiency and theoretical backgrounds \citep{honglim06}. All of the WSM and WDM schemes compute effective radii for ice, snow and cloud water to interact with RRTMG radiation. All except WSM3 compute reflectivity diagnostics.
+
+\subsection{WDM5 and WDM6 schemes}
+
+These have ice-phase processes the same as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The scheme is therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected. These are initialized with a constant value. 
 
 \subsection{Eta Grid-scale Cloud and Precipitation (2001) scheme}
 
@@ -171,37 +175,13 @@ description of the scheme can be found in Sec. 3.1 of the November
 2001 Technical Procedures Bulletin (TPB) at 
 http://www.emc.ncep.noaa.gov/mmb/mmbpll/eta12tpb/ and 
 on the COMET page at http://meted.ucar.edu/nwp/pcu2/etapcp1.htm. 
+More recently an advection option for this scheme has been added that explicitly advects cloud water, rain and ice
+and carries a rimed fraction.
 
-\subsection{Thompson et al. scheme}
-A new bulk microphysical parameterization (BMP) has been developed
-for use with WRF or other mesoscale models. Compared to earlier
-single-moment BMPs, the new scheme incorporates a large number of
-improvements to both physical processes and computer coding plus
-employs many techniques found in far more sophisticated spectral/bin
-schemes using look-up tables. Unlike any other BMP, the assumed snow
-size distribution depends on both ice water content and temperature
-and is represented as a sum of exponential and gamma distributions.
-Furthermore, snow assumes a non-spherical shape with a bulk density
-that varies inversely with diameter as found in observations and in
-contrast to nearly all other BMPs that assume spherical snow with
-constant density.
-
-New features specific to this version of the bulk scheme compared
-to the \citet{thompson04} paper description include:
-
-\begin{itemize}\setlength{\parskip}{-4pt}
-\item generalized gamma distribution shape for each hydrometeor species,
-\item non-spherical, variable density snow, and size distribution matching observations,
-\item y-intercept of rain depends on rain mixing ratio and whether apparent source is melted ice,
-\item y-intercept of graupel depends on graupel mixing ratio,
-\item a more accurate saturation adjustment scheme,
-\item variable gamma distribution shape parameter for cloud water droplets based on observations,
-\item look-up table for freezing of water drops,
-\item look-up table for transferring cloud ice into snow category,
-\item improved vapor deposition/sublimation and evaporation,
-\item variable collection efficiency for rain, snow, and graupel collecting cloud droplets,
-\item improved rain collecting snow and graupel.
-\end{itemize}
+\subsection{Thompson et al. and aerosol-aware Thompson-Eidhammer schemes}
+This is a bulk microphysics scheme that has double-moment ice and rain and has been updated as described by \citet{thompson08}. The aerosol-aware scheme \citep{thompson14}
+additionally has prognostic variables for ice-friendly and water-friendly nuclei that are initialized from a global monthly climatology based on aerosols. The scheme has been developed for midlatitude convective, orographic and snowfall conditions especially at cloud-permitting grid scales. It is used operationally in the RAP/HRRR forecasting system. The ice, snow,
+and cloud droplet radii are passed to the RRTMG radiation schemes along with the clear-sky aerosols for optical depth calculations. Reflectivity is also diagnosed.
 
 \subsection{Goddard Cumulus Ensemble Model scheme}
 
@@ -234,6 +214,36 @@ functions, with the associated intercept and slope parameters derived from the
 predicted mixing ratio and number concentration.
 The scheme has been extensively tested and compared with both
 idealized and real case studies covering a wide range of conditions.
+
+\subsection {Milbrandt-Yau Double-Moment scheme}
+The \citet{milbrandt05} scheme is a fully double-moment scheme that carries graupel and hail as separate species.
+It therefore has 12 prognostic variables in addition to vapor.
+
+\subsection {CAM Morrison-Gettelman scheme}
+The \citet{morrisongettelman08} scheme matches the microphysics used in the CESM CAM5.1 climate model. It is added as part of the CAM
+suite of physics. It carries cloud, ice, rain and snow as double-moment variables. It is primarily designed for global low resolution applications.
+
+\subsection {Stony-Brook University Lin-Colle scheme}
+A single-moment bulk microphysics scheme \citep{lin11} that predicts cloud, rain, ice and snow and also carries riming intensity
+to represent graupel densities.
+
+\subsection {NSSL microphysics schemes}
+There are multiple National Severe Storms Laboratory (NSSL) options by \citet{mansell10} ranging from single-moment with graupel
+properties specified \citep{gilmore04} or predicted with hail added to double-moment of all species with or without hail and also optionally adding CCNs.
+
+\subsection {HUJI spectral bin microphysics schemes}
+The Hebrew University of Jerusalem, Israel, (HUJI) spectral bin microphysics (SBM) scheme has "fast" and "full" versions.
+These resolve size distributions into 33 mass-doubling size bins for each type of particle. The fast scheme \citep{khain10} has four
+particle types cloud/rain, ice/snow, graupel and aerosols, while the full scheme \citep{khain04} has eight types cloud/rain, snow, graupel, aerosols,
+ice plates, columns and dendrites and hail. The aerosols are cloud condensation nuclei. Note that each bin variable is advected
+making these schemes computationally an order of magnitude more costly than bulk microphysics options. Also cloud-resolving to LES
+scales are required to represent the details of motion and supersaturation that such schemes require.
+
+\subsection {Predicted Particle Properties (P3) scheme}
+The P3 scheme \citep{morrison15} uses a novel approach for predicting properties of ice particles as they transition to
+snow and may rime into graupel. The scheme has double-moment rain with an option for double-moment cloud to
+handle aerosol effects. The ice is also double-moment, but also has associated scalars for rimed mass and volume that
+allow the ice-particle properties to evolve rather than imposing categories like snow, graupel and hail.
 
 \section{Cumulus parameterization}
 

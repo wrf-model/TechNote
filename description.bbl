@@ -210,6 +210,11 @@ results from real observation experiments.
 Geer, A. J. and Bauer, P., 2011: Observation errors in all-sky data assimilation. 
 {\em Q. J. Roy. Meteorol. Soc.}, {\bf 137}, 2024--2037.
 
+\bibitem[Gilmore et al.(2004)]{gilmore04}
+Gilmore, M. S., J. M. Straka, and E. N. Rasmussen, 2004: Precipitation uncertainty due to variations
+ in precipitation particle parameters within a simple microphysics scheme. 
+ {\em Mon. Wea. Rev.}, {\bf 132}, 2610--2627.
+
 \bibitem[Grell and Devenyi(2002)]{grell02}%
 Grell, G. A., and D. Devenyi, 2002: A generalized approach to parameterizing convection
   combining ensemble and data assimilation techniques. 
@@ -343,6 +348,17 @@ Kain, J. S., 2004: The Kain-Fritsch convective parameterization: An update.
 Kessler, E., 1969: On the distribution and continuity of water 
   substance in atmospheric circulation,
   {\em Meteor. Monogr.}, {\bf 32}, Amer. Meteor. Soc., 84 pp.
+  
+\bibitem[Khain et al.(2010)]{khain10}%
+Khain, A., B. Lynn, and J. Dudhia, 2010: Aerosol effects on intensity of landfalling hurricanes as 
+seen from simulations with the WRF model with spectral bin microphysics. 
+{\em J. Atmos. Sci.}, {\bf 67}, 365--384.
+
+\bibitem[Khain et al.(2004)]{khain04}%
+Khain, A., A. Pokrovsky, M. Pinsky, A. Seifert, and V. Phillips, 2004: Simulation of effects of 
+atmospheric aerosols on deep turbulent convective clouds using a spectral microphysics 
+mixed-phase cumulus cloud model. Part I: model description and possible applications. 
+{\em J. Atmos. Sci.}, {\bf 61}, 2963--2982.
 
 \bibitem[Klemp and Lilly(1978)]{klemp_and_lilly78}%
 Klemp, J. B., and D. K. Lilly, 1978:
@@ -407,6 +423,16 @@ Li, X., J. Ming, M. Xue, Y. Wang, and K. Zhao, 2015: Implementation of a dynamic
   Cyclone Chanthu (2010). 
   {\em J. Geophys. Res. Atmos.}, {\bf 120}, 4017--4039.
 
+\bibitem[Lim and Hong(2010)]{lim10}%,
+Lim, K.-S. S., and S.-Y. Hong, 2010: Development of an effective double-moment cloud microphysics scheme 
+with prognostic cloud condensation nuclei (CCN) for weather and climate models. 
+{\em Mon. Wea. Rev.},  {\bf 138}, 1587--1612.
+
+\bibitem[Lin and Colle(2011)]{lin11}%
+Lin, Y., and B. A. Colle, 2011:
+A new bulk microphysical scheme that includes riming intensity and temperature-dependent ice characteristics. 
+{\em Mon. Wea. Rev.} , {\bf 139}, 1013--1035.
+
 \bibitem[Lin et al.(1983)]{lin83}%,
 Lin, Y.-L., R. D. Farley, and H. D. Orville, 1983:
   Bulk parameterization of the snow field in a cloud model. 
@@ -452,6 +478,10 @@ Lynch, P., and X.-Y. Huang, 1994:  Diabatic initialization using recursive filte
 Lynch, P., 1997: The Dolph-Chebyshev Window: A Simple Optimal Filter. 
   {\em Mon. Wea. Rev.}, {\bf 125}, 655--660.
   
+\bibitem[Mansell et al.(2010)]{mansell10}%
+Mansell, E. R., C. L. Ziegler, and E. C. Bruning, 2010: Simulated electrification of a small thunderstorm 
+with two-moment bulk microphysics. {\em J. Atmos. Sci.}, {\bf 67}, 171--194.
+  
 \bibitem[McCumber et al.(1991)]{mccumber91}
 McCumber, M., W.-K. Tao, J. Simpson, R. Penc, and S.-T. Soong, 1991:
 Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection,
@@ -473,6 +503,10 @@ Michalakes, J., J. Dudhia, D. Gill, T. Henderson, J. Klemp, W. Skamarock, and W.
   To appear in proceeding of {\em the Eleventh ECMWF Workshop 
   on the Use of High Performance Computing in Meteorology}. 
   25--29 October 2004, Reading, U.K., Ed. George Mozdzynski.
+
+\bibitem[Milbrandt and Yau (2005)]{milbrandt05}%
+Milbrandt, J. A., and M. K. Yau, 2005: A multimoment bulk microphysics parameterization. 
+Part I: Analysis of the role of the spectral shape parameter. {\em J. Atmos. Sci.}, {\bf 62}, 3051--3064. 
 
 \bibitem[Mlawer et al.(1997)]{mlawer97}%
 Mlawer, E. J., S. J. Taubman, P. D. Brown, M. J. Iacono, and S. A. Clough, 1997:
@@ -498,13 +532,22 @@ Morrison, H., and J. O. Pinto, 2006:
 schemes in mesoscale simulations of springtime Arctic mixed-phase stratiform clouds. 
 {\em Mon. Wea. Rev.}, {\bf 134}, 1880--1900.
 
+\bibitem[Morrison and Gettelman (2008)]{morrisongettelman08}%
+Morrison, H., and A. Gettelman, 2008:
+A New Two-Moment Bulk Stratiform Cloud Microphysics Scheme in the Community
+Atmosphere Model, Version 3 (CAM3). Part I: Description and Numerical Tests.
+{\em J. Clim.}. {\bf 21}, 3642--3659.
+
+\bibitem[Morrison and Milbrandt(2015)]{morrison15}%
+Morrison, H. and J.A. Milbrandt, 2015: Parameterization of ice microphysics based onthe prediction of bulk particle properties. Part 1: Scheme description and idealizedtests. {\em J. Atmos. Sci.}, {\bf 72}, 287--311.
+
 \bibitem[Morrison et al.(2008)]{morrison08}%
 Morrison, H., G. Thompson, and V. Tatarskii, 2008:
  Impact of cloud
-micrpohysics on the development of trailing stratiform precipitation in a
+microphysics on the development of trailing stratiform precipitation in a
 simulated squall line: Comparison of one- and two-moment
 schemes. 
-Submitted to {\em Mon. Wea. Rev.} 
+{\em Mon. Wea. Rev.} , {\bf 137}, 991--1007.
 
 \bibitem[Noh et al.(2003)]{noh03}%
 Noh, Y., W.G. Cheon, S.-Y. Hong, and S. Raasch, 2003:
@@ -714,6 +757,14 @@ Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment
 Thompson, G., R. M. Rasmussen, and K. Manning, 2004: Explicit forecasts of winter precipitation
   using an improved bulk microphysics scheme. Part I: Description and sensitivity analysis.
   {\em Mon. Wea. Rev.}, {\bf 132}, 519--542.
+  
+\bibitem[Thompson et al.(2008)]{thompson08}%
+Thompson, G., P. R. Field, R. M. Rasmussen, and W. D. Hall, 2008: Explicit Forecasts of Winter Precipitation Using an Improved Bulk Microphysics Scheme. Part II: Implementation of a New Snow Parameterization. 
+  {\em Mon. Wea. Rev.}, {\bf 136}, 5095--5115.
+
+\bibitem[Thompson and Eidhammer(2014)]{thompson14}%
+Thompson, G., and T. Eidhammer, 2014: A study of aerosol impacts on clouds and precipitation development in a large winter cyclone. 
+{\em J. Atmos. Sci.}, {\bf 71}, 3636--3658.
 
 \bibitem[Tong et al.(2016)]{tong16}%
 Tong, W., G. Li, J. Sun, X. Tang and Y. Zhang, 2016: Design Strategies of an Hourly Update 3DVAR Data Assimilation System for 
