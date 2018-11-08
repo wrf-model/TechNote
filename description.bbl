@@ -1,5 +1,9 @@
 \begin{thebibliography}{}
 
+\bibitem[Angevine et al.(2010)]{angevine10}%
+Angevine, W. M., H. Jiang, and T. Mauritsen, 2010: Performance of an eddy diffusivity-mass flux 
+scheme for shallow cumulus boundary layers. {\em Mon. Wea. Rev.}, {\bf 138}, 2895--2912.
+
 \bibitem[Auligne(2014a)]{auligne14a}%
 Auligne, T. D., 2014: Multivariate minimum residual method for cloud retrieval. Part I: Theoretical aspects and simulated observation
  experiments.
@@ -328,6 +332,11 @@ Janjic, Z. I., 2000: Comments on "Development and Evaluation of a Convection
 Janjic, Z. I., 2002: Nonsingular Implementation of the Mellor--Yamada Level 2.5 Scheme 
   in the NCEP Meso model,
   {\em NCEP Office Note}, {\bf No. 437}, 61 pp.
+  
+\bibitem[Jimenez et al.(2012)]{jimenez12}%
+Jimenez, P., J. Dudhia, J. F. Gonzalez-Ruoco, J. Navarro, J. P. Montavez,
+and E. Garcia-Bustamente, 2012: A revised scheme for the WRF surface layer formulation.
+{\em Mon. Wea. Rev.,} {\bf 140,} 898--918.
 
 \bibitem[Kain and Fritsch(1990)]{kain90}%
 Kain, J. S., and J. M. Fritsch, 1990: A one-dimensional entraining/ detraining 
@@ -539,7 +548,9 @@ Atmosphere Model, Version 3 (CAM3). Part I: Description and Numerical Tests.
 {\em J. Clim.}. {\bf 21}, 3642--3659.
 
 \bibitem[Morrison and Milbrandt(2015)]{morrison15}%
-Morrison, H. and J.A. Milbrandt, 2015: Parameterization of ice microphysics based onthe prediction of bulk particle properties. Part 1: Scheme description and idealizedtests. {\em J. Atmos. Sci.}, {\bf 72}, 287--311.
+Morrison, H. and J.A. Milbrandt, 2015: Parameterization of ice microphysics based on
+the prediction of bulk particle properties. Part 1: Scheme description and idealized
+tests. {\em J. Atmos. Sci.}, {\bf 72}, 287--311.
 
 \bibitem[Morrison et al.(2008)]{morrison08}%
 Morrison, H., G. Thompson, and V. Tatarskii, 2008:
@@ -728,6 +739,11 @@ Stauffer D. R., and N. L. Seaman, 1994:
 Stephens, G. L., 1978: Radiation profiles in extended water clouds. 
   Part II: Parameterization schemes,
   {\em J. Atmos. Sci.}, {\bf 35}, 2123--2132.
+  
+\bibitem[Sukoriansky et al.(2005)]{sukoriansky05}%
+Sukoriansky, S., B. Galperin, and V. Perov, 2005: Application of a new spectral model of stratified turbulence 
+to the atmospheric boundary layer over sea ice. 
+{\em Bound.-Layer Meteor.}, {\bf 117}, 231--257.
 
 \bibitem[Sun and Wang(2013)]{sun13}%
 Sun, J., and H. Wang, 2013: Radar Data Assimilation with WRF 4D-Var. Part II: Comparison with 3D-Var for a Squall Line 
