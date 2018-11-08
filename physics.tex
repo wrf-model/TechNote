@@ -402,18 +402,25 @@ provide no tendencies, only the stability-dependent information about
 the surface layer for the land-surface and PBL schemes.
 Currently, each surface layer option is tied to particular boundary-layer
 options, but in the future more interchangeability and options may become
-available. Note that some boundary layer schemes (YSU and MRF) require
+available. Note that some boundary layer schemes (ACM2 and MRF) require
 the thickness of the surface layer in the model to be representative of the
-actual surface layer (e.g. 50-100 meters).
+actual surface layer (e.g. 50-100 meters) while most others can have thin surface
+layers. The schemes use Monin-Obukhov similarity theory with variations in
+the stability functions and methods for computing roughness lengths.
+Similarity theory relates the information at the lowest model level to the
+surface via a stability dependent, approximately log, profile of wind and
+scalars. Diagnostic outputs of 2m and 10m quantities are consistently
+computed with the profiles of these schemes.
 
 \subsection{Similarity theory (MM5)}
 
+This scheme is now superseded by the Revised MM5 similarity theory scheme
+(see next subsection) but still available as an option.
 This scheme uses stability functions from \citet{paulson70}, \citet{dyer70}, 
 and \citet{webb70}
 to compute surface exchange coefficients for heat, moisture, and momentum. 
 A convective velocity following \citet{beljaars94} is used to enhance surface 
-fluxes of heat and moisture. No thermal roughness length parameterization is 
-included in the current version of this scheme. A Charnock relation relates 
+fluxes of heat and moisture. A Charnock relation relates 
 roughness length to friction velocity over water. There are four stability 
 regimes following \citet{zhanganthes82}.
 This surface layer scheme must be run in conjunction with the MRF or
@@ -424,7 +431,21 @@ simulations. Also for water points, the Beljaars formulation for convective
 velocity is replaced by one proportional only to the vertical thermal gradient
 to help in weak-wind situations.
 
-\subsection{Similarity theory (Eta)}
+\subsection{Revised MM5 similarity theory}
+
+\citet{jimenez12} revised the previous MM5 similarity theory by improving the
+consistency between Ri and z/L and removing limits by using new stability
+functions for stable and unstable conditions that also include the extra term
+z$_0$/L. The scheme gives largely similar results to the old option but shows
+some improvement in the transition periods. Both the MM5-based schemes
+also have thermal roughness length options in addition to convective velocity.
+The thermal roughness length allows for a reduced roughness length in 
+the calculation of $\theta_*$ while the convective velocity adds to $u_*$
+for the purposes of scalar fluxes but not friction. Over the ocean, options
+for tropical cyclones include a Donelan-based formulation for wave
+roughness and a Garratt formulation or constant $z_{0q}$ for enthalpy fluxes.
+
+\subsection{Similarity theory (MYJ/Eta)}
 
 The Eta surface layer scheme \citep{janjic96,janjic02} is based 
 on similarity theory \citep{monin54}. The scheme 
@@ -439,9 +460,26 @@ This surface layer scheme must be run in conjunction with the Eta
 (Mellor-Yamada-Janjic) PBL scheme, and is therefore sometimes referred to
 as the MYJ surface scheme.
 
+\subsection{QNSE similarity theory}
+
+This should be used with the Quasi-Normal Scale Elimination (QNSE) PBL scheme
+\citep{sukoriansky05} named for a theoretical technique employed to derive sub-grid
+mixing properties of stratified turbulence. The theory provides effective viscosity and
+diffusivity as a function of Richardson number that are used in the stable PBL regime
+and the surface layer similarity functions for stable conditions. The scheme is also
+distinguished by have a Parndtl number of 0.7 instead of a value near 1. Unstable conditions 
+follow the MYJ functions, and much of the rest of the code is based on MYJ.
+
 \subsection{Similarity theory (PX)}
 
 The PX surface layer scheme \citep{pleim06} was developed as part of the PX LSM but can be used with any LSM or PBL model.  This scheme is based on similarity theory and includes parameterizations of a viscous sub-layer in the form of a quasi-laminar boundary layer resistance accounting for differences in the diffusivity of heat, water vapor, and trace chemical species.   The surface layer similarity functions are estimated by analytical approximations from state variables.  
+
+\subsection{TEMF surface layer}
+
+This surface layer scheme is designed to work with the Total Energy Mass Flux (TEMF) PBL scheme
+\citep{angevine10}. The similarity functions used in this scheme are functions of Ri for stable conditions,
+and consider unstable conditions similarly to neutral conditions.
+
 
 \section{Land-Surface Model}
 
