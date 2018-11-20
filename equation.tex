@@ -28,7 +28,7 @@ hydrostatic-pressure vertical coordinate denoted by $\eta$, which is also referr
 vertical coordinate. In previous versions of the ARW, $\eta$ was defined as
 %
 \begin{equation}
-\eta = {p_d-p_{t}\over p_{s}-p_{t}},
+\eta = {\frac{p_d-p_{t}}{p_{s}-p_{t}}},
 \label{eta_def}
 \end{equation}
 where $p_d$ is the hydrostatic component of the pressure of dry air, and
@@ -74,10 +74,10 @@ B(1)=1,\quad B_\eta(1)=1, \quad B(\eta_c)=0, \quad B_\eta(\eta_c)=0,
 such that
 %
 \begin{equation}
-c_1={2\eta_c^2\over(1-\eta_c)^3},  \quad      
-c_2={-\eta_c(4+\eta_c+\eta_c^2)\over(1-\eta_c)^3},  \quad      
-c_3={2(1+\eta_c+\eta_c^2)\over(1-\eta_c)^3},  \quad      
-c_4={-(1+\eta_c)\over\ \ \ (1-\eta_c)^3},    
+c_1={\frac{2\eta_c^2}{(1-\eta_c)^3}},  \quad      
+c_2={\frac{-\eta_c(4+\eta_c+\eta_c^2)}{(1-\eta_c)^3}},  \quad      
+c_3={\frac{2(1+\eta_c+\eta_c^2)}{(1-\eta_c)^3}},  \quad      
+c_4={\frac{-(1+\eta_c)}{(1-\eta_c)^3}},    
 \label{B_cof}
  \end{equation}
 where $\eta_c$ is a specified value of $\eta$ at which it becomes a pure pressure coordinate.%
@@ -95,7 +95,7 @@ Figure \ref{figure:B_profile} displays the $B(\eta)$ profiles for the traditiona
 The vertical coordinate metric is defined as 
 %
 \begin{equation}
-\mu_d= {\partial p_d\over\partial\eta} = B_\eta(\eta)(p_s-p_t) +[1-B_\eta(\eta)](p_0-p_t). \label{mu_def}
+\mu_d= {\frac{\partial p_d}{\partial\eta}} = B_\eta(\eta)(p_s-p_t) +[1-B_\eta(\eta)](p_0-p_t). \label{mu_def}
 \end{equation}
 %
 Since $\mu_d \Delta\eta=\Delta p_d=-g\rho_d \Delta z$ is proportional to the mass per unit area within a
@@ -237,7 +237,7 @@ map scale factors $m_x$ and $m_y$ are defined as the ratio of the distance
 in computational space to the corresponding distance on the earth's surface:
 
 \begin{equation}
-(m_x,m_y) = {(\Delta x, \Delta y) \over \hbox{distance on the earth}}.
+(m_x,m_y) = {\frac{(\Delta x, \Delta y)}{\hbox{distance on the earth}}}.
 \label{map_scale}
 \end{equation}
 %
@@ -323,19 +323,19 @@ physical forcings.  Including the map-scale factors \eqref{map_scale}, the Corio
 curvature terms are cast in the following form:
 
 \begin{align}
-F_{U_{cor}} & =  + {m_x\over m_y}
-\ \ \Bigl(f + u {\partial m_x \over
-\partial y} - v {\partial m_y \over \partial x}\Bigr) V
-- \Bigl( {u \over r_e}  + e \cos \alpha_r \Bigr)W \label{u-mom-rhs} 
+F_{U_{cor}} & =  + {\frac{m_x}{m_y}}
+\ \ \Bigl(f + u {\frac{\partial m_x}{\partial y}}
+- v {\frac{\partial m_y}{\partial x}}\Bigr) V
+- \Bigl( {\frac{u}{r_e}}  + e \cos \alpha_r \Bigr)W \label{u-mom-rhs} 
 \\
 %
-F_{V_{cor}} & = - {m_y\over m_x}\biggl[ \Bigl(f + u {\partial m_x \over
-\partial y} - v {\partial m_x \over \partial x}\Bigr) U
-+ \Bigl( {v \over r_e} -e \sin \alpha_r \Bigr)W \biggr] \label{v-mom-rhs} 
+F_{V_{cor}} & = - {\frac{m_y}{m_x}}\biggl[ \Bigl(f + u {\frac{\partial m_x}{\partial y}}
+- v {\frac{\partial m_x}{\partial x}}\Bigr) U
++ \Bigl( {\frac{v}{r_e}} -e \sin \alpha_r \Bigr)W \biggr] \label{v-mom-rhs} 
 \\
 %
-F_{W_{cor}} & = + e \Bigl(U \cos \alpha_r - {m_x\over m_y}V \sin \alpha_r\Bigr) 
-+ {1\over r_e}\biggl(uU +{m_x\over m_y}vV \biggr), \label{w-mom-rhs}
+F_{W_{cor}} & = + e \Bigl(U \cos \alpha_r - {\frac{m_x}{m_y}}V \sin \alpha_r\Bigr) 
++ {\frac{1}{r_e}}\biggl(uU +{\frac{m_x}{m_y}}vV \biggr), \label{w-mom-rhs}
 \end{align}
 \noindent
 where $\alpha_r$ is the local rotation angle between the $y$-axis and the
