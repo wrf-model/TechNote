@@ -560,6 +560,11 @@ simulated squall line: Comparison of one- and two-moment
 schemes. 
 {\em Mon. Wea. Rev.} , {\bf 137}, 991--1007.
 
+\bibitem[Niu et al.(2011)]{niu11}%
+Niu, G.-Y, Z.-L. Yang, K. E. Mitchell, F. Chen, M. B. Ek, M. Barlage, A. Kumar, K. Manning, D. Niyogi, E. Rosero, M. Tewari, Y. Xia, 2011: 
+The community Noah land surface model with multiparameterization options (Noah-MP): 1. Model description and evaluation with local-scale measurements. 
+{\em J. Geophys. Res.}, {\bf116}, D12109.
+
 \bibitem[Noh et al.(2003)]{noh03}%
 Noh, Y., W.G. Cheon, S.-Y. Hong, and S. Raasch, 2003:
  Improvement of the K-profile model for the planetary boundary layer based on large eddy simulation data. 
@@ -906,6 +911,11 @@ on the analysis and forecast of Hurricane Sandy with a limited-area data assimil
 \bibitem[Yang et al.(2017)]{yang17}
 Yang, C., Z. Liu, F. Gao, P. P. Childs, and J. Min, 2017: Impact of assimilating GOES imager clear-sky radiance with a rapid refresh assimilation system for convection-permitting forecast over Mexico. 
 {\em J. Geophys. Res. Atmos.}, {\bf 122}, 5472--5490.
+
+\bibitem[Yang et al.(2011)]{yang11}%
+Yang, Z.-L., G.-Y. Niu, K. E. Mitchell, F. Chen, M. B. Ek, M. Barlage, L. Longuevergne, K. Manning, D. Niyogi, M. Tewari, and Y. Xia, 2011: 
+The community Noah land surface model with multiparameterization options (Noah-MP): 2. Evaluation over global river basins. 
+{\em J. Geophys. Res.}, {\bf 116}, D12110.
 
 \bibitem[Zhang and Anthes(1982)]{zhanganthes82}%
 Zhang, D.-L., and R.A. Anthes, 1982: A high-resolution model of the

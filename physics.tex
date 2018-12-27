@@ -543,9 +543,17 @@ moisture and snow cover prediction. The layer thickness are 10, 30, 60 and 100 c
 soil drainage, and runoff, taking into account vegetation categories,
 monthly vegetation fraction, and soil texture. The scheme provides sensible and latent 
 heat fluxes to the boundary-layer scheme. The Noah LSM additionally predicts 
-soil ice, and fractional snow cover effects, has an improved urban treatment,
+soil ice, and fractional snow cover effects, is linked to urban model options,
 and considers surface emissivity properties, which are all new since the OSU
 scheme.
+
+\subsection{NoahMP LSM}
+
+This model follows on from the Noah LSM and is a large collaborative effort \citep{niu11, yang11} to allow for multiple parameterization options
+for each part of the LSM physics making it a multi-parameterization (MP) scheme. The sub-options within this scheme
+include dynamic vegetation, stomatal resistance, runoff/groundwater, soil permeability, radiative transfer, soil and snow
+options and surface evaporation resistance options. There is also a crop model (GeCROS). NoahMP is linked to
+all the urban options like Noah (UCM, BEP and BEM).
 
 \subsection{Rapid Update Cycle (RUC) Model LSM}
 
