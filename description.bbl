@@ -766,6 +766,10 @@ over the U.S. Great Plains.
 Sun, J., H. Wang, W. Tong, Y. Zhang, C. Lin, and D. Xu, 2016: Comparison of the Impacts of Momentum Control Variables on High-Resolution
  Variational Data Assimilation and Precipitation Forecasting.
  {\em Mon. Wea. Rev.}, {\bf 144}, 149--169.
+ 
+ \bibitem[Sun and Xue(2001)]{sun01}%
+ Sun, S., and Y. Xue, 2001: Implementing a new snow scheme in Simplified Simple Biosphere Model (SSiB), 
+ {\em Adv. Atmos. Sci.}, {\bf 18}, 335--354.
 
 \bibitem[Tao and Simpson(1993)]{tao93}%
 Tao, W.-K., and J. Simpson, 1993:
@@ -908,7 +912,11 @@ Xu, M., Y. Liu, C. Davis and T. Warner, 2002:
 
 \bibitem[Xue(2000)]{xue.2000}
 Xue, M., 2000: High-order monotonic numerical diffusion and smoothing. {\em
-  Mon.\ Wea.\ Rev.}, {\bf 128}, 2853--2864.
+  Mon. Wea. Rev.}, {\bf 128}, 2853--2864.
+  
+\bibitem[Xue et al.(1991)]{xue91}%
+Xue, Y., P. J. Sellers, J. L. Kinter, and J. Shukla, 1991: A simplified biosphere model for global climate studies. 
+{\em J. Climate}, {\bf 4}, 345--364.
 
 \bibitem[Yang et al.(2016)]{yang16}
 Yang, C., Z. Liu, J. Bresch, S.R.H. Rizvi, X.-Y. Huang, and J. Min, 2016: AMSR2 all-sky radiance assimilation and its impact 

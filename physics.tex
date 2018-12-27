@@ -545,7 +545,7 @@ monthly vegetation fraction, and soil texture. The scheme provides sensible and 
 heat fluxes to the boundary-layer scheme. The Noah LSM additionally predicts 
 soil ice, and fractional snow cover effects, is linked to urban model options,
 and considers surface emissivity properties, which are all new since the OSU
-scheme.
+scheme. There is a sub-tiling (mosaic) option for this LSM.
 
 \subsection{NoahMP LSM}
 
@@ -572,10 +572,12 @@ An implicit technique is applied to the solution of these equations.
 Prognostic variables include soil temperature, volumetric liquid, frozen and total soil moisture contents, 
 surface and sub-surface runoff, canopy moisture, evapotranspiration, latent, sensible and soil heat fluxes, 
 heat of snow-water phase change, skin temperature, snow depth and density, and snow temperature. 
+This option also has a sub-grid mosaic sub-option.
 
 \subsection{Pleim-Xiu LSM}
 
-The PX LSM \citep{pleim95, xiu01}, originally based on the ISBA model \citet{noilhan89}, includes a 2-layer force-restore soil temperature and moisture model.  The top layer is taken to be 1 cm thick, and the lower layer is 99 cm. The PX LSM features three pathways for moisture fluxes: evapotranspiration, soil evaporation, and evaporation from wet canopies.  Evapotranspiration is controlled by bulk stomatal resistance that is dependent on root zone soil moisture, photosynthetically active radiation, air temperature, and the relative humidity at the leaf surface.   Grid aggregate vegetation and soil parameters are derived from fractional coverages of land use categories and soil texture types.  There are two indirect nudging schemes that correct biases in 2-m air temperature and RH by dynamic adjustment of soil moisture \citep{pleim03} and deep soil temperature \citep{pleim08}.  Note that a small utility program (ipxwrf) can be used to propagate soil moisture and temperature between consecutive runs to create a continuous simulation of these quantities.
+The PX LSM \citep{pleim95, xiu01}, originally based on the ISBA model \citet{noilhan89}, includes a 2-layer force-restore soil temperature and moisture model.  The top layer is taken to be 1 cm thick, and the lower layer is 99 cm. The PX LSM features three pathways for moisture fluxes: evapotranspiration, soil evaporation, and evaporation from wet canopies.  Evapotranspiration is controlled by bulk stomatal resistance that is dependent on root zone soil moisture, photosynthetically active radiation, air temperature, and the relative humidity at the leaf surface.   Grid aggregate vegetation and soil parameters are derived from fractional coverages of land use categories and soil texture types.  There are two indirect nudging schemes that correct biases in 2-m air temperature and RH by dynamic adjustment of soil moisture \citep{pleim03} and deep soil temperature \citep{pleim08}.  Note that a small utility program (ipxwrf) can be used to propagate soil moisture and temperature between consecutive runs to create a continuous simulation of these quantities. The scheme also
+allows for sub-grid variability by averaging grid-cell properties from sub-grid fractions.
 
 \subsection{Community Land Model (CLM4)}
 
@@ -584,6 +586,11 @@ The model has 10 soil layers and 5 snow layers.
 The scheme allows for sub-grid tiling by 5 main categories (glacier, wetland, vegetated, lake and urban), and 4 vegetated sub-tiles of different "plant functional types" (PFTs).
 This has a rather comprehensive set of physics related to land-surface, soil, hydrology, and vegetation processes, also including urban areas, glaciers, and a multi-layer lake
 model that is also an option to run with other LSMs in WRF.
+
+\subsection{Simplified Simple Biosphere Model (SSiB)}
+
+SSiB \citep{xue91, sun01} has been provided from the UCLA GCM as another climate option for land-surface physics. It has a 2-layer bulk soil temperature model,
+vegetation effects at the surface, 3 layers of soil moisture with a root zone, and a 4-layer snow treatment. It also predicts canopy temperature and moisture.
 
 \subsection{Urban Canopy Model}
 
