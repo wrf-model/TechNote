@@ -415,6 +415,10 @@ Lacis, A. A., and J. E. Hansen, 1974: A parameterization for the
 Laprise R., 1992: The Euler Equations of motion with hydrostatic pressure
   as as independent variable,
   {\em Mon. Wea. Rev.}, {\bf 120}, 197--207.
+  
+ \bibitem[Lawrence et al.(2011)]{lawrence11}%
+Lawrence, D. M., et al., 2011: Parameterization improvements and functional and structural advances in Version 4 of the Community Land Model. 
+{\em J. Adv. Model. Earth Syst.}, {\bf 3}, M03001.
 
 \bibitem[Lee et al.(2004)]{lee04}%
 Lee, M.-S., D. Barker, W. Huang and Y.-H. Kuo, 2004: First Guess at
@@ -574,6 +578,9 @@ Noh, Y., W.G. Cheon, S.-Y. Hong, and S. Raasch, 2003:
 Noilhan, J., and S. Planton, 1989:
   A simple parameterization of land surface processes for meteorological models. 
 {\em Mon. Wea. Rev.}, {\bf 117}, 536--549.
+
+\bibitem[Oleson et al.(2010)]{oleson10}%
+Oleson, K. W., et al., 2010: Technical description of version 4 of the Community Land Model (CLM). NCAR Tech. Note NCAR/TN-478+STR. 266 pp. 
 
 \bibitem[Ooyama(1990)]{ooyama90}%
 Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere,
