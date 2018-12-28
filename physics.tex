@@ -545,7 +545,7 @@ monthly vegetation fraction, and soil texture. The scheme provides sensible and 
 heat fluxes to the boundary-layer scheme. The Noah LSM additionally predicts 
 soil ice, and fractional snow cover effects, is linked to urban model options,
 and considers surface emissivity properties, which are all new since the OSU
-scheme. There is a sub-tiling (mosaic) option for this LSM.
+scheme. There is a sub-tiling (mosaic) option for this LSM \citep{li13}.
 
 \subsection{NoahMP LSM}
 
@@ -594,7 +594,7 @@ vegetation effects at the surface, 3 layers of soil moisture with a root zone, a
 
 \subsection{Urban Canopy Model}
 
-This can be run as an option with the Noah LSM.
+This can be run as an option with the Noah and NoahMP LSMs.
 In order to represent the city scale effects on the mesoscale,
 an urban canopy model (UCM) originally developed by \citet{kusaka01}
 and \citet{kusaka04} and later on modified
@@ -614,19 +614,48 @@ geometry.
 The urban canopy model estimates the surface temperature and heat
 fluxes from the roof, wall and road surface. It also calculates
 the momentum exchange between the urban surface and the atmosphere.
-If they are available, the UCM can take three dfferent densities
+If they are available, the UCM can take three different densities
 of urban development using special land-use categories.
 In Version 3, an anthropogenic heating diurnal cycle was added as
 an option.
 
+\subsection{Building Environment Parameterization (BEP)}
+
+This is an urban option that also aims to account for more of the dynamical effects of buildings on the flow \citep{martilli02}.
+The option is available for the Noah and NoahMP LSMs.
+The buildings are allowed to directly impact more than the lowest model layer with suitable choices of PBL schemes (MYJ and Bougeault-Lacarrere).
+The scheme is also adaptable to more detailed urban morphology datasets such as NUDAPT and WUDAPT.
+
+\subsection{Building Energy Model (BEM)}
+
+An urban option that builds on BEP to include a building energy budget including heat transfer through walls, windows, floors, roofs, etc., and effects of air conditioning
+in controlled environments and other anthropogenic internal heating
+in addition to the external urban canyon representations that exist in other urban schemes \citep{salamanca10}. This model allows for a prediction of energy consumption.
+This option is also available with the Noah and NoahMP LSMs.
+
 \subsection{Ocean Mixed-Layer Model}
 
-This can be selected with the 5-layer option, and is designed for
+This can be selected with its own option, and is designed for
 hurricane modeling in order to simulate the cooling of the ocean underneath
 hurricanes. The ocean mixed-layer model is based on that of \citet{pollard73}. Each column is independently coupled to the local atmospheric column, so the model is one-dimensional. The ocean part consists of a time-varying layer, representing the variable-depth mixed layer over a fixed layer acting as a reservoir of cooler water with a specified thermal lapse rate. In the mixed layer, the prognostic variables are its depth, vector horizontal current, and mean temperature taken to be the sea-surface temperature (SST). The hurricane winds drive the current, which in turn leads to mixing at the base of the mixed layer when the Richardson number becomes low enough. This mixing deepens and cools the mixed layer, and hence the cooler sea-surface temperature impacts the heat and moisture fluxes at the surface, and has a negative feedback on hurricane intensity. The model includes Coriolis effects on the current, which are important in determining the location of maximum cooling on the right side of the hurricane track. It also includes a mixed-layer heat budget, but the surface fluxes and radiation have much less impact than the hurricane-induced deep mixing on the thermal balance at the time scales considered during a forecast. The ocean mixed-layer model is initialized using the observed SST for the mixed layer, and with a single depth representative of known conditions in the hurricane's vicinity that may be replaced with a map of the mixed-layer depth, if available. The initial current is set to zero, which is a reasonable assumption given that the hurricane-induced current is larger than pre-existing ones.
 
+\subsection{3-D Ocean Model}
 
-\subsection{Specified Lower Boundary Conditions}
+This is a three-dimensional ocean model with configurable layers \citep{price94,lee12}, but is simple in the sense of having a fixed flat bathymetry so that all the layers are at fixed depths.
+The model predicts temperature, salinity, and currents at each point along with advective effects. However, currents are typically initialized to zero and this model would
+require additional data to be initialized from real ocean data. Its main use is as added sophistication for a mixed layer model that responds to the atmosphere and includes
+3d dynamical ocean effects driven by the atmospheric stress which can improve over the 1d approach.
+
+\subsection{CLM4.5 Lake Model}
+
+This is a standalone option in WRF that can be used with LSMs other than CLM4. It is based on \citet{subin12} and has a 
+one-dimensional mass and energy balance scheme with 20-25 model layers,
+including up to 5 snow layers on the lake ice, 10 water layers, and 10 soil
+layers on the lake bottom. The lake scheme is used with actual lake points and
+lake depth data where available (WPS has a bathymetry dataset for many lakes), and it also can be used with user defined
+lake points and lake depth in WRF.
+
+\subsection{Updating Lower Boundary Conditions}
 
 For long simulation periods, in excess of about a week, as in applications such as 
 regional climate, ARW has a capability to specify lower boundary conditions 
@@ -729,7 +758,9 @@ temperature. Shortwave radiation includes visible and surrounding wavelengths
 that make up the solar spectrum. Hence, the only source is the Sun, but 
 processes include absorption, reflection, and scattering in the atmosphere 
 and at surfaces. For shortwave radiation, the upward flux is the reflection due to surface 
-albedo. Within the atmosphere the radiation responds to model-predicted 
+albedo. For higher resolutions, the shortwave schemes can represent slope effects
+that modify the surface downward shortwave flux according to slope aspect angles.
+Within the atmosphere the radiation responds to model-predicted 
 cloud and water vapor distributions, as well as specified carbon dioxide, 
 ozone, and (optionally) trace gas concentrations. All the radiation schemes 
 in WRF currently are column (one-dimensional) schemes, so each column is 
