@@ -86,29 +86,6 @@ resolved, mixed-phase schemes should be used, particularly in convective
 or icing situations. For coarser grids the added expense of these schemes
 is not worth it because riming is not likely to be well resolved.
 
-\begin{table}
-\caption{Microphysics Options}
-\label{microphysics table}
-$$\vbox
-{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
-\hfil#\hfil \qquad & \hfil#\hfil \qquad &  \hfil#\hfil \cr
-\multispan4\hrulefill \cr
-Scheme   & Number of   &   Ice-Phase        &      Mixed-Phase          \cr
-         & Variables   &   Processes        &      Processes          \cr
-\multispan4\hrulefill \cr
-Kessler     &      3       &       N         &       N   \cr
-Purdue Lin  &      6       &       Y         &       Y   \cr
-WSM3        &      3       &       Y         &       N   \cr
-WSM5        &      5       &       Y         &       N   \cr
-WSM6        &      6       &       Y         &       Y   \cr
-Eta GCP     &      2       &       Y         &       Y   \cr
-Thompson    &      7       &       Y         &       Y   \cr
-Goddard     &      6       &       Y         &       Y   \cr
-Morrison 2-Moment     &      10      &       Y         &       Y   \cr
-\multispan4\hrulefill \cr
-}}$$
-\end{table}
-
 \subsection{Kessler scheme}
 
 This scheme \citep{kessler69}, which was taken from the COMMAS model
@@ -270,24 +247,6 @@ the model can resolve the convective eddies itself (e.g., $\le$ 5 km grid).
 Table \ref{cumulus table} summarizes the basic characteristics of the
 available cumulus parameterization options in the {\wrf}. 
   
-\begin{table}
-\caption{Cumulus Parameterization Options}
-\label{cumulus table}
-$$\vbox
-{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
-#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
-\multispan4\hrulefill \cr
-Scheme   & Cloud                 &  Type of scheme    &      Closure          \cr
-         & Detrainment           &                    &                \cr
-\multispan4\hrulefill \cr
-Kain-Fritsch         &      Y    &  Mass flux    &  CAPE removal  \cr
-Betts-Miller-Janjic  &      N    &  Adjustment   &  Sounding adjustment  \cr
-Grell-Devenyi        &      Y    &  Mass flux    &  Various   \cr
-Grell-3              &      Y    &  Mass flux    &  Various   \cr
-\multispan4\hrulefill \cr
-}}$$
-\end{table}
-
 \subsection{Kain-Fritsch scheme}
 
 The modified version of the Kain-Fritsch scheme \citep{kain04} is based on 
@@ -412,31 +371,12 @@ surface via a stability dependent, approximately log, profile of wind and
 scalars. Diagnostic outputs of 2m and 10m quantities are consistently
 computed with the profiles of these schemes.
 
-\subsection{Similarity theory (MM5)}
-
-This scheme is now superseded by the Revised MM5 similarity theory scheme
-(see next subsection) but still available as an option.
-This scheme uses stability functions from \citet{paulson70}, \citet{dyer70}, 
-and \citet{webb70}
-to compute surface exchange coefficients for heat, moisture, and momentum. 
-A convective velocity following \citet{beljaars94} is used to enhance surface 
-fluxes of heat and moisture. A Charnock relation relates 
-roughness length to friction velocity over water. There are four stability 
-regimes following \citet{zhanganthes82}.
-This surface layer scheme must be run in conjunction with the MRF or
-YSU PBL schemes. In Version 3, there is an option to replace the Charnock
-relation for roughness length with a Donelan relation that has lower
-drag at hurricane-force wind speeds, and may be more suitable for hurricane
-simulations. Also for water points, the Beljaars formulation for convective
-velocity is replaced by one proportional only to the vertical thermal gradient
-to help in weak-wind situations.
-
 \subsection{Revised MM5 similarity theory}
 
 \citet{jimenez12} revised the previous MM5 similarity theory by improving the
 consistency between Ri and z/L and removing limits by using new stability
 functions for stable and unstable conditions that also include the extra term
-z$_0$/L. The scheme gives largely similar results to the old option but shows
+$\psi(z_0/L)$. The scheme gives largely similar results to the old option but shows
 some improvement in the transition periods. Both the MM5-based schemes
 also have thermal roughness length options in addition to convective velocity.
 The thermal roughness length allows for a reduced roughness length in 
@@ -467,8 +407,13 @@ This should be used with the Quasi-Normal Scale Elimination (QNSE) PBL scheme
 mixing properties of stratified turbulence. The theory provides effective viscosity and
 diffusivity as a function of Richardson number that are used in the stable PBL regime
 and the surface layer similarity functions for stable conditions. The scheme is also
-distinguished by have a Parndtl number of 0.7 instead of a value near 1. Unstable conditions 
-follow the MYJ functions, and much of the rest of the code is based on MYJ.
+distinguished by have a Prandtl number of 0.7 instead of a value near 1. 
+
+\subsection{MYNN surface layer}
+
+The MYNN surface-layer scheme includes  several forms for stability functions with Dyer and Hicks
+used by default. There are also several options for handling thermal roughness lengths and the 
+fluxes over water.
 
 \subsection{Similarity theory (PX)}
 
@@ -479,6 +424,26 @@ The PX surface layer scheme \citep{pleim06} was developed as part of the PX LSM 
 This surface layer scheme is designed to work with the Total Energy Mass Flux (TEMF) PBL scheme
 \citep{angevine10}. The similarity functions used in this scheme are functions of Ri for stable conditions,
 and consider unstable conditions similarly to neutral conditions.
+
+\subsection{Similarity theory (MM5) -- old version}
+
+This scheme is now superseded by the Revised MM5 similarity theory scheme
+(see next subsection) but still available as an option.
+This scheme uses stability functions from \citet{paulson70}, \citet{dyer70}, 
+and \citet{webb70}
+to compute surface exchange coefficients for heat, moisture, and momentum. 
+A convective velocity following \citet{beljaars94} is used to enhance surface 
+fluxes of heat and moisture. A Charnock relation relates 
+roughness length to friction velocity over water. There are four stability 
+regimes following \citet{zhanganthes82}.
+This surface layer scheme must be run in conjunction with the MRF or
+YSU PBL schemes. In Version 3, there is an option to replace the Charnock
+relation for roughness length with a Donelan relation that has lower
+drag at hurricane-force wind speeds, and may be more suitable for hurricane
+simulations. Also for water points, the Beljaars formulation for convective
+velocity is replaced by one proportional only to the vertical thermal gradient
+to help in weak-wind situations.
+
 
 
 \section{Land-Surface Model and Other Surface Options}
@@ -502,24 +467,6 @@ points in the LSM, so it can be regarded as a one-dimensional column model for
 each WRF land grid-point, and many LSMs can be run in a stand-alone mode.
 Table \ref{land table} summarizes the basic features of the land-surface
 treatments in {\wrf}.
-
-\begin{table}
-\caption{Land Surface Options}
-\label{land table}
-$$\vbox
-{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
-#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
-\multispan4\hrulefill \cr
-Scheme          & Vegetation   &  Soil                            & Snow               \cr
-                & Processes    &  Variables (Layers)              & Scheme               \cr
-\multispan4\hrulefill \cr
-5-layer         &      N    &  Temperature (5)                    &  none  \cr
-Noah            &      Y    &  Temperature, Water+Ice, Water (4)  &  1-layer, fractional  \cr
-RUC             &      Y    &  Temperature, Ice, Water + Ice (6)          &  multi-layer   \cr
-Pleim-Xiu       &      Y    &  Temperature, Moisture (2)          &  input only   \cr
-\multispan4\hrulefill \cr
-}}$$
-\end{table}
 
 \subsection{5-layer thermal diffusion}
 
@@ -655,6 +602,14 @@ layers on the lake bottom. The lake scheme is used with actual lake points and
 lake depth data where available (WPS has a bathymetry dataset for many lakes), and it also can be used with user defined
 lake points and lake depth in WRF.
 
+\subsection{Sea-Ice Treatment}
+
+Most of the land models (CLM, Noah, NoahMP, RUC, PX) also consider sea-ice surfaces, and the model surface-layer schemes
+can also consider fractional sea-ice cover within a grid-cell where the fluxes are combined with those of open water.
+Usually the depth is considered fixed and the fraction may be updated with the sea-surface temperature periodically
+during the simulation as the model has no prognostic equation for sea-ice amounts.
+The sea ice in Noah and NoahMP considers 4 layers each 1 meter thick for the sea-ice energy budget.
+
 \subsection{Updating Lower Boundary Conditions}
 
 For long simulation periods, in excess of about a week, as in applications such as 
@@ -691,40 +646,16 @@ few hundred meters, where boundary layer eddies may start to be resolved, and
 in these situations the scheme should be replaced by a fully three-dimensional
 local sub-grid turbulence scheme such as the TKE diffusion scheme (Section
 \ref{tke_section}.)
-Table \ref{pbl table} summarizes the basic features of the PBL schemes
-in {\wrf}.
-
-
-\begin{table}
-\caption{Planetary Boundary Layer Options}
-\label{pbl table}
-$$\vbox
-{\halign{#\hfil \quad & #\hfil \quad &
-#\hfil \quad & #\hfil \quad &  #\hfil \cr
-\multispan4\hrulefill \cr
-Scheme          & Unstable PBL      &  Entrainment         & PBL Top              \cr
-                & Mixing            &  treatment           &                      \cr
-\multispan4\hrulefill \cr
-MRF  & K profile + countergradient term    &  part of PBL mixing &  from critical bulk $Ri$  \cr
-YSU  & K profile + countergradient term   &  explicit term &  from buoyancy profile  \cr
-MYJ  & K from prognostic TKE                        &  part of PBL mixing  &  from TKE   \cr
-ACM2  & transilient mixing up, local K down         &  part of PBL mixing  &  from critical bulk $Ri$   \cr
-\multispan4\hrulefill \cr
-}}$$
-\end{table}
-
-\subsection {Medium Range Forecast Model (MRF) PBL}
-
-The scheme is described by \citet{hong96}. 
-This PBL scheme employs a so-called counter-gradient flux for heat and moisture 
-in unstable conditions. It uses enhanced vertical flux coefficients in the PBL, 
-and the PBL height is determined from a critical bulk Richardson number. 
-It handles vertical diffusion with an implicit local scheme, and it is based 
-on local $Ri$ in the free atmosphere.
 
 \subsection{Yonsei University (YSU) PBL}
 
-The Yonsei University PBL \citep{hong06} is the next generation of the MRF PBL, also using the countergradient terms to represent fluxes due to non-local gradients. This adds to the MRF PBL \citep{hong96} an explicit treatment of the entrainment layer at the PBL top. The entrainment is made proportional to the surface buoyancy flux in line with results from studies with large-eddy models \citep{noh03}. The PBL top is defined using a critical bulk Richardson number of zero (compared to 0.5 in the MRF PBL), so is effectively dependent on the buoyancy profile, in which the PBL top is defined at the maximum entrainment layer (compared to the layer at which the diffusivity becomes zero). A smaller magnitude of the counter-gradient mixing in the YSU PBL produces a well-mixed boundary-layer profile, whereas there is a pronounced over-stable structure in the upper part of the mixed layer in the case of the MRF PBL. Details are available in \citet{hong06}, including the analysis of the interaction between the boundary layer and precipitation physics. In version 3.0, an enhanced stable boundary-layer diffusion algorithm \citep{hong07} is also devised that allows deeper mixing in windier conditions.
+The Yonsei University PBL \citep{hong06} is the next generation of the MRF PBL, also using the countergradient terms to represent fluxes due to non-local gradients. This adds to the MRF PBL \citep{hong96} an explicit treatment of the entrainment layer at the PBL top. The entrainment is made proportional to the surface buoyancy flux in line with results from studies with large-eddy models \citep{noh03}. The PBL top is defined using a critical bulk Richardson number of zero (compared to 0.5 in the MRF PBL), so is effectively dependent on the buoyancy profile, in which the PBL top is defined at the maximum entrainment layer (compared to the layer at which the diffusivity becomes zero). A smaller magnitude of the counter-gradient mixing in the YSU PBL produces a well-mixed boundary-layer profile, whereas there is a pronounced over-stable structure in the upper part of the mixed layer in the case of the MRF PBL. Details are available in \citet{hong06}, including the analysis of the interaction between the boundary layer and precipitation physics. 
+
+Topographic drag effects were added as an option to this PBL scheme by \citet{jimenez12a} and improved by \citet{lorente16} which modifies the
+model drag according to sub-grid variance in terrain elevation and also resolved local variability.
+ 
+ Top-down mixing was
+added as an option \citep{wilson18} to allow for radiative-driven downward mixing that helps the life-cycle of stratocumulus clouds and fog.
 
 \subsection{Mellor-Yamada-Janjic (MYJ) PBL}
 
@@ -741,10 +672,84 @@ ratio of the variance of the vertical velocity deviation and TKE cannot be
 smaller than that corresponding to the regime of vanishing turbulence. 
 The TKE production/dissipation differential equation is solved iteratively. 
 The empirical constants have been revised as well \citep{janjic96,janjic02}. 
+This scheme is also enabled with fluxes from layers other than the surface for use with
+the BEP and BEM urban models.
+
+\subsection{Quasi-Normal Scale Elimination (QNSE) scheme with EDMF}
+
+The QNSE scheme for the stable boundary is combined with an eddy-diffusivity mass-flux (EDMF) scheme for thermals in the unstable
+boundary layer. The QNSE scheme \citep{sukoriansky05} is a theoretically derived scheme for the stably stratified boundary layer.
+The scheme is a Mellor-Yamada TKE-based method that modifies the vertical diffusion with a function of the Richardson number
+to incorporate the theory. For unstable conditions an eddy-diffusivity mass flux approach has
+been adopted \citep{pergaud09} that considers non-local thermals which may include cumulus clouds in additional to local
+TKE-based mixing. The shallow convective mass-flux scheme is called after the local TKE-based calculations in the QNSE scheme.
+
+\subsection{Mellor-Yamada-Nakanishi-Niino (MYNN) Levels 2.5 and 3}
+
+The MYNN2.5 and MYNN3 schemes \citep{nakanishi06,nakanishi09} are TKE-based schemes where Level 2.5 predicts
+TKE as an extra prognostic variable, while Level 3 adds variances of potential temperature, moisture and their covariance.
+However in both schemes only TKE is advected, but the TKE advection option is a unique aspect of this scheme. The scheme is
+used operationally as part of the NOAA HRRR physics and has included many newer updates including shallow convection
+and EDMF options \citep{olson19} as well as updated options for computing mixing length scales. The schemes can be used
+with the MYNN or MM5 surface-layer schemes.
+
+An additional option related to the MYNN PBL scheme is a wind-farm parameterization \citep{fitch12} that accounts for
+the additional drag and turbulence generation by wind-farm rotors.The scheme is customizable to different rotor characteristics
+as a function of wind speed.
 
 \subsection{Asymmetrical Convective Model version 2 (ACM2) PBL}
 
 The ACM2 \citep{pleim07} is a combination of the ACM, which is a simple transilient model that was originally a modification of the Blackadar convective model, and an eddy diffusion model.  Thus, in convective conditions the ACM2 can simulate rapid upward transport in buoyant plumes and local shear induced turbulent diffusion.  The partitioning between the local and non-local transport components is derived from the fraction of non-local heat flux according to the model of \citet{holtslag93}.  The algorithm transitions smoothly from eddy diffusion in stable conditions to the combined local and non-local transport in unstable conditions.  The ACM2 is particularly well suited for consistent PBL transport of any atmospheric quantity including both meteorological (u, v,$\theta$ , qv) and chemical trace species.
+
+\subsection{Bougeault-Lacarrere PBL}
+
+The BouLac PBL \citep{bougeault89} is a 1.5-order (level 2.5) scheme with a prognostic TKE equation and a method of calculating length scales
+that defines both upwards and downwards lengths scales affected by the PBL top and ground and uses the lesser of these for a length scale.
+The scheme has also been adapted for use with the BEP and BEM urban models that can represent buildings higher than the lowest model level
+thickness.
+
+\subsection{University of Washington (UW) PBL}
+
+The scheme of \citet{bretherton09} is part of the CAM climate model physics suite. It is a TKE-based scheme that includes a
+moist turbulence parameterization. The TKE is a diagnostic quantity. The scheme defines convectively mixed sets of layers
+and includes a method for explicit entrainment related to the convective velocity.
+
+\subsection{Total Energy Mass Flux (TEMF) PBL}
+
+\citet{angevine10} use total energy rather than TKE as a prognostic variable. This includes potential energy in addition.
+The scheme includes the effects of shallow cumulus convection and is also coupled with its own surface-layer scheme.
+
+\subsection{Shin-Hong PBL}
+
+\citet{shin15} have developed a scale-aware PBL option based on the YSU PBL scheme. At larger grid sizes it
+resembles YSU, but as the grid size becomes much less than the PBL depth, the nonlocal term is reduced in
+strength to allow the resolved scales to do a fraction of the transport consistent with resolution.
+
+\subsection{Grenier-Bretherton-McCaa (GBM) PBL}
+
+This is a moist PBL scheme \citet{grenier01} that can also represent cloud-topped boundary layers such as marine stratocumulus.
+The scheme includes a TKE equation and the effect of cloud-top radiative cooling that modifies the entrainment
+and TKE, an important process for stratocumulus clouds.
+
+
+\subsection {Medium Range Forecast Model (MRF) PBL}
+
+The scheme is described by \citet{hong96}. 
+This PBL scheme employs a so-called counter-gradient flux for heat and moisture 
+in unstable conditions. It uses enhanced vertical flux coefficients in the PBL, 
+and the PBL height is determined from a critical bulk Richardson number. 
+It handles vertical diffusion with an implicit local scheme, and it is based 
+on local $Ri$ in the free atmosphere.
+
+\subsection {Gravity Wave Drag}
+
+For grid sizes that exceed about 10 km and for longer simulations that include significant orography,
+gravity wave drag may be an important process to include. This accounts for the momentum flux
+due to unresolved mountain waves that may affect jet-stream level winds, and mountains also
+have a low-level flow-blocking effect. WRF has an option for these effects \citep{choi15} that uses
+sub-grid orographic data provided by {\em geogrid}. The sub-grid information includes direction-sensitive
+statistics related to the orientation of the orography.
+
 
 \section{Atmospheric Radiation}
 
@@ -771,27 +776,6 @@ less than the horizontal grid length. This assumption would become less
 accurate at high horizontal resolution.
 Table \ref{radiation table} summarizes the basic features of the radiation schemes
 in the {\wrf}.
-
-\begin{table}
-\caption{Radiation Options}
-\label{radiation table}
-$$\vbox
-{\halign{#\hfil \qquad & \hfil#\hfil \qquad &
-\hfil#\hfil \qquad & #\hfil \qquad &  #\hfil \cr
-\multispan4\hrulefill \cr
-Scheme          &   Longwave/      &  Spectral      & CO$_2$, O$_3$, clouds              \cr
-                &   Shortwave      &  Bands         &                      \cr
-\multispan4\hrulefill \cr
-RRTM            &  LW   &  16 &  CO$_2$, O$_3$, clouds  \cr
-GFDL LW         &  LW   &  14 &  CO$_2$, O$_3$, clouds  \cr
-CAM3 LW         &  LW   &  2  &  CO$_2$, O$_3$, clouds  \cr
-GFDL SW         &  SW   &  12 &  CO$_2$, O$_3$, clouds  \cr
-MM5  SW         &  SW   &  1  &   clouds   \cr
-Goddard         &  SW   &  11  &  CO$_2$, O$_3$, clouds  \cr
-CAM3 SW         &  SW   &  19  &  CO$_2$, O$_3$, clouds  \cr
-\multispan4\hrulefill \cr
-}}$$
-\end{table}
 
 \subsection{Rapid Radiative Transfer Model (RRTM) Longwave}
 
@@ -857,39 +841,6 @@ ozone distribution that varies during the simulation according
 to monthly zonal-mean climatological data.
 
 \section {Physics Interactions}
-
-\begin{table}
-\caption{Physics Interactions. Columns correspond to 
-model physical processes: radiation (Rad),
-microphysics (MP), cumulus parameterization (CP), planetary boundary layer/vertical diffusion
-(PBL), and surface physics (Sfc). Rows corresponds to
-model variables where {\em i} and {\em o} indicate whether a variable is
-input or output (updated) by a physical process.}
-\label{physics interaction table}
-$$\vbox
-{\halign{#\hfil \qquad & #\hfil \qquad & \hfil#\hfil \qquad & \hfil#\hfil 
-\qquad & \hfil#\hfil \qquad &  \hfil#\hfil \qquad & \hfil#\hfil \cr
-\multispan7\hrulefill \cr
-                &              & Rad       & MP           & CP           & PBL      &   Sfc   \cr
-\multispan7\hrulefill \cr
-Atmospheric     &  Momentum    &           &              &      i       &  io     &           \cr
-State or        &  Pot. Temp.  &   io      &     io       &     io       &  io     &           \cr
-Tendencies      &  Water Vapor &    i      &     io       &     io       &  io     &           \cr
-                &  Cloud       &    i      &     io       &      o       &  io     &           \cr
-                &  Precip      &    i      &     io       &      o       &         &           \cr
-\multispan7\hrulefill \cr
-Surface         &  Longwave Up &    i      &              &              &         &    o      \cr
-Fluxes          &  Longwave Down &  o      &              &              &         &    i      \cr
-                &  Shortwave Up &   i      &              &              &         &    o      \cr
-                &  Shortwave Down & o      &              &              &         &    i      \cr
-                &  Sfc Convective Rain &   &              &      o       &         &    i      \cr
-                &  Sfc Resolved Rain &     &      o       &              &         &    i      \cr
-                &  Heat Flux &             &              &              &   i     &    o      \cr
-                &  Moisture Flux &         &              &              &   i     &    o      \cr
-                &  Surface Stress &        &              &              &   i     &    o      \cr
-\multispan7\hrulefill \cr
-}}$$
-\end{table}
 
 While the model physics parameterizations are categorized in a modular way,
 it should be noted that there are many interactions between them via the
