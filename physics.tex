@@ -765,17 +765,24 @@ processes include absorption, reflection, and scattering in the atmosphere
 and at surfaces. For shortwave radiation, the upward flux is the reflection due to surface 
 albedo. For higher resolutions, the shortwave schemes can represent slope effects
 that modify the surface downward shortwave flux according to slope aspect angles.
+There are also diagnostic outputs of the diffuse and direct components of solar radiation
+at the surface. Diagnostics for the RRTMG and CAM3 options also include
+TOA/surface, longwave/shortwave, clearsky/allsky, upward/downward  accumulated
+fluxes for radiation budgets.
+
 Within the atmosphere the radiation responds to model-predicted 
 cloud and water vapor distributions, as well as specified carbon dioxide, 
 ozone, and (optionally) trace gas concentrations. All the radiation schemes 
 in WRF currently are column (one-dimensional) schemes, so each column is 
 treated independently, and the fluxes correspond to those in 
-infinite horizontally uniform  planes, which
+infinite horizontally uniform  planes with cloud fractions at leach layer, which
 is a good approximation if the vertical thickness of the model layers is much 
 less than the horizontal grid length. This assumption would become less 
 accurate at high horizontal resolution.
-Table \ref{radiation table} summarizes the basic features of the radiation schemes
-in the {\wrf}.
+
+In addition to radiative transfer schemes listed below, WRF also has idealized
+temperature relaxation methods for the Held-Suarez global test case and the
+idealized tropical cyclone case.
 
 \subsection{Rapid Radiative Transfer Model (RRTM) Longwave}
 
@@ -785,7 +792,36 @@ It uses pre-set tables to accurately represent longwave processes due
 to water vapor, ozone, CO$_2$, and trace gases (if present), as well as 
 accounting for cloud optical depth.
 
-\subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Longwave}
+\subsection {CAM3 Longwave and Shortwave}
+
+These are spectral-band longwave and shortwave schemes used in the NCAR Community Atmosphere
+Model (CAM 3.0) for climate simulations. It has the potential to handle
+several trace gases including time variation as in climate-change scenarios. 
+It interacts with resolved clouds and cloud fractions,
+ and is documented fully by \citet{collins04}.  It has the ability to handle optical properties of
+several aerosol types and trace gases. It uses cloud fractions and overlap assumptions
+in unsaturated regions, and has a monthly zonal ozone climatology.
+ 
+ In more recent versions of CAM, this has been replaced by RRTMG radiation.
+ 
+\subsection {RRTMG Longwave and Shortwave}
+
+The Rapid Radiative Transfer Model for GCMs (RRTMG, \citet{iacono08}) is a state-of-the-art
+widely used radiative model for weather and climate applications both globally
+and regionally. The schemes use spectral bands and the k-distribution method of
+integration with look-up tables for efficiency. For clouds with cloud fractions that vary vertically it uses the 
+Monte Carlo Independent Column Approximation (MCICA) together with a 
+maximum-random overlap assumption. It can also make use of effective radii
+of cloud water, ice and snow if they come from the microphysics or it will use its
+own assumptions if these are not provided. It includes the effect
+of trace gases and has an option for their time variation for climate projections.
+For ozone there is a global monthly climatology option that comes from the CAM3 data.
+Aerosols can use a global monthly climatology (Tegen or Eidhammer/Thompson) or can come from
+optical properties computed by WRF-Chem or can be specified/input in other ways. The longwave scheme has been
+modified at the top-of-atmosphere to account for the significant downward flux originating from 
+above the model top \citep{cavallo11}.
+ 
+\subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Longwave and Shortwave}
 
 This longwave radiation scheme is from GFDL. It follows the simplified exchange 
 method of \citet{fels75} and \citet{schwarzkopf91}, 
@@ -797,16 +833,7 @@ The \citet{rodgers68} formulation is adopted for ozone absorption.
 Clouds are randomly overlapped. 
 This scheme is implemented to conduct comparisons with the operational Eta model.
 
-\subsection {CAM Longwave}
-
-A spectral-band scheme used in the NCAR Community Atmosphere
-Model (CAM 3.0) for climate simulations. It has the potential to handle
-several trace gases. It interacts with resolved clouds and cloud fractions,
- and is documented fully by \citet{collins04}.
-
-\subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Shortwave}
-
-This shortwave radiation is a GFDL version of the \citet{lacis74}
+The shortwave radiation is a GFDL version of the \citet{lacis74}
 parameterization. Effects of atmospheric water vapor, ozone 
 \citep[both from][]{lacis74}, and carbon dioxide \citep{sasamori72}
 are employed. Clouds are randomly overlapped. Shortwave calculations are made 
@@ -815,30 +842,38 @@ using a daylight-mean cosine solar zenith angle over the time interval
 
 \subsection {MM5 (Dudhia) Shortwave}
 
-This scheme is base on \citet{dudhia89} and is taken from MM5. It has a simple 
-downward integration of solar flux, accounting for clear-air scattering, 
+This scheme is based on \citet{dudhia89} and is taken from MM5. It has a simple 
+downward integration of solar flux, accounting for tunable clear-air scattering, as well as 
 water vapor absorption \citep{lacis74}, and cloud albedo and absorption. 
-It uses look-up tables for clouds from \citet{stephens78}. In Version 3,
-the scheme has an option to account for terrain slope and shadowing effects
-on the surface solar flux.
+It uses look-up tables for clouds from \citet{stephens78} but does not use
+sub-grid cloud fractions, only uniformly clear or cloudy within a model layer. The scheme
+has no ozone, so it should not be used with model tops in the mid-stratosphere.
 
-\subsection {Goddard Shortwave}
+\subsection {Old Goddard Shortwave}
 
 This scheme is based on \citet{chou94}. It has a total of 11 spectral 
 bands and considers diffuse and direct solar radiation components in a two-stream 
 approach that accounts for scattered and reflected components. Ozone is considered 
-with several climatological profiles available.
+with several climatological one-dimensional profiles available. The scheme can also take
+aerosol optical properties provided by WRF-Chem.
 
-\subsection {CAM Shortwave}
+\subsection {New Goddard Longwave and Shortwave}
 
-A spectral-band scheme used in the NCAR Community Atmosphere
-Model (CAM 3.0) for climate simulations. It has the ability to handle optical properties of
-several aerosol types and trace gases. It uses cloud fractions and overlap assumptions
-in unsaturated regions, and has a monthly zonal ozone climatology. It is documented fully by 
-\citet{collins04}.
-The CAM radiation scheme is especially suited for regional climate simulations by having a 
-ozone distribution that varies during the simulation according
-to monthly zonal-mean climatological data.
+These spectral-band schemes provided by NASA Goddard are advanced and relatively efficient while also being accurate.
+The shortwave and longwave schemes are based on \citet{chou99} and \citet{chou01}
+respectively. It does not interact with WRF-Chem but 2D aerosol optical depth
+information can be used for aerosol effects. It includes trace gases and uses
+ozone climatology profiles. Cloud fractions in layers are also accounted for with
+low, middle and high layers maximally overlapped within these grouped layers and randomly between
+them.
+
+\subsection {Fu-Liou-Gu (FLG) Longwave and Shortwave}
+
+Sophisticated spectral band schemes provided by UCLA  \citep{gu11,fu92}.
+Contains capabilities for fractional clouds and aerosols, but these are off by default,
+so clouds are either present or absent in a layer. Ozone uses profiles similar to the
+Goddard schemes. CO2 and trace gases are specified.
+Correlated-k distribution method for longwave scheme.
 
 \section {Physics Interactions}
 

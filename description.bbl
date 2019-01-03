@@ -101,6 +101,11 @@ Carpenter, R. L., K. K. Droegemeier, P. R. Woodward, and C. E. Hane, 1990:
   Application of the Piecewise Parabolic Method (PPM) to
   meteorological modeling. 
   {\em Mon. Wea. Rev.}, {\bf 118}, 586--612.
+  
+ \bibitem[Cavallo et al.(2011)]{cavallo11}%
+ Cavallo, S. M., J. Dudhia and C. Snyder, 2011: A multi-layer upper boundary condition for longwave
+radiative flux to correct temperature biases in a mesoscale model. 
+ {\em Mon. Wea. Rev.}, {\bf 139}, 1952--1959.
 
 \bibitem[Chen and Dudhia(2001)]{chendudhia01}%
 Chen, F., and J. Dudhia, 2001: Coupling an advanced land-surface/ hydrology model 
@@ -139,6 +144,14 @@ Chou M.-D., and M. J. Suarez, 1994: An efficient thermal infrared radiation
   parameterization for use in general circulation models. 
   NASA Tech. Memo. 104606, 3, 85pp.
 
+\bibitem[Chou and Suarez(1999)]{chou99}%
+Chou M.-D., and M. J. Suarez, 1999: A solar radiation parameterization for atmospheric studies.
+  NASA Tech. Memo. 104606, 15, 40pp.
+  
+ \bibitem[Chou et al.(2001)]{chou01}%
+ Chou, M. D., M. J. Suarez, X. Z. Liang, and M. M. H. Yan, 2001: A thermal infrared radiation parameterization for atmospheric studies.
+  NASA Tech. Memo. 104606, 19, 68pp.
+  
 \bibitem[Collins et al.(2004)]{collins04}%
 Collins, W.D. et al., 2004: 
 Description of the NCAR Community Atmosphere Model (CAM 3.0),
@@ -221,6 +234,10 @@ Fisher, M., 2003: Background error covariance modeling.
 \bibitem[Fletcher(1962)]{fletcher62}%
 Fletcher, N. H., 1962: {\em The Physics Of Rain Clouds.} Cambridge University Press, 
   386 pp.
+  
+\bibitem[Fu and Liou(1992)]{fu92}%
+Fu, Q., and K. N. Liou, 1992: On the correlated k-distribution method for radiative transfer in nonhomogeneous atmospheres. 
+{\em J. Atmos. Sci.}, {\bf 49}, 2139--2156. 
 
 \bibitem[Gao et al.(2015)]{gao15}%
 Gao, F., X.-Y. Huang, N. A. Jacobs, and H. Wang, 2015: Assimilation of wind speed and direction observations: 
@@ -249,6 +266,10 @@ within the WRF model. {\em Atmos. Environ.}, {\bf 39}, 6957-6975.
 \bibitem[Grenier and Bretherton(2001)]{grenier01}%
 Grenier, H., and C. S. Bretherton, 2001: A moist PBL parameterization for large-scale models and its application to subtropical cloud-topped marine boundary layers. 
 {\em Mon. Wea. Rev.}, {\em 129}, 357--377.
+
+\bibitem[Gu et al.(2011)]{gu11}%
+Gu, Y., K. N. Liou, S. C. Ou, and R. Fovell, 2011: Cirrus cloud simulations using WRF with improved radiation parameterization and increased vertical resolution. 
+{\em J. Geophys. Res.}, {\bf 116}, D06119. 
 
 \bibitem[{Hacker et~al.(2011)Hacker, Snyder, Ha,, and Pocernich}]{Ha11a}
 Hacker, J.~P., C.~Snyder, S.-Y. Ha, and M.~Pocernich, 2011: Linear and
@@ -314,6 +335,11 @@ X. Zhang, D.-J. Won, H.-C. Lin, and Y.-H. Kuo, 2009: Four-Dimensional Variationa
 Huang, X.-Y., F. Gao, N. A. Jacobs, and H. Wang, 2013: Assimilation of wind speed and direction observations: a new formulation 
 and results from idealised experiments. 
 {\em Tellus A}, {\bf 65}, 19936, doi:10.3402/tellusa.v65i0.19936.
+
+\bibitem[Iacono et al.(2008)]{iacono08}%
+Iacono, M. J., J. S. Delamere, E. J. Mlawer, M. W. Shephard, S. A. Clough, and W. D. Collins, 2008: Radiative forcing by long-lived greenhouse gases: 
+Calculations with the AER radiative transfer models. 
+{\em J. Geophys. Res.}, {\bf 113}, D13103.
 
 \bibitem[Ide et al.(1997)]{ide97}%
 Ide, K., P. Courtier, M. Ghil, and A. C. Lorenc, 1997: Unified notation for data
@@ -512,7 +538,8 @@ Lorenc, A. C., 1986: Analysis methods for numerical weather prediction.
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 1177--1194.
   
  \bibitem[Lorente-Plazas et al.(2016)]{lorente16}%
- Lorente-Plazas, R., P. A. Jimenez, J. Dudhia, and J. P. Montavez, 2016: Evaluating and improving theimpact of the atmospheric stability and orography on surface winds in the WRF model. 
+ Lorente-Plazas, R., P. A. Jimenez, J. Dudhia, and J. P. Montavez, 2016: Evaluating and improving the
+impact of the atmospheric stability and orography on surface winds in the WRF model. 
 {\em Mon. Wea. Rev.}, {\bf 144}, 2685--2693.
   
 \bibitem[Lynch and Huang(1992)]{lynchhuang92}%,
@@ -632,7 +659,8 @@ Noilhan, J., and S. Planton, 1989:
 Oleson, K. W., et al., 2010: Technical description of version 4 of the Community Land Model (CLM). NCAR Tech. Note NCAR/TN-478+STR. 266 pp. 
 
 \bibitem[Olson et al.(2019)]{olson19}%
-J. B. Olson, J. S. Kenyon, W.. A. Angevine, J. M. Brown, M. Pagowski, and K. Su?elj, 2019: A Description of the MYNN-EDMF Scheme andthe Coupling to Other Components in WRF-ARW. NOAA Technical Memorandum (in preparation).
+J. B. Olson, J. S. Kenyon, W.. A. Angevine, J. M. Brown, M. Pagowski, and K. Su?elj, 2019: A Description of the MYNN-EDMF Scheme and
+the Coupling to Other Components in WRF-ARW. NOAA Technical Memorandum (in preparation).
 
 \bibitem[Ooyama(1990)]{ooyama90}%
 Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere,
@@ -659,7 +687,9 @@ Paulson, C. A., 1970: The mathematical representation of wind speed and
   {\em J. Appl. Meteor.}, {\bf 9}, 857--861.
   
 \bibitem[Pergaud et al.(2009)]{pergaud09}%
-Pergaud J, V. Masson, S. Malardel, and F. Couvreux, 2009: A parameterization of drythermal and shallow cumuli for mesoscale numerical weather prediction.{\em Boundary-Layer Meteorol.}, {\bf 132}, 83--106.
+Pergaud J, V. Masson, S. Malardel, and F. Couvreux, 2009: A parameterization of dry
+thermal and shallow cumuli for mesoscale numerical weather prediction.
+{\em Boundary-Layer Meteorol.}, {\bf 132}, 83--106.
 
 \bibitem[Pleim(2006)]{pleim06}%
 Pleim, J. E., 2006:
