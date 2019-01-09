@@ -566,9 +566,9 @@ we can define the spatial discretization for the ARW solver.
 %
 % Figure 3.something
 %
-\begin{figure}
-  \includegraphics *[width=6.5in,bb= 0 0 629.8 325.4]{figures/grids.pdf}
-  \caption{\label{figure:2}Horizontal and vertical grids of the ARW}
+\begin{figure}[ht]
+  \fbox{\includegraphics[trim=0 1cm 0 16cm, clip=true, width=6.5in]{figures/grids.pdf}}
+  \caption{\label{figure:2}Horizontal (left) and vertical (right) grids of the ARW}
 \end{figure}
 
 \subsection{Acoustic Step Equations}
@@ -1179,7 +1179,7 @@ the definition of the correction \eqref{correction-def}.
 %  figure 3.2 for polar b.c
 %
 \begin{figure}
-  \includegraphics *[width=6.5in,bb= 0 0 419 183]{figures/polar_bc.pdf}
+  \includegraphics *[trim=0 0.1cm 0 0.1cm, clip=true, width=6.5in]{figures/polar_bc.pdf}
   \caption{\label{figure_pole} Latitude-longitude grid structure in the
 pole region. In the ARW formulation, $r_e\Delta\psi = \Delta y/m_y $.}
 \end{figure}
@@ -1498,7 +1498,7 @@ of the time step suggested in section \ref{rk3_timestep_constraint}:
 \end{equation}
 \begin{equation}
 \Delta t = min ( max ( \Delta t, \Delta t_{min} ) , \Delta t_{max} ),
-\label{adapt_bound_min_timestep}
+\label{adapt_bound_timestep}
 \end{equation}
 %
 \noindent
