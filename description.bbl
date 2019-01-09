@@ -1,5 +1,10 @@
 \begin{thebibliography}{}
 
+\bibitem[Alapaty et al.(2008)]{alapaty08}%
+Alapaty K, D. Niyogi, F. Chen, P. Pyle, A. Chandrasekar, and N. Seaman, 2008: Development of the flux-adjusting 
+surface data assimilation system for mesoscale models. {\em J. Appl. Meteorol. Climatol.}, {\bf 47}, 
+2331–2350, doi:10.1175/2008JAMC1831.1.
+
 \bibitem[Angevine et al.(2010)]{angevine10}%
 Angevine, W. M., H. Jiang, and T. Mauritsen, 2010: Performance of an eddy diffusivity-mass flux 
 scheme for shallow cumulus boundary layers. {\em Mon. Wea. Rev.}, {\bf 138}, 2895--2912.
@@ -584,6 +589,11 @@ Michalakes, J., J. Dudhia, D. Gill, T. Henderson, J. Klemp, W. Skamarock, and W.
   To appear in proceeding of {\em the Eleventh ECMWF Workshop 
   on the Use of High Performance Computing in Meteorology}. 
   25--29 October 2004, Reading, U.K., Ed. George Mozdzynski.
+
+\bibitem[Miguez-Macho et al. (2004)]{miguez04}%
+Miguez-Macho, G., G. L. Stenchikov, and A. Robock, 2004: Spectral nudging to eliminate the 
+  effects of domain position and geometry in regional climate model simulations. 
+  {\em J. Geophys. Res.}, {\bf 109}, D13104. doi:10.1029/2003JD004495.
 
 \bibitem[Milbrandt and Yau (2005)]{milbrandt05}%
 Milbrandt, J. A., and M. K. Yau, 2005: A multimoment bulk microphysics parameterization. 
