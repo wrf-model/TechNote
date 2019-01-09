@@ -3,11 +3,13 @@
 
 Four-dimensional data assimilation (FDDA), also known as nudging, is a method of keeping
 simulations close to analyses and/or observations or forcing data over the course of an
-integration. There are two types of FDDA that can be used separately or in
+integration by applying extra forcing terms to the model equations.
+There are three types of FDDA and some can be used in
 combination. Grid- or analysis-nudging simply forces the model simulation 
 towards a series of analyses grid-point by grid-point. Observational- or station-nudging
-locally forces the simulation towards observational data. These methods
-provide a four-dimensional analysis that is somewhat balanced dynamically,
+locally forces the simulation towards observational data. 
+Spectral nudging only forces the model to the selected spectra of waves in the analysis.
+These methods provide a four-dimensional analysis that is somewhat balanced dynamically,
 and in terms of continuity,
 while allowing for complex local topographical or convective variations.
 Such datasets can cover long periods, and have particular value in driving
@@ -15,7 +17,7 @@ off-line air quality or atmospheric chemistry models.
 
 \section{Grid Nudging or Analysis Nudging}
 
-Grid nudging is a major component of so-called Four-Dimensional Data Assimilation (FDDA). (Other components are surface-analysis nudging to be developed soon, and observational nudging, developed and released in WRF Version 2.2).
+Grid nudging is a component of FDDA. Other components are surface-analysis nudging, and observational nudging. The method can be used to nudge wind component u and v, temperature and water vapor mixing ratio.
 
 The grid-nudging method is specifically three-dimensional analysis nudging, whereby the atmospheric model is nudged towards time- and space-interpolated analyses using a point-by-point relaxation term. \citet{stauffer90} originally developed the technique for MM5.
 
@@ -46,6 +48,14 @@ Several options are available to control the nudging.
 
 {\it e)} Nudging and nesting. Each of these controls is independently set for each domain when nesting, except for the ramping function, which has one switch for all domains.
 
+\section{Surface Analysis Nudging}
+
+The method used in surface analysis nudging is similar to that for 3-dimensional analysis nudging, except it only applies to the variables in the boundary layer. It utilizes a surface analysis file produced by an auxiliary program which may have higher temporal frequency than the 3-dimensional atmospherice analysis. 
+
+\section{Flux-Adjusting Surface Analysis Nudging}
+
+This is a surface analysis nudging method that not only nudges temperature and water mixing ratio at the first model level, but it also corrects soil temperature and moisture based on the differences in temperature and water vapor mixing ratio at the first model level (also refered to as Flux-Adjusting Surface Data Assimilation System or FASDAS). The differences of temperature and water vapor mixing ratio at the first model level are converted to surface flux adjustments that are applied to the prognostic equations of soil temperature and soil moisture. Through this indirect nudging, the surface temperature and water vapor mixing ratio from the model will become closer to the analysis. This method was developed for MM5 by \citet{alapaty08}.
+
 \section{Observational or Station Nudging}
 
 The observation-nudging FDDA capability allows the model to effectively assimilate temperature, wind and moisture observations from all platforms, measured at any location within the model domains and any time within a given data assimilation periods With the observation-nudging formulation, each observation directly interacts with the model equations and thus the scheme yields dynamically and diabatically initialized analyses to support the applications that need regional 4-D full-field weather and/or to start regional NWP with spun-up initial conditions. The observation-nudging scheme, which is an enhanced version of the standard MM5 observation-nudging scheme, was implemented into WRF-ARW and has been in the model since WRF Version 2.2. 
@@ -66,3 +76,11 @@ The most significant modifications to the standard MM5 observation-nudging schem
 
 (7) An ability for users to set different nudging time-windows and influence radii for different (nested) domains has been added into WRF since the WRF V3.0 release. 
  
+\section{Spectral Nudging}
+
+Spectral nudging is another way to nudge model solution to either analysis or any forcing data. The key difference between this method and that grid- or obs-nudging is that it is more selective in the scales one would like to nudge. In contrast to directly nudge model variables toward analysis or observation, this method decomposes the difference fields spectrally, and nudges toward the longer waves that corresponding to the analysis. The spectral coefficients from the selected waves are then transformed back from the wave space to physical space and added to the model as tendencies. This technique was originally implemented by \citet{miguez04} to the Reginoal Atmospheric Modeling System, and later to the WRF model in 2010.
+
+The spectral nudging uses the same input data as for grid-nudging, and nudges model variables u, v, temperature, and geopotential height. Water mixing ratio nudging was added in Version 4.0. Applications described above for grid-nudging can be considered using spectral nudging too.
+
+Options to control the grid-nudging are also used for spectral nudging (such as nudging end time and ramping, nudging strength, controls of nudging in the boundary layer or lower levels and so on). In addition, there is an option to control the ramping in the vertical between the layer without nudging to the layer where the nudging is on. The number of waves to nudge in the x and y directions are user-defined.
+
