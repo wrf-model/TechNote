@@ -70,21 +70,24 @@ heating as an approximation for the next time-step as described in Section
 Currently, the sedimentation process is accounted for inside the 
 individual microphysics modules, 
 and, to prevent instability in the calculation of the vertical flux of
-precipitation, a smaller time step is allowed. The saturation adjustment is also 
+precipitation, either a smaller time step is allowed or a Lagrangian scheme is used. 
+The saturation adjustment is also 
 included inside the microphysics. In the future, however, it might be separated 
 into an individual 
 subroutine to enable the remaining microphysics to be called less frequently 
 than the model's advection step for efficiency.
 
-Table \ref{microphysics table} shows a summary of the options indicating the
-number of moisture variables, and whether ice-phase and mixed-phase
-processes are included. Mixed-phase processes are those that result from
+The various microphysics options have differing
+numbers of moisture variables, depending on ice-phase and mixed-phase
+processes included. Mixed-phase processes are those that result from
 the interaction of ice and water particles, such as riming that produces
 graupel or hail.
 As a general rule, for grid sizes less than 10 km, where updrafts may be
 resolved, mixed-phase schemes should be used, particularly in convective
 or icing situations. For coarser grids the added expense of these schemes
 is not worth it because riming is not likely to be well resolved.
+Many schemes are also double-moment for some species and include
+number concentrations for those as extra advected scalar variables.
 
 \subsection{Kessler scheme}
 
@@ -123,7 +126,8 @@ Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavi
 
 \subsection{WDM5 and WDM6 schemes}
 
-These have ice-phase processes the same as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The scheme is therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected. These are initialized with a constant value. 
+These have ice-phase processes the same as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The scheme is therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected. These are initialized with a constant value. As with all the WSM schemes, sedimentation is handled with a Lagrangian scheme. Also as with WSM5 and WSM6, the method of \citet{dudhia08} is used
+to provide a combined fallspeed for snow and graupel.
 
 \subsection{Eta Grid-scale Cloud and Precipitation (2001) scheme}
 
@@ -244,8 +248,8 @@ schemes have been found to be helpful in triggering convection in
 5--10 km grid applications. Generally, they should not be used when
 the model can resolve the convective eddies itself (e.g., $\le$ 5 km grid).
 
-Table \ref{cumulus table} summarizes the basic characteristics of the
-available cumulus parameterization options in the {\wrf}. 
+Note that some cumulus schemes include both deep and shallow
+convection, while others only include deep convection.
   
 \subsection{Kain-Fritsch scheme}
 
@@ -465,8 +469,6 @@ temperature, soil temperature profile, soil moisture profile, snow cover, and
 possibly canopy properties. There is no horizontal interaction between neighboring
 points in the LSM, so it can be regarded as a one-dimensional column model for
 each WRF land grid-point, and many LSMs can be run in a stand-alone mode.
-Table \ref{land table} summarizes the basic features of the land-surface
-treatments in {\wrf}.
 
 \subsection{5-layer thermal diffusion}
 
@@ -889,6 +891,39 @@ It can be seen that all the physical schemes interact in some way with the surfa
 physics (land-surface models, and, potentially, coupled ocean models).
 The surface physics, while not explicitly producing tendencies of atmospheric
 state variables, is responsible for updating the land-state variables.
+
+\begin{table}
+\caption{Physics Interactions. Columns correspond to
+model physical processes: radiation (Rad),
+microphysics (MP), cumulus parameterization (CP), planetary boundary layer/vertical diffusion
+(PBL), and surface physics (Sfc). Rows corresponds to
+model variables where {\em i} and {\em o} indicate whether a variable is
+input or output (updated) by a physical process.}
+\label{physics interaction table}
+$$\vbox
+{\halign{#\hfil \qquad & #\hfil \qquad & \hfil#\hfil \qquad & \hfil#\hfil
+\qquad & \hfil#\hfil \qquad &  \hfil#\hfil \qquad & \hfil#\hfil \cr
+\multispan7\hrulefill \cr
+                &              & Rad       & MP           & CP           & PBL      &   Sfc   \cr
+\multispan7\hrulefill \cr
+Atmospheric     &  Momentum    &           &              &      i       &  io     &           \cr
+State or        &  Pot. Temp.  &   io      &     io       &     io       &  io     &           \cr
+Tendencies      &  Water Vapor &    i      &     io       &     io       &  io     &           \cr
+                &  Cloud       &    i      &     io       &      o       &  io     &           \cr
+                &  Precip      &    i      &     io       &      o       &         &           \cr
+\multispan7\hrulefill \cr
+Surface         &  Longwave Up &    i      &              &              &         &    o      \cr
+Fluxes          &  Longwave Down &  o      &              &              &         &    i      \cr
+                &  Shortwave Up &   i      &              &              &         &    o      \cr
+                &  Shortwave Down & o      &              &              &         &    i      \cr
+                &  Sfc Convective Rain &   &              &      o       &         &    i      \cr
+                &  Sfc Resolved Rain &     &      o       &              &         &    i      \cr
+                &  Heat Flux &             &              &              &   i     &    o      \cr
+                &  Moisture Flux &         &              &              &   i     &    o      \cr
+                &  Surface Stress &        &              &              &   i     &    o      \cr
+\multispan7\hrulefill \cr
+}}$$
+\end{table}
 
 Note also that, as mentioned, the microphysics does not output tendencies,
 but updates the atmospheric state at the end of the model time-step. 
