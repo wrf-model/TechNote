@@ -248,7 +248,7 @@ the model can resolve the convective eddies itself (e.g., $\le$ 5 km grid).
 Note that some cumulus schemes include both deep and shallow
 convection, while others only include deep convection.
   
-\subsection{Kain-Fritsch scheme}
+\subsection{Kain-Fritsch schemes}
 
 The modified version of the Kain-Fritsch scheme \citep{kain04} is based on 
 \citet{kain90} and \citet{kain93}, but has been modified based on 
@@ -285,7 +285,41 @@ or other parameters, i.e., old precipitation efficiency relationship not used.
 \item
 Detrainment is specified to occur in updraft source layer and below.
 \end{itemize}
+
+\item
+A new way to compute perturbation temperature added to the testing updraft 
+parcel is implemented based on \citet{ma2009}. This perturbation temperature
+is a function of horizontal and vertical moisture advection, rather than vertical
+velocity. This changes the trigger function in the original scheme to work better
+in weakly forced environment.
+
+\item
+Subgrid cloud fraction due to both deep and shallow convection is estimated and passed
+to the radiation schemes \citep{alapaty12}.
 \end{itemize}
+
+\subsubsection{Multi-Scale Kain-Fritsch Scheme}
+
+This is based on the original Kain-Fritsch scheme, and modified to allow 
+the scheme to adapt when the grid-size decreases from the mesoscale range (a few tenths 
+of kilometers) to convective scales (a few kilometers) \citep{zheng16}. The main modification includes 
+a dynamic adjustment time scale for CAPE removal, a modified scale-dependent minimum 
+entrainment rate, and an enhanced grid-scale vertical motion using subgrid scale updraft 
+mass fluxes. The scheme also includes an option to interact with climatological 
+aerosol through an addition of subgrid-scale cloud microphysics.
+
+\subsubsection{Kain-Fritsch Cumulus Potential Scheme}
+
+In this version of the Kain-Fritsch scheme, the trigger function in the original scheme 
+is replaced by a method that relates the initiation of convection to the distribution of 
+temperature and moisture in the boundary layer via probability density functions (PDFs)
+\citep{berg13}. The scheme has tunable 
+parameters to set for the critical cumulative frequency of bins in order to trigger deep 
+convection, and minimum frequency of a bin within the PDF required to form shallow convection. 
+The scheme also computes the cumulus cloud fraction due to shallow convection and feeds it into 
+the radiation physics. In addition, the scheme can include vertical transport of trace gases and 
+aerosols, aqueous chemistry, wet removal and aerosol effect on cloud drop number when 
+activated with the MOSAIC chemistry \citep{berg15}.
 
 
 \subsection{Betts-Miller-Janjic scheme}
@@ -318,7 +352,9 @@ The work of the buoyancy force on the ascending particle is required to exceed
 a prescribed positive threshold.
 \end{itemize}
 
-\subsection{Grell-Devenyi ensemble scheme}
+\subsection{Grell Schemes}
+
+\subsubsection{Grell-Devenyi Ensemble Scheme}
 
 \citet{grell02} introduced an ensemble cumulus scheme 
 in which effectively multiple cumulus schemes and variants are run 
@@ -339,7 +375,7 @@ integrated vertical advection of moisture. Another control
 is the trigger, where the maximum cap strength that permits convection
 can be varied. These controls typically provide ensembles of 144 members.
 
-\subsection{Grell-3 scheme}
+\subsubsection{Grell-3 Scheme}
 
 The Grell-3 scheme was first introduced in Version 3.0, and so is
 new, and not yet well tested in many situations. It shares a lot in
@@ -350,6 +386,105 @@ cumulus schemes by allowing subsidence effects to be spread to
 neighboring grid columns, making the method more suitable to grid sizes
 less than 10 km, while it can also be used at larger grid sizes where
 subsidence occurs within the same grid column as the updraft. 
+
+\subsubsection{Grell-Freitus Scheme}
+
+The Grell-Freitas scheme \citep{grell14} is based on Grell-Devenyi 
+scheme which considers stochastic approach to cumulus convection, and modified 
+to work across grid-sizes from mesoscale to convective scales. The scheme 
+relates the convective updraft fraction, sigma, to the entrainment rate, 
+which in turn is related the cloud radius. As the grid size decreases, the 
+fractional updraft area increases, which is equivalent to decreasing 
+the unit mass flux required to stabilizing the atmosphere.
+
+\subsection{Simplified Arakawa-Schubert Schemes}
+
+This group of schemes is based on simplified Arakawa-Schubert scheme (SAS) \citep{grell93} 
+which considers only one type of cloud instead of an ensemble. They all use the 
+quasi-equilibrium closure. They vary by how they handle convective downdrafts, 
+shallow convection, momentum transport (all three not included in the original 
+AS and last two not in SAS), entrainment/detrainment and scale-aware aspects.
+
+\subsubsection{Original SAS Scheme}
+
+This is the convective scheme used by GFS from 1995 to 2000 \citep{pan95}. This version 
+includes a moist convective downdraft, has a shallow component that uses an 
+eddy diffusion approach, and considers convective momentum transport which 
+depends on vertical wind shear. However the convective momentum transport 
+was not implemented in ARW. 
+
+\subsubsection{New SAS Scheme}
+
+This is a updated SAS scheme operational in GFS since July 2010 \citep{han11}. In this version, 
+the shallow convection using an eddy diffusion approach is replaced by a mass-flux 
+scheme similarly formulated to deep convection, with entrainment/detrainment 
+following LES studies. The deep convection is made stronger by removing random 
+cloud-top selection and increasing the maximum allowable mass-flux at the cloud base. 
+The entrainment and detrainment are modified to be dependent on environmental relative 
+humidify as in the new Tiedtke scheme. The trigger function is modified to have some 
+dependency on large-scale vertical velocity and subcloud layer environmental moisture. 
+The scheme uses a similar convective momentum transport formulation, but with a reduced effect.
+
+\subsubsection{Scale-aware SAS Scheme}
+
+This variation of the SAS scheme is based on NSAS, but with scale-aware features added. 
+The fractional area occupied by the deep convection increases based on updraft radius 
+which is in turn dependent on entrainment. This is similar to the assumption used by 
+the Grell-Freitas scheme, but using the actual entrainment rate at cloud base. This scheme 
+is currently employed in Hurricane WRF.
+
+\subsubsection{KIAPS Scale-aware SAS Scheme}
+
+This is another variation of the updated NCEP SAS scheme from 2010, 
+with an added scale-aware dependency \citep{kwon17}. The scale-awareness is implemented by considering 
+the fractional updraft area to increase as the grid size decreases. Two factors determine 
+the increase: one is empirical and the other is dependent on the ratio of grid vertical 
+velocity over convective updraft velocity. In addition to mass-flux dependency on the grid size, 
+the convective inhibition and convective cloud water detrainment are also made to depend on grid size.
+
+\subsection{Zhang-McFarlane Scheme}
+
+The Zhang-McFarlane scheme is a mass-flux scheme and it is only for deep convection \citep{zhang95}. 
+It follows the ideas of Arakawa-Schubert, but makes simplified 
+assumptions. One of the assumptions is that instead of using a spectrum of cloud plumes, 
+it specifies the distribution of the updraft assuming that they all have the same cloud 
+base mass flux, but each has a characteristic entrainment rate. It also assumes that the 
+convection removes CAPE at an exponential rate with a specified adjustment time scale. 
+The scheme detrains cloud liquid and ice, and considers momentum transport. The scheme 
+is ported from CAM4, and tested with other CAM physics. For example, it can be 
+used together with Park-Bretherton shallow convection option and CAM microphysics.
+
+\subsection{Tiedtke Schemes}
+
+There are two versions of the Tiedtke scheme \citep{tiedtke89} in ARW. The first version is based on an earlier version 
+of the scheme from ECMWF, and the newer version is closer to the code in recent IFS by ECMWF.
+
+\subsubsection{Tiedtke Scheme}
+
+The Tiedtke scheme is a mass-flux scheme, and it parameterizes deep, 
+shallow and midlevel convection. It represents the cloud ensemble by a bulk cloud model, 
+and considers entrainment and detrainment and downdrafts. It uses a CAPE closure to 
+determine the strength of the deep and midlevel convection, and surface evaporation 
+for shallow convection. In the version implemented in WRF \citep{zhangc11}, turbulent 
+entrainment and detrainment are added and turbulent entrainment for shallow convection 
+is increased to promote boundary layer cloud formation. Another modification is to change 
+how detrained cloud at the top is treated: in the original scheme, it evaporates immediately; 
+and in the current scheme, it is added to the grid scale. To limit the deep convection in 
+drier regions, a minimum relative humidity of 80% is imposed for the mean RH between cloud base and top.
+
+\subsubsection{New Tiedtke Scheme}
+
+This is an updated version of Tiedtke scheme, and it is closer to the one used in the 
+recent ECMWF IFS \citep{zhangc17}. The updates include trigger functions for deep and shallow convection, 
+closures for deep and shallow convection, convective adjustment time scale, entrainment 
+and detrainment rates for all types of convection, conversion from cloud water/ice to 
+rain/snow and options for momentum transport. The entrainment for deep convection is 
+made to depend on environmental moisture which helps the simulated tropical systems. 
+The updated CAPE closure for deep convection relaxes to CAPE generated in the planetary 
+boundary layer which improves the diurnal precipitation over land. The convective 
+adjustment time is no longer a constant, but it depends on the vertical velocity averaged 
+in the updraft and cloud depth.
+
 
 \section{Surface Layer}
 

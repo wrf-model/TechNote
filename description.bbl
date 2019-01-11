@@ -2,8 +2,13 @@
 
 \bibitem[Alapaty et al.(2008)]{alapaty08}%
 Alapaty K, D. Niyogi, F. Chen, P. Pyle, A. Chandrasekar, and N. Seaman, 2008: Development of the flux-adjusting 
-surface data assimilation system for mesoscale models. {\em J. Appl. Meteorol. Climatol.}, {\bf 47}, 
-2331–2350, doi:10.1175/2008JAMC1831.1.
+  surface data assimilation system for mesoscale models. {\em J. Appl. Meteorol. Climatol.}, {\bf 47}, 
+  2331–2350, doi:10.1175/2008JAMC1831.1.
+
+\bibitem[Alapaty et al.(2012)]{alapaty12}%
+Alapaty, K., J. A. Herwehe, T. L. Otte, C. G. Nolte, O. R. Bullock, M. S. Mallard, J. S. Kain, and J. Dudhia, 2012: 
+  Introducing subgrid-scale cloud feedbacks to radiation for regional meteorological and climate modeling. 
+  {\em Geophys. Res. Lett.}, {\bf 39}, L24809, doi:https://doi.org/10.1029/2012GL054031.
 
 \bibitem[Angevine et al.(2010)]{angevine10}%
 Angevine, W. M., H. Jiang, and T. Mauritsen, 2010: Performance of an eddy diffusivity-mass flux 
@@ -49,6 +54,16 @@ Barker, D. M., X.-Y. Huang, Z. Liu, T. Auligne, X. Zhang, S. Rugg, A. A. AL KATH
 Beljaars, A.C.M., 1994: The parameterization of surface fluxes in 
   large-scale models under free convection, 
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 121}, 255--270.
+
+\bibitem[Berg et al.(2013)]{berg13}%
+Berg, L.K., W.I. Gustafson, E.I. Kassianov, E. I., and L. Deng (2013), Evaluation of a modified scheme 
+  for shallow convection: Implementation of CuP and case studies, {\em Mon. Wea. Rev.}, {\bf 141}, 134-147, 
+  10.1175/mwr-d-12-00136.1.
+
+\bibitem[Berg et al.(2015)]{berg15}%
+Berg, L.K, M. Shrivastava, R.C. Easter, J.D. Fast, E.G. Chapman, and Y. Liu, 2015: A new WRF-Chem treatment 
+  for studying regional scale impacts of cloud-aerosol interactions in parameterized cumuli. 
+  {\em Geophys. Model Devel.}, {\bf 8}, 409-429. doi:10.5194/gmd-8-409-2015.
 
 \bibitem[{Berner et~al.(2015)Berner, Fossell, Ha, Hacker,, and Snyder}]{Be15}
 Berner, J., K.~R. Fossell, S.-Y. Ha, J.~P. Hacker, and C.~Snyder, 2015:
@@ -258,6 +273,10 @@ Gilmore, M. S., J. M. Straka, and E. N. Rasmussen, 2004: Precipitation uncertain
  in precipitation particle parameters within a simple microphysics scheme. 
  {\em Mon. Wea. Rev.}, {\bf 132}, 2610--2627.
 
+\bibitem[Grell(1993)]{grell93}%
+Grell, G. A., 1993: Prognostic evaluation of assumptions used by cumulus parameterizations. 
+  {\em Mon. Wea. Rev.}, {\bf 121}, 764-787, doi:10.1175/1520-0493(1993)121<0764:PEOAUB>2.0.CO;2.
+
 \bibitem[Grell and Devenyi(2002)]{grell02}%
 Grell, G. A., and D. Devenyi, 2002: A generalized approach to parameterizing convection
   combining ensemble and data assimilation techniques. 
@@ -267,6 +286,10 @@ Grell, G. A., and D. Devenyi, 2002: A generalized approach to parameterizing con
 Grell, G.A., S.E. Peckham, R. Schmitz, S.A. McKeen, G. Frost,
 W.C. Skamarock and B. Eder, 2005: Fully coupled online chemistry
 within the WRF model. {\em Atmos. Environ.}, {\bf 39}, 6957-6975.
+
+\bibitem[Grell and Freitas(2014)]{grell14}%
+Grell, G. A. and Freitas, S. R., 2014: A scale and aerosol aware stochastic convective parameterization 
+  for weather and air quality modeling. {\em Atmos. Chem. Phys.}, {\bf 14}, 5233-5250, doi:10.5194/acp-14-5233-2014. 
 
 \bibitem[Grenier and Bretherton(2001)]{grenier01}%
 Grenier, H., and C. S. Bretherton, 2001: A moist PBL parameterization for large-scale models and its application to subtropical cloud-topped marine boundary layers. 
@@ -285,6 +308,10 @@ Hacker, J.~P., C.~Snyder, S.-Y. Ha, and M.~Pocernich, 2011: Linear and
 Haltiner, G. J., and R. T. Williams, 1980: 
   {\em Numerical prediction and dynamic meteorology.}
   John Wiley \& Sons, Inc., 477pp.
+
+\bibitem[Han and Pan(2011)]{han11}%
+Han, Jongil and Hua–Lu Pan, 2011: Revision of convection and vertical diffusion schemes in the 
+  NCEP Global Forecast System. {\em Wea. Forecasting}, {\bf 26}, 520–533. doi:10.1175/WAF-D-10-05038.1.
 
 \bibitem[Hollingsworth and Lonnberg(1986)]{hollingsworth86}%
 Hollingsworth, A., and P. Lonnberg, 1986: The Statistical Structure Of Short-Range
@@ -458,9 +485,12 @@ Kusaka, H. and F. Kimura, 2004:
 
 \bibitem[Kusaka et al.(2001)]{kusaka01}
 Kusaka, H., H. Kondo, Y. Kikegawa, and F. Kimura, 2001:
- A simple single-layer urban canopy model for atmospheric models: Comparison with multi-layer and slab
-models. 
+ A simple single-layer urban canopy model for atmospheric models: Comparison with multi-layer and slab models. 
 {\em Bound.-Layer Meteor.}, {\bf 101}, 329--358.
+
+\bibitem[Kwon and Hong(2017)]{kwon17}%
+Kwon, Y.-C. and S.-Y. Hong, 2017: A mass-flux cumulus parameterization scheme across gray-zone resolutoins. 
+  {\em Mon. Wea. Rev.} {\bf 145}, 583-598, doi:0.1175/MWR-D-16-0034.1
 
 \bibitem[Lacis and Hansen(1974)]{lacis74}%
 Lacis, A. A., and J. E. Hansen, 1974: A parameterization for the 
@@ -559,6 +589,11 @@ Lynch, P., and X.-Y. Huang, 1994:  Diabatic initialization using recursive filte
 \bibitem[Lynch(1997)]{lynch97}%,
 Lynch, P., 1997: The Dolph-Chebyshev Window: A Simple Optimal Filter. 
   {\em Mon. Wea. Rev.}, {\bf 125}, 655--660.
+
+\bibitem[Ma and Tan, 2009]{ma2009}%
+Ma, L.-M. and Z.-M. Tan, 2009: Improving the behavior of the cumulus parameterization 
+  for tropical cyclone prediction: Convection trigger. {\em Atmospheric Research}, {\bf 92}, 190--211, 
+  doi:10.1016/j.atmosres.2008.09.022.
   
 \bibitem[Mansell et al.(2010)]{mansell10}%
 Mansell, E. R., C. L. Ziegler, and E. C. Bruning, 2010: Simulated electrification of a small thunderstorm 
@@ -682,6 +717,10 @@ Palmer, T.~N., R.~Buizza, F.~Doblas-Reyes, T.~Jung, M.~Leutbecher, G.~Shutts,
   M.~Steinheimer, and A.~Weisheimer, {2009}: {Stochastic Parametrization and 
   Model Uncertainty}. \textit{{{ECMWF Technical Memorandum}}}, \textbf{{598}},
   {available at http://www.ecmwf.int/publications/}.
+
+\bibitem[Pan and Wu(1995)]{pan95}%
+Pan, H.-L., and W.-S. Wu, 1995: Implementing a mass flux convective parameterization package 
+  for the NMC Medium-Range Forecast model. NMC Office Note 409, 40 pp. 
 
 \bibitem[Park et al. (2013)]{park13}%
 Park, S.-H., W. Skamarock, J. Klemp, L. Fowler, and M. Duda, 2013: Evaluation of global atmospheric solvers using extensions of the Jablonowski and Williamson baroclinic wave test case. {\em Mon. Wea. Rev.}, {\bf 141}, 3116--3129.
@@ -896,6 +935,10 @@ Microphysics, radiation and surface processes in the Goddard Cumulus Ensemble (G
 Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment, 
   {\em Mon. Wea. Rev.}, {\bf 117}, 231--235.
 
+\bibitem[Tiedtke (1989)]{tiedtke89}%
+Tiedtke, M., 1989: A comprehensive mass flux scheme for cumulus parameterization in large–scale models. 
+  {\em Mon. Wea. Rev.}, {\bf 117}, 1779–1800. doi:10.1175/1520-0493(1989)117<1779:ACMFSF>2.0.CO;2.
+
 \bibitem[Thompson et al.(2004)]{thompson04}%
 Thompson, G., R. M. Rasmussen, and K. Manning, 2004: Explicit forecasts of winter precipitation
   using an improved bulk microphysics scheme. Part I: Description and sensitivity analysis.
@@ -1047,10 +1090,24 @@ Yang, Z.-L., G.-Y. Niu, K. E. Mitchell, F. Chen, M. B. Ek, M. Barlage, L. Longue
 The community Noah land surface model with multiparameterization options (Noah-MP): 2. Evaluation over global river basins. 
 {\em J. Geophys. Res.}, {\bf 116}, D12110.
 
+\bibitem[Zhang and Wang(2011)]{zhangc11}%
+Zhang, Chunxi, Yuqing Wang, and Kevin Hamilton, 2011: Improved representation of boundary layer clouds over 
+  the southeast pacific in ARW–WRF using a modified Tiedtke cumulus parameterization scheme. 
+  {\em Mon. Wea. Rev.}, {\bf 139}, 3489–3513. doi:10.1175/MWR-D-10-05091.1.
+
+\bibitem[Zhang and Wang(2017)]{zhangc17}%
+Zhang, C., and Y. Wang, 2017: Projected Future Changes of Tropical Cyclone Activity over the Western North and 
+  South Pacific in a 20-km-Mesh Regional Climate Model. {\em J. Climate}, {\bf 30}, 5923-5941. doi:10.1175/JCLI-D-16-0597.1.
+
 \bibitem[Zhang and Anthes(1982)]{zhanganthes82}%
 Zhang, D.-L., and R.A. Anthes, 1982: A high-resolution model of the
   planetary boundary layer--sensitivity tests and comparisons with SESAME--79 data. 
   {\em J. Appl. Meteor.}, {\bf 21}, 1594--1609.
+
+\bibitem[Zhang and McFarlane(1995)]{zhang95}%
+Zhang, G. J., and N. A. McFarlane, 1995: Sensitivity of climate simulations to the parameterization of 
+  cumulus convection in the Canadian Climate Centre general circulation model. {\em Atmos.–Ocean}, {\bf 33}, 407–446,
+  doi:10.1080/07055900.1995.9649539
 
 \bibitem[Zhang et al.(2013)]{zhang13}%
 Zhang, X., X.-Y. Huang, and N. Pan., 2013: Development of the Upgraded Tangent Linear and Adjoint of the Weather Research and Forecasting (WRF) Model. 
@@ -1070,6 +1127,11 @@ Zhang, X.,Y.-H. Kuo, S.-Y. Chen, X.-Y. Huang, and L.F. Hsiao, 2014: Parallelizat
 Zhang, X., H. Wang, X.-Y. Huang, F. Gao, and N. A. Jacobs, 2015: Using Adjoint-Based Forecast Sensitivity Method to Evaluate TAMDAR 
   Data Impacts on Regional Forecasts. 
   {\em Adv. Meteorol.}, {\bf 2015}, doi:10.1155/2015/427616.
+
+\bibitem[Zheng et al.(2016)]{zheng16}%
+Zheng, Y., K. Alapaty, J.A. Herwehe, A.D. Del Genio, and D. Niyogi, 2016: Improving high-resolution 
+  weather forecasts using the Weather Research and Forecasting (WRF) Model with an updated Kain-Fritsch scheme. 
+  {\em Mon. Wea. Rev.}, {\bf 144}, 833-860.
 
 \bibitem[Zilitinkevich(1995)]{zilit95}%
 Zilitinkevich, S.~S., 1995: Non-local turbulent transport: pollution dispersion 
