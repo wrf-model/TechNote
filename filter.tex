@@ -833,13 +833,13 @@ term added to \eqref{u-small-step} and \eqref{v-small-step} are
 %
 \begin{equation}
 \delta_\tau U'' = ... \,\,
-- \gamma_e \delta_x (\delta_{\tau-\Delta \tau} \mu_d'')
+- \gamma_e {\Delta x^2 \over \Delta \tau} \delta_x (\delta_{\tau-\Delta \tau} \mu_d'')
 \end{equation}
 \noindent 
 and
 \begin{equation}
 \delta_\tau V'' = ... \,\, 
-- \gamma_e \delta_y (\delta_{\tau-\Delta \tau} \mu_d'').
+- \gamma_e {\Delta y^2 \over \Delta \tau} \delta_y (\delta_{\tau-\Delta \tau} \mu_d'').
 \end{equation}
 %
 \noindent
@@ -848,8 +848,7 @@ mass divergence (i.e., \eqref{omega}) from the previous
 acoustic step (that is computed using
 the time $\tau$ values of $U$ and $V$), and
 $\gamma_e$ is the external mode damping coefficient.  An external mode
-damping coefficient $\gamma_e = \beta{\Delta x^2\over \Delta t}$,  
-$\beta = 0.01$, is typically used in the ARW
+damping coefficient $\gamma_e = 0.01$  is typically used in the ARW
 applications, independent of time step or grid size.
 
 \subsection{Semi-Implicit Acoustic Step Off-centering}
