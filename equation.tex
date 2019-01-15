@@ -444,6 +444,14 @@ and the diagnostic equation for dry hydrostatic pressure \eqref{pd_eq} becomes
 \partial_\eta \phi' =-\bar\mu_d \alpha'_d-\alpha_d\mu'_d.
 \label{hydro-pert}
 \end{equation}
+%
+Additionally, an option is available to use the hypsometric equation for the dry hydrostatic pressure in place of (\ref{hydro-pert}):
+\begin{equation}
+%{1 \over p}{\partial \phi \over \partial (\ln p)} = - \bar \alpha - \alpha'
+{\partial \phi / \partial (\ln p_d)} = - p_d(\bar \alpha_d + \alpha'_d)
+\label{hypsometric_eqn}
+\end{equation}
+%
 The conservation equations for the potential temperature \eqref{tm_full} and 
 the scalar moisture equations \eqref{qm_full} remain unchanged.
 
