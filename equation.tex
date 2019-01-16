@@ -324,13 +324,13 @@ curvature terms are cast in the following form:
 
 \begin{align}
 F_{U_{cor}} & =  + {m_x\over m_y}
-\ \ \Bigl(f + u {\partial m_x \over
+\ \ \Bigl(f + u {m_y\over m_x}{\partial m_x \over
 \partial y} - v {\partial m_y \over \partial x}\Bigr) V
 - \Bigl( {u \over r_e}  + e \cos \alpha_r \Bigr)W \label{u-mom-rhs} 
 \\
 %
-F_{V_{cor}} & = - {m_y\over m_x}\biggl[ \Bigl(f + u {\partial m_x \over
-\partial y} - v {\partial m_x \over \partial x}\Bigr) U
+F_{V_{cor}} & = - {m_y\over m_x}\biggl[ \Bigl(f + u {m_y\over m_x}{\partial m_x \over
+\partial y} - v {\partial m_y \over \partial x}\Bigr) U
 + \Bigl( {v \over r_e} -e \sin \alpha_r \Bigr)W \biggr] \label{v-mom-rhs} 
 \\
 %
@@ -351,7 +351,8 @@ with $e$ and $f$ are the Coriolis force.
 
 
  For the isotropic projections 
-(Lambert conformal, polar stereographic, and Mercator), the map-scale factors are the same in both horizontal directions, such that $m_x=m_y=m$. For the anisotropic latitude-longitude grid, $m_x=\sec\psi$ and $m_y=1$.
+(Lambert conformal, polar stereographic, and Mercator), the map-scale factors are the same in both horizontal directions, such that $m_x=m_y=m$. For the anisotropic latitude-longitude grid, $m_x=\sec\psi$ and $m_y=1$, so that $\partial m_x/\partial y  = (1/r_e) \sec \psi \tan \psi$ and $\partial m_y/\partial x  = 0$, 
+given that $\partial / \partial y = (1/r_e)\partial/\partial \psi$.
 For idealized cases on a Cartesian grid, the map scale factors $m_x = m_y = 1$, 
 $f$ is specified, and $e$ and $r_e^{-1}$ should be zero to remove the curvature terms.
 
