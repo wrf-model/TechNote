@@ -273,7 +273,7 @@ can be written as
 \label{v-mom-full}
 \\
 %
-\partial_t W + (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta (\Omega w)
+\partial_t W + m_x [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta (\Omega w)
 - m_y^{-1} g [ (\alpha/\alpha_d) \partial_\eta p - \mu_d ] & = F_W 
 \label{w-mom-full}
 \\
@@ -324,13 +324,13 @@ curvature terms are cast in the following form:
 
 \begin{align}
 F_{U_{cor}} & =  + {m_x\over m_y}
-\ \ \Bigl(f + u {\partial m_x \over
+\ \ \Bigl(f + u {m_y\over m_x}{\partial m_x \over
 \partial y} - v {\partial m_y \over \partial x}\Bigr) V
 - \Bigl( {u \over r_e}  + e \cos \alpha_r \Bigr)W \label{u-mom-rhs} 
 \\
 %
-F_{V_{cor}} & = - {m_y\over m_x}\biggl[ \Bigl(f + u {\partial m_x \over
-\partial y} - v {\partial m_x \over \partial x}\Bigr) U
+F_{V_{cor}} & = - {m_y\over m_x}\biggl[ \Bigl(f + u {m_y\over m_x}{\partial m_x \over
+\partial y} - v {\partial m_y \over \partial x}\Bigr) U
 + \Bigl( {v \over r_e} -e \sin \alpha_r \Bigr)W \biggr] \label{v-mom-rhs} 
 \\
 %
@@ -351,8 +351,11 @@ with $e$ and $f$ are the Coriolis force.
 
 
  For the isotropic projections 
-(Lambert conformal, polar stereographic, and Mercator), the map-scale factors are the same in both horizontal directions, such that $m_x=m_y=m$. For the anisotropic latitude-longitude grid, $m_x=\sec\psi$ and $m_y=1$.
-For idealized cases on a Cartesian grid, the map scale factors $m_x = m_y = 1$, 
+(Lambert conformal, polar stereographic, and Mercator), the map-scale factors are the same in both horizontal directions, such that $m_x=m_y=m$,
+where $m$ typically only varies with latitude. 
+For the anisotropic latitude-longitude grid, $m_x=\sec\psi$ and $m_y=1$, so that $\partial m_x/\partial y  = (1/r_e) \sec \psi \tan \psi$ and $\partial m_y/\partial x  = 0$, 
+given that $\partial / \partial y = (1/r_e)\partial/\partial \psi$.
+For idealized cases on a Cartesian grid, the map-scale factors $m_x = m_y = 1$, 
 $f$ is specified, and $e$ and $r_e^{-1}$ should be zero to remove the curvature terms.
 
 \section{Perturbation Form of the Governing Equations}
@@ -398,8 +401,8 @@ The momentum equations
 %
 \partial_t V + m_y[\partial_x (Uv) + \partial_y (Vv)] + (m_y/m_x) \partial_\eta (\Omega v) ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~ \notag &
 \\
-+(m_x/m_y) (\alpha/\alpha_d) \left[ \mu_d (\partial_x \phi' + \alpha_d \partial_x p' + \alpha'_d \partial_x \overline{p}) +
-\partial_x \phi (\partial_\eta p' - \mu'_d)\right]  = F_U
++(m_y/m_x) (\alpha/\alpha_d) \left[ \mu_d (\partial_y \phi' + \alpha_d \partial_y p' + \alpha'_d \partial_y \overline{p}) +
+\partial_y \phi (\partial_\eta p' - \mu'_d)\right]  = F_V
 \\
 %%+ ({\mu}_d \alpha \partial_y p' 
 %%+ {\mu}_d \alpha' \partial_y \bar{p}) ~~~~~~~~ \notag &
@@ -409,7 +412,7 @@ The momentum equations
 %%- {\mu}_d' \partial_y \phi )
 %%                                                      &= F_V   \\ 
 %
-\partial_t W  + (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
+\partial_t W  + m_x [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
 (\Omega w)  ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~ \notag & 
 \\
 - m_y^{-1} g (\alpha/\alpha_d) [\partial_\eta p' 
@@ -444,6 +447,14 @@ and the diagnostic equation for dry hydrostatic pressure \eqref{pd_eq} becomes
 \partial_\eta \phi' =-\bar\mu_d \alpha'_d-\alpha_d\mu'_d.
 \label{hydro-pert}
 \end{equation}
+%
+Additionally, an option is available to use the hypsometric equation for the dry hydrostatic pressure in place of (\ref{hydro-pert}):
+\begin{equation}
+%{1 \over p}{\partial \phi \over \partial (\ln p)} = - \bar \alpha - \alpha'
+{\partial \phi / \partial (\ln p_d)} = - p_d(\bar \alpha_d + \alpha'_d)
+\label{hypsometric_eqn}
+\end{equation}
+%
 The conservation equations for the potential temperature \eqref{tm_full} and 
 the scalar moisture equations \eqref{qm_full} remain unchanged.
 

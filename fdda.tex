@@ -1,0 +1,86 @@
+\chapter{Four-Dimensional Data Assimilation}
+\label{fdda_chap}
+
+Four-dimensional data assimilation (FDDA), also known as nudging, is a method of keeping
+simulations close to analyses and/or observations or forcing data over the course of an
+integration by applying extra forcing terms to the model equations.
+There are three types of FDDA and some can be used in
+combination. Grid- or analysis-nudging simply forces the model simulation 
+towards a series of analyses grid-point by grid-point. Observational- or station-nudging
+locally forces the simulation towards observational data. 
+Spectral nudging only forces the model to the selected spectra of waves in the analysis.
+These methods provide a four-dimensional analysis that is somewhat balanced dynamically,
+and in terms of continuity,
+while allowing for complex local topographical or convective variations.
+Such datasets can cover long periods, and have particular value in driving
+off-line air quality or atmospheric chemistry models.
+
+\section{Grid Nudging or Analysis Nudging}
+
+Grid nudging is a component of FDDA. Other components are surface-analysis nudging, and observational nudging. The method can be used to nudge wind component u and v, temperature and water vapor mixing ratio.
+
+The grid-nudging method is specifically three-dimensional analysis nudging, whereby the atmospheric model is nudged towards time- and space-interpolated analyses using a point-by-point relaxation term. \citet{stauffer90} originally developed the technique for MM5.
+
+The grid-nudging technique has several major uses.
+
+{\it a) Four-dimensional datasets.} The model is run with grid-nudging for long periods, e.g. months, to provide a four-dimensional meteorologically self-consistent dataset that also stays on track with the driving analyses. In this way, the model is used as an intelligent interpolator of analyses between times, and also accounting better for topographic and convective effects. As mentioned, the primary use for such datasets is in air quality where the wind fields may be used to drive off-line chemistry models.
+
+{\it b) Boundary conditions.} A nested simulation is run with the outer domain nudged towards analyses, and the nest running un-nudged. This provides better temporal detail at the nest boundary than driving it directly from linearly interpolated analyses, as it would be if it were the outer domain. This technique could also be used in forecasting, where an outer domain is nudged towards global forecast fields that are available in advance of the regional forecast.
+
+{\it c) Dynamic initialization.} A pre-forecast period (e.g., -6 hours to 0 hours) is run with nudging using analyses at those times that are already available. This is probably better than a cold-start using just the 0 hour analysis because it gives the model a chance to spin up. In particular, the model will have six hours to adjust to topography, and produce cloud fields by hour 0, whereas with a cold start there would be a spin-up phase where waves are produced and clouds are developed. This method could also be combined with 3D-Var techniques that may provide the hour 0 analysis.
+
+Grid nudging has been added to ARW using the same input analyses as the WPS pre-processing systems can provide. Since it works on multiple domains in a nesting configuration, it requires multiple time-periods of each nudged domain as input analyses. Given these analyses, the {\it real} program produces another input file which is read by the model as nudging is performed. This file contains the gridded analysis 3d fields of the times bracketing the current model time as the forecast proceeds. The four nudged fields are the two horizontal wind components (u and v), temperature, and specific humidity. 
+
+The method is implemented through an extra tendency term in the nudged variable's equations, e.g.
+
+$$ {\partial \theta \over \partial t} = F(\theta) + G_{\theta} W_{\theta} ( \hat \theta_0 - \theta)  $$
+where $F(\theta)$ represents the normal tendency terms due to physics, advection, etc., $G_{\theta}$ is a time-scale controlling the nudging strength, and $W_{\theta}$ is an additional weight in time or space to limit the nudging as described more below, while $\hat \theta_0$ is the time- and space-interpolated analysis field value towards which the nudging relaxes the solution.
+
+Several options are available to control the nudging.
+
+{\it a)} Nudging end-time and ramping. Nudging can be turned off during the simulation, as in dynamical initialization. Since turning nudging off suddenly can lead to noise, there is a capability for ramping the nudging down over a period, typically 1-2 hours to reduce the shock.
+
+{\it b)} Strength of nudging. The timescale for nudging can be controlled individually for winds, temperature and moisture. Typically the namelist value of  0.0003 s-1 is used, corresponding to a timescale of about 1 hour, but this may be reduced for moisture where there may be less confidence in the analysis versus the details in the model.
+
+{\it c)} Nudging in the boundary layer. Sometimes, since the analysis does not resolve the diurnal cycle, it is better not to nudge in the boundary layer to let the model PBL evolve properly, particularly the temperature and moisture fields. Each variable can therefore be selectively not nudged in the model boundary layer, the depth of which is given by the PBL physics.
+
+{\it d)} Nudging at low levels. Alternatively the nudging can be deactivated for any of the variables below a certain layer throughout the simulation. For example, the lowest ten layers can be free of the nudging term. 
+
+{\it e)} Nudging and nesting. Each of these controls is independently set for each domain when nesting, except for the ramping function, which has one switch for all domains.
+
+\section{Surface Analysis Nudging}
+
+The method used in surface analysis nudging is similar to that for 3-dimensional analysis nudging, except it only applies to the variables in the boundary layer. It utilizes a surface analysis file produced by an auxiliary program which may have higher temporal frequency than the 3-dimensional atmospherice analysis. 
+
+\section{Flux-Adjusting Surface Analysis Nudging}
+
+This is a surface analysis nudging method that not only nudges temperature and water mixing ratio at the first model level, but it also corrects soil temperature and moisture based on the differences in temperature and water vapor mixing ratio at the first model level (also refered to as Flux-Adjusting Surface Data Assimilation System or FASDAS). The differences of temperature and water vapor mixing ratio at the first model level are converted to surface flux adjustments that are applied to the prognostic equations of soil temperature and soil moisture. Through this indirect nudging, the surface temperature and water vapor mixing ratio from the model will become closer to the analysis. This method was developed for MM5 by \citet{alapaty08}.
+
+\section{Observational or Station Nudging}
+
+The observation-nudging FDDA capability allows the model to effectively assimilate temperature, wind and moisture observations from all platforms, measured at any location within the model domains and any time within a given data assimilation periods With the observation-nudging formulation, each observation directly interacts with the model equations and thus the scheme yields dynamically and diabatically initialized analyses to support the applications that need regional 4-D full-field weather and/or to start regional NWP with spun-up initial conditions. The observation-nudging scheme, which is an enhanced version of the standard MM5 observation-nudging scheme, was implemented into WRF-ARW and has been in the model since WRF Version 2.2. 
+More details of the methods can be found in \citet{liu08}.
+The most significant modifications to the standard MM5 observation-nudging scheme \citep{stauffer94} that are included in the WRF observation-nudging scheme are summarized as follows:
+
+(1) Added capability to incorporate all, conventional and  non-conventional, synoptic and asynoptic data resources, including the twice daily radiosondes; hourly surface, ship and buoy observations, and special observations from GTS/WMO; NOAA/NESDIS satellite winds derived from cloud, water vapor and IR imageries; NOAA/FSL ACARS, AMDAR, TAMDAR and other aircraft reports; NOAA/FSL NPN (NOAA Profiler Network) and CAP (Corporative Agencies Profilers) profilers; the 3-hourly cloud-drifting winds and water-vapor-derived winds from NOAA/NESDIS; NASA Quikscat sea surface winds; and high-density, high-frequency observations from various mesonets of government agencies and private companies. In particular, special weights are assigned to the application-specific data, such as the SAMS network, special soundings and wind profilers located at and operated by the Army test ranges. 
+
+(2) Added capability to assimilate multi-level upper-air observations, such as radiosondes, wind profilers and radiometers, in a vertically coherent way, which is in contrast to the algorithm for single point observations such as aircraft reports and satellite derived winds. 
+
+(3) Surface temperature (at 2 m AGL) and winds (at 10 m AGL) observations are first adjusted to the first model level according to the similarity theory that is built in the model surface-layer physics and the surface-layer stability state at the observation time. The adjusted temperature and wind innovations at the lowest model level are then used to correct the model through the mixing layer, with weights gradually reduced toward the PBL top. 
+
+(4) Steep mountains and valleys severely limit the horizontal correlation distances. For example, weather variables on the upwind slope are not correlated with those on the downwind slope. To take account this effect, a terrain-dependent nudging weight correction is designed to eliminate the influence of an observation to a model grid point if the two sites are physically separated by a mountain ridge or a deep valley. More details about the scheme and numerical test results can be found in \citet{xu02}. Essentially, for a given observation and grid point, a terrain search is done along the line connecting the grid point and the observation site. If there is a terrain blockage or a valley (deeper than a given depth), the nudging weight for the observation at the given grid point is set to zero. Currently, this algorithm is applied for surface observations assimilation only.  
+
+(5) The scheme was adjusted to accomplish data assimilation on multi-scale domains. Two adjustments among many are noteworthy. The first is an addition of grid-size-dependent horizontal nudging weight for each domain and the corresponding inflation with heights.  The second is adding the capability of double-scans, a two-step observation-nudging relaxation. The idea is similar to the successive corrections: the first scan, with large influence radii and smaller weights, allows observations to correct large scale fields, while the second scan, with smaller influence radii and large weights, permits the observation to better define the smaller-scale feature. 
+
+(6) Observation-nudging allows the observation correction to be propagated into the model state in a given time influence window. One technical difficulty with this is that the model state is not known at the observation time for computing the observation increment, or innovation, during the first half of the time window. In the \citet{stauffer94} scheme, at each time step within the time influence window, the innovation is calculated (or approximated) by differing the observation from the model state at the time step. This obviously leads to dragging the future forecasts toward previous (observation) states. To reduce this error, the innovation calculation is kept the same as before up to the observation time (this is OK since the model state is gradually tacking toward the observation state), but the true innovation s kept and used during the later half of the time influence window.  
+
+(7) An ability for users to set different nudging time-windows and influence radii for different (nested) domains has been added into WRF since the WRF V3.0 release. 
+ 
+\section{Spectral Nudging}
+
+Spectral nudging is another way to nudge the model solution to either analysis or any forcing data. The key difference between this method and that of grid- or obs-nudging is that it is more selective in the scales one would like to nudge. In contrast to directly nudge model variables toward analysis or observation, this method decomposes the difference fields spectrally, and nudges toward the longer waves that correspond to the analysis. The spectral coefficients from the selected waves are then transformed back from the wave space to physical space and added to the model as tendencies. This technique was originally implemented by \citet{miguez04} to the Reginoal Atmospheric Modeling System, and later to the WRF model in 2010.
+
+Spectral nudging uses the same input data as for grid-nudging, and nudges model variables u, v, temperature, and geopotential height. Water mixing ratio nudging was added in Version 4.0. Applications described above for grid-nudging can be considered using spectral nudging too.
+
+Options to control the grid-nudging are also used for spectral nudging (such as nudging end time and ramping, nudging strength, controls of nudging in the boundary layer or lower levels and so on). In addition, there is an option to control the ramping in the vertical between the layer without nudging to the layer where the nudging is on. The number of waves to nudge in the x and y directions are user-defined.
+

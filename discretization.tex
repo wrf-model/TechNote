@@ -229,7 +229,7 @@ R_{\Theta_m}^{t^*} = &
 \\
 %
 R_W^{t^*} = &
-- (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] - \partial_\eta
+- m_x [\partial_x (Uw) + \partial_y (Vw)] - \partial_\eta
 (\Omega w)  ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~~~~~~ ~~~ \notag 
 \\
 & + m_y^{-1} g (\alpha/\alpha_d) [\partial_\eta p' 
@@ -415,9 +415,8 @@ substep \eqref{rk3a}, \eqref{rk3b} or \eqref{rk3c} \hfill \break
 Global: Apply polar filter to scalars. \smallskip\hfill\break
 %
 \hphantom{BeginBegin} 
-(8) Compute $p'$ and $\alpha'$ using
-updated prognostic variables in
-\eqref{ideal_gas_law} and \eqref{hydro-pert}
+(8) Using updated prognostic variables, compute $p'$ with \eqref{ideal_gas_law} and $\alpha'$ with
+\hfill \break \hphantom{BeginBeginBegin} \eqref{hydro-pert} or \eqref{hypsometric_eqn}
 \medskip \hfill \break
 %
 \hphantom{Begin} {\bf End RK3 Loop} 
@@ -850,7 +849,7 @@ R_{\Theta_{adv}}^{t^*} = &
 \\
 %
 R_{W_{adv}}^{t^*} = &
-- (m_x m_y/m_y) [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
+- m_x [\partial_x (Uw) + \partial_y (Vw)] + \partial_\eta
 (\Omega w) 
 \\
 %

@@ -222,19 +222,19 @@ horizontal and vertical momentum:
 \begin{align}
 \partial_t U &= ...\,\,
 - m_x \bigl[ \partial_x \tau_{11} + \partial_y \tau_{12} 
-- \partial_z ( z_x \tau_{11} + z_y \tau_{12}) \bigr]
+- z_x \partial_z  \tau_{11} - z_y \partial_z \tau_{12} \bigr]
 - \partial_z \tau_{13}
 \label{u-disp-phys} \\
 %
 \partial_t V &= ...\,\,
 - m_y \bigl[ \partial_x \tau_{12} + \partial_y \tau_{22} 
-- \partial_z ( z_x \tau_{12} + z_y \tau_{22}) \bigr]
+- z_x \partial_z \tau_{12} - z_y \partial_z \tau_{22} \bigr]
 - \partial_z \tau_{23}
 \label{v-disp-phys} \\
 %
 \partial_t W &= ...\,\,
 - m_y \bigl[ \partial_x \tau_{13} + \partial_y \tau_{23} 
-- \partial_z ( z_x \tau_{13} + z_y \tau_{23}) \bigr]
+- z_x \partial_z \tau_{13} - z_y \partial_z \tau_{23} \bigr]
 - \partial_z \tau_{33}.
 \label{w-disp-phys}
 \end{align}
@@ -332,26 +332,25 @@ momentum equations
 \begin{align}
 \partial_t U &= ...\,\,
 - {\overline{m_x}}^x \bigl[ \delta_x \tau_{11} + \delta_y \tau_{12} 
-- \delta_z 
-( z_x {\overline{\tau_{11}}}^{x\eta} + {\overline {z_y}}^{xy} 
-{\overline{\tau_{12}}}^{y\eta}) \bigr]
+- \overline{z_x}^{\eta} \delta_z 
+{\overline{\tau_{11}}}^{x\eta} - {\overline {z_y}}^{xy\eta} \delta_z 
+{\overline{\tau_{12}}}^{y\eta} \bigr]
 -\delta_z \tau_{13}
 \notag \\
 %
 \partial_t V &= ...\,\,
 - {\overline{m_y}}^y \bigl[ \delta_y \tau_{22} + \delta_x \tau_{12} 
-- \delta_z 
-( z_y {\overline{\tau_{22}}}^{y\eta} + {\overline {z_x}}^{xy} 
-{\overline{\tau_{12}}}^{x\eta}) \bigr]
+- \overline{z_y}^{\eta} \delta_z 
+{\overline{\tau_{22}}}^{y\eta} - {\overline {z_x}}^{xy\eta} \delta_z
+{\overline{\tau_{12}}}^{x\eta} \bigr]
 -\delta_z \tau_{23}
 \notag \\
 %
 \partial_t W &= ...\,\,
 - m_x \bigl[ \delta_x \tau_{13} + \delta_y \tau_{23} 
-- \delta_z ( 
-{\overline {z_x}}^{x\eta} {\overline{\tau_{13}}}^{x\eta} 
-+{\overline {z_y}}^{y\eta} {\overline{\tau_{23}}}^{y\eta} 
-)
+- \overline {z_x}^{x} \delta_z 
+{\overline{\tau_{13}}}^{x\eta} 
+-{\overline {z_y}}^{y} \delta_z{\overline{\tau_{23}}}^{y\eta} 
 \bigr]
 - \delta_z \tau_{33}.
 \notag
@@ -434,14 +433,14 @@ The spatial discretization for the scalar diffusion
 \partial_t (\mu_d q) = ...\,\, & 
 + m_x \bigl[
 \delta_x \bigl({\overline \mu_d}^x H_1( q) \bigr)
-- \mu_d \delta_z 
-\bigl(\overline{z_x}^x {\overline{H_1( q)}}^{x\eta} \bigr)
+- \mu_d \overline{z_x}^{x\eta}\delta_z 
+\bigl( {\overline{H_1( q)}}^{x\eta} \bigr)
 \bigr] 
 \notag \\
 & + m_y \bigl[
 \delta_y \bigl({\overline \mu_d}^y H_2( q) \bigr)
-- \mu_d \delta_z 
-\bigl(\overline{z_y}^y {\overline{H_2( q)}}^{y\eta} \bigr)
+- \mu_d \overline{z_y}^{y\eta}\delta_z 
+\bigl( {\overline{H_2( q)}}^{y\eta} \bigr)
 \bigr] 
 \notag \\
 & + \mu_d \delta_z \bigl({\overline{K_v}}^\eta \delta_z  q \bigr),
@@ -833,13 +832,13 @@ term added to \eqref{u-small-step} and \eqref{v-small-step} are
 %
 \begin{equation}
 \delta_\tau U'' = ... \,\,
-- \gamma_e \delta_x (\delta_{\tau-\Delta \tau} \mu_d'')
+- \gamma_e {\Delta x^2 \over \Delta \tau} \delta_x (\delta_{\tau-\Delta \tau} \mu_d'')
 \end{equation}
 \noindent 
 and
 \begin{equation}
 \delta_\tau V'' = ... \,\, 
-- \gamma_e \delta_y (\delta_{\tau-\Delta \tau} \mu_d'').
+- \gamma_e {\Delta y^2 \over \Delta \tau} \delta_y (\delta_{\tau-\Delta \tau} \mu_d'').
 \end{equation}
 %
 \noindent
@@ -848,8 +847,7 @@ mass divergence (i.e., \eqref{omega}) from the previous
 acoustic step (that is computed using
 the time $\tau$ values of $U$ and $V$), and
 $\gamma_e$ is the external mode damping coefficient.  An external mode
-damping coefficient $\gamma_e = \beta{\Delta x^2\over \Delta t}$,  
-$\beta = 0.01$, is typically used in the ARW
+damping coefficient $\gamma_e = 0.01$  is typically used in the ARW
 applications, independent of time step or grid size.
 
 \subsection{Semi-Implicit Acoustic Step Off-centering}
