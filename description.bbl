@@ -186,6 +186,12 @@ NCAR Technical Note, NCAR/TN-464+STR, 226pp.
 Daley, R., and E. Barker, 2001: NAVDAS: Formulation and Diagnostics. 
   {\em Mon. Wea.  Rev.}, {\bf 129}, 869--883.
 
+\bibitem[Daniels et al.(2016)]{daniels16}%
+Daniels, M., K. Lundquist, J. Mirocha, D. Wiersema, and F. Chow, 2016. 
+  A new vertical grid nesting capability in the Weather Research and 
+  Forecasting (WRF) model. 
+  {\em Mon. Wea.  Rev.}, {\bf 144}, 3725---3747. DOI:10.1175/MWR-D-16-0049.1
+
 \bibitem[Davies and Turner(1977)]{daviesturner77}%
 Davies, H. C., and R. E. Turner, 1977: Updating prediction models by dynamical relaxation: An
   examination of the technique.
@@ -595,6 +601,12 @@ Ma, L.-M. and Z.-M. Tan, 2009: Improving the behavior of the cumulus parameteriz
   for tropical cyclone prediction: Convection trigger. {\em Atmospheric Research}, {\bf 92}, 190--211, 
   doi:10.1016/j.atmosres.2008.09.022.
   
+\bibitem[Mahalov and Moustaoui(2009)]{mahalovmoustaoui09}%
+Mahalov, A., and M. Moustaoui, 2009: 
+  Vertically nested nonhydrostatic model for multiscale resolution of flows in the 
+  upper troposphere and lower stratosphere. 
+  {\em J. Comput. Phys.}, {\bf 228}, 1294--–1311, doi:10.1016/j.jcp.2008.10.030.
+  
 \bibitem[Mansell et al.(2010)]{mansell10}%
 Mansell, E. R., C. L. Ziegler, and E. C. Bruning, 2010: Simulated electrification of a small thunderstorm 
 with two-moment bulk microphysics. {\em J. Atmos. Sci.}, {\bf 67}, 171--194.
@@ -605,7 +617,7 @@ Martilli A, Clappier A, and Rotach M.W., 2002: An urban surface exchange paramet
   
 \bibitem[McCumber et al.(1991)]{mccumber91}
 McCumber, M., W.-K. Tao, J. Simpson, R. Penc, and S.-T. Soong, 1991:
-Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection,
+Comparison of ice-phase microphysical parameterization schemes using numerical simulations of tropical convection.
   {\em J. Appl. Meteor.}, {\bf 30}, 985--1004.
 
 \bibitem[Mellor and Yamada(1982)]{melloryamada82}%
