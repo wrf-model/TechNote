@@ -13,6 +13,7 @@ through to the upper model lid. In this way, the vertical capabilty is more accu
 to as a "refinement" as opposed to "nesting". In practice, both of these terms will be used 
 interchangeably when referring to a child domain that has enhanced vertical resolution 
 compared to the parent domain.
+
 As with all domains within ARW, the horizontally or vertically nested grids (child domains, 
 fine-grid domains) are rectangular
 and are aligned with the parent (coarser) grid within which they are
@@ -30,12 +31,13 @@ The horizontal nesting capability is in many ways similar to the
 implementations provided in other mesoscale and cloudscale models (e.g. MM5,
 ARPS, COAMPS). The vertical refinement options are described in 
 \citet{mahalovmoustaoui09} and \citet{daniels16}.
-The major improvement in the ARW's nesting
-infrastruture compared with techniques used in other models is the ability to compute nested
+
+The ARW's nesting
+infrastruture computes nested
 simulations efficiently on parallel distributed-memory computer systems,
 which includes support for moving nested grids.
 The WRF Software Framework, described in
-\citet{michalak04}, makes these advances possible.  In this chapter we
+\citet{michalak04}, makes these capabilities possible.  In this chapter we
 describe the various horizontal and vertical nesting options available in the ARW and the 
 numerical coupling between the grids.
 
@@ -483,8 +485,9 @@ fine grid reference state for a smooth transition between the grids.
 %
 \begin{figure} 
  \centering
-  \includegraphics *[width=4.5in]{figures/zone12.pdf}
-  \caption{\label{figure:zone12} Zones of topographic blending
+  \includegraphics[width=4.5in]{figures/zone12.pdf}
+  \caption{\label{figure:zone12} 
+Zones of topographic blending
 for a fine grid.  In the fine grid, the first zone is
 entirely interpolated from the coarse grid topography.  In
 the second zone, the topography is linearly weighted between
@@ -554,7 +557,7 @@ occurrences of this interpolation.
 non-masked fields from CG to FG.
 \item At initialization or upon a domain move, topography elevation (and 
 fields derived from topography elevation) within the FG domain are blended 
-with data from the CG, as shown in Fig. \ref{zone12}.
+with data from the CG, as shown in Fig. \ref{figure:zone12}.
 \item At the completion of each CG timestep, the CG fields are interpolated
 for use by the FG. Primarily, this is for the construction of the lateral boundary 
 conditions for the FG domain, but optional interpolations of fields only computed 
