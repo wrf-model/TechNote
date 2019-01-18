@@ -254,7 +254,8 @@ not permitted to get colder than $T_{min}$, defined as
 \notag
 \end{equation}
 
-\noindent From the reference pressure and the final reference temperature, 
+\noindent The isobaric temperature and the stratospheric correction supply a reasonable 
+reference temperature up to approximately 100 Pa. From the reference pressure and the final reference temperature, 
 the reference potential temperature is then defined as
 
 \noindent
@@ -325,8 +326,10 @@ then the input 3-dimensional data are vertically
 interpolated in dry pressure space. With the potential temperature $\theta$ and mixing ratio
 $q_v$ available on each $\eta$ level, the pressure, density, and height diagnostics are
 handled.
-\noindent  The perturbation $\mu_d'$
-given the reference value \eqref{init_mubar} is
+\noindent  The perturbation $\mu_d'$,
+given the reference value $\overline{\mu}_d$ defined in \eqref{init_mubar} 
+and the vertical coordinate metric $\mu_d$ defined in \eqref{init_mutotal},
+is defined as
 \begin{equation}
 \mu_d'  = \mu_d - \overline{\mu}_d,
 \label{init_muprime}
