@@ -35,7 +35,8 @@ large eddy simulations (em\_les), ground fire simulations (em\_fire),
 sea breezes (em\_seabreeze2d\_x), mountain waves (em\_hill2d\_x), squall lines
 (em\_squall2d\_x, em\_squall2d\_y), supercell thunderstorms
 (em\_quarter\_ss), gravity currents (em\_grav2d\_x), baroclinic
-waves (em\_b\_wave), tropical cyclones (em\_tropical\_cyclone), and 
+waves (em\_b\_wave), tropical cyclones (em\_tropical\_cyclone), 
+convective - radiation equilibrium (em\_convrad), and 
 global domains (em\_heldsuarez).  
 A brief description of these test cases can be
 found in the doc/README\_test\_cases file provided in the ARW release.
@@ -55,15 +56,15 @@ the existing initializations that closely resemble a desired initialization.
 $$\vbox
 {\halign{\hfil#\hfil \qquad & \hfil#\hfil \qquad & \hfil#\hfil \cr
 \multispan3\hrulefill \cr
- 1D             & 2D                & 3D                  \cr
+ 1D             & 2D                  & 3D                    \cr
 \multispan3\hrulefill \cr
-em\_scm\_xy       &  em\_grav2d\_x      & em\_b\_wave           \cr
-                &  em\_hill2d\_x      & em\_convad           \cr
-                &  em\_seabreeze2d\_x & em\_fire             \cr
+em\_scm\_xy     &  em\_grav2d\_x      & em\_b\_wave           \cr
+                &  em\_hill2d\_x      & em\_convrad           \cr
+                &  em\_seabreeze2d\_x & em\_fire              \cr
                 &  em\_squall2d\_x    & em\_held\_suarez      \cr
-                &  em\_squall2d\_y    & em\_les              \cr
-                &                   & em\_quarter\_ss       \cr
-                &                   & em\_tropical\_cyclone \cr
+                &  em\_squall2d\_y    & em\_les               \cr
+                &                     & em\_quarter\_ss       \cr
+                &                     & em\_tropical\_cyclone \cr
 \multispan3\hrulefill \cr
 }}$$
 \end{table}
