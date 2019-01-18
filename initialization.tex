@@ -27,14 +27,18 @@ assimilation package (see Chapter \ref{var_chap}).
 
 \section{Initialization for Idealized Conditions}
 
-The ARW comes with a number of test cases using idealized
-environments, including large eddy simulations (em\_les),
+Table \ref {ideal cases table} summarizes the names of the ARW ideal test cases that
+utilize various assumptions of idealized environments.
+These test cases include
+tests with a single column model (em\_scm\_xy), 
+large eddy simulations (em\_les), ground fire simulations (em\_fire),
 sea breezes (em\_seabreeze2d\_x), mountain waves (em\_hill2d\_x), squall lines
 (em\_squall2d\_x, em\_squall2d\_y), supercell thunderstorms
 (em\_quarter\_ss), gravity currents (em\_grav2d\_x), baroclinic
-waves (em\_b\_wave), and global domains (em\_heldsuarez).  
+waves (em\_b\_wave), tropical cyclones (em\_tropical\_cyclone), and 
+global domains (em\_heldsuarez).  
 A brief description of these test cases can be
-found in the README\_test\_cases file provided in the ARW release.
+found in the doc/README\_test\_cases file provided in the ARW release.
 The test cases include examples of atmospheric
 flows at fine scales (e.g., the LES example has a grid-spacing of
 100 meters and a time step of 1 second) and examples of flow at large
@@ -42,14 +46,35 @@ scales (e.g., the Held Suarez global test case uses a grid-spacing around 600 km
 a time step of 1800 s), in addition to the traditional mesoscale and
 cloudscale model simulations.  The test suite allows an ARW user to
 easily reproduce these known solutions.  The test suite is also the
-starting point for constructing idealized flow simulations by modifying
-initializations that closely resemble a desired initialization.
+starting point for constructing personalized idealized flow simulations by modifying
+the existing initializations that closely resemble a desired initialization.
 
-Most of these tests use as input a 1D sounding specified as a function of
-geometric height $z$ (except for the baroclinic wave case that uses a 2D
-profile specified in $[y,z]$), and, with the exception of the baroclinic
-wave test case, the sounding files are in text format that can be
-directly edited by the user.  The 1D specification of the sounding in
+\begin{table}
+\caption{Ideal Cases. Listed are the available idealized cases for the Advanced Research WRF.}
+\label{ideal cases table}
+$$\vbox
+{\halign{\hfil#\hfil \qquad & \hfil#\hfil \qquad & \hfil#\hfil \cr
+\multispan3\hrulefill \cr
+ 1D             & 2D                & 3D                  \cr
+\multispan3\hrulefill \cr
+em\_scm\_xy       &  em\_grav2d\_x      & em\_b\_wave           \cr
+                &  em\_hill2d\_x      & em\_convad           \cr
+                &  em\_seabreeze2d\_x & em\_fire             \cr
+                &  em\_squall2d\_x    & em\_held\_suarez      \cr
+                &  em\_squall2d\_y    & em\_les              \cr
+                &                   & em\_quarter\_ss       \cr
+                &                   & em\_tropical\_cyclone \cr
+\multispan3\hrulefill \cr
+}}$$
+\end{table}
+
+The initial conditions for the Held-Suarez test case are analytically
+defined in the initialization routines. Other than the baroclinic wave case
+that utilizes a binary 2D profile specified in $[y,z]$, all of the rest of the
+idealized ARW cases use as input a 1D sounding specified as a function of
+geometric height $z$. This text-based sounding may be
+directly edited by the user.  
+The 1D specification of the sounding in
 these test files requires the surface values of pressure, potential
 temperature, and water vapor mixing ratio, followed by the potential
 temperature, vapor mixing ratio, and horizontal wind components at some
@@ -189,11 +214,14 @@ snow depth (m), skin temperature (K), sea surface temperature (K), and a sea ice
 \label{initialization_real_base_section}
 Identical to the idealized initializations, there is a partitioning of some of the 
 meteorological data into reference and perturbation fields.
-For real-data cases, the reference state is defined by terrain elevation and three constants:
+For real-data cases, the reference state is defined by terrain elevation and several user definable constants:
 \begin{itemize}\setlength{\parskip}{-5pt}
 \item $p_{0}$ ($10^5$ Pa) reference sea level pressure; 
-\item $T_{0}$ (usually 270 to 300 K) reference sea level temperature; and
-\item $A$ (50 K) temperature difference between the pressure levels of $p_{0}$ and $p_{0}/e$.
+\item $T_{0}$ (usually 270 to 300 K) reference sea level temperature; 
+\item $A$ (50 K) temperature difference between the pressure levels of $p_{0}$ and $p_{0}/e$;
+\item $T_{min}$ (200 K) minimum temperature permitted; 
+\item $\gamma_{strat}$ (-11 K) standard stratosphere lapse rate;
+\item $p_{strat}$ (0 Pa) pressure at which stratospheric warming begins.
 \end{itemize}
 
 \noindent Using these parameters, the dry reference state surface pressure is
@@ -212,9 +240,16 @@ p_{d} = \overline{p}_d = B(\eta) ~( \bar p_{s} - p_{t} ) +[\eta-B(\eta)](p_0-p_t
 \label{init_pbar}
 \end{equation}
 
-\noindent With \eqref{init_pbar}, the reference temperature is a straight line on a skew-T plot, defined as
+\noindent With \eqref{init_pbar}, the reference temperature is a straight line on a skew-T plot, though 
+not permitted to get colder than $T_{min}$, defined as
 \begin{equation}
-T = T_0 + A~ln {\overline{p}_d \over p_0}.
+T = \max~\bigg(~T_{min}~,~ T_0 + A~ln {\overline{p}_d \over p_0}~\bigg).
+\notag
+\end{equation}
+
+\noindent For vertical locations where the $\overline{p}_d < p_{strat}$, the reference profile warms:
+\begin{equation}
+T = T_{min} + \gamma_{strat}~ln {\overline{p}_d \over p_{strat}}.
 \notag
 \end{equation}
 
@@ -223,8 +258,7 @@ the reference potential temperature is then defined as
 
 \noindent
 \begin{equation}
-\overline{\theta}_d = {\bigg( T_{0} + A~ln{\overline{p}_d \over p_{0} } \bigg) }
-{\bigg( {p_0 \over \overline{p}_d } \bigg) }
+\overline{\theta}_d = T~{\bigg( {p_0 \over \overline{p}_d } \bigg) }
 ^{R_d \over C_p},
 \label{init_thetad}
 \end{equation}
@@ -237,7 +271,7 @@ the reference potential temperature is then defined as
 \label{init_alphabar}
 \end{equation}
 
-\noindent Using \eqref{init-pbar}, the base state coordinate metric is given as
+\noindent Using \eqref{init_pbar}, the base state coordinate metric is given as
 %
 \begin{equation}
 \bar\mu_d= {\partial \bar p_d\over\partial\eta} = B_\eta(\eta)(\bar p_s-p_t)+\bigl[1-B_\eta(\eta)\bigr](p_0-p_t).
