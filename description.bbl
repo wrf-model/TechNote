@@ -871,12 +871,6 @@ Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
 moisture transport on NWP precipitation forecasts, 
   {\em Mon. Wea. Rev.}: submitted.
 
-\bibitem[Skamarock(2005)]{skamarock2005}%
-Skamarock W. C., 2005: Timesplitting techniques for multidimensional transport,
-  available at {\em
-  http://www.mmm.ucar.edu/individual/skamarock/advect3d\_2005.pdf},
-  26 pp.
-
 \bibitem[Skamarock et al.(2012)]{skamarock12}%
 Skamarock, W. C, J. B. Klemp, M. G. Duda, L. Fowler, S.-H. Park, and T. D. Ringler, 2012: A Multi-scale Nonhydrostatic Atmospheric Model Using Centroidal Voronoi Tesselations and C-Grid Staggering. {\em Mon. Wea. Rev.}, {\bf 240}, 3090-3105, doi: 10.1175/MWR-D-11-00215.1.
 
@@ -983,6 +977,11 @@ Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS 
 Wang, W., D. Barker, C. Bruy\`ere, M. Duda, J. Dudhia, D. Gill, J. Michalakes, and S. Rizvi, 2008: 
 WRF Version 3 Modeling System User's Guide.
   {\em http://www.mmm.ucar.edu/wrf/users/docs/user$\_$guide$\_$V3/}.
+
+\bibitem[Wang et al.(2009)]{Wang-et-al-2009}%
+Wang, H., Skamarock, W. C., Feingold, G., 2009: Evaluation of scalar advection schemes in the 
+Advanced Research WRF model using large-eddy simulations of aerosol-cloud interactions.
+ {\em Mon. Wea. Rev.}, {\bf 137}, 2547--2558.
 
 \bibitem[Wang et al.(2013a)]{wang13a}%
 Wang, H., J. Sun, S. Fan, and X.-Y. Huang, 2013: Indirect Assimilation of Radar Reflectivity with WRF 3D-Var and Its Impact on Prediction of
@@ -1101,6 +1100,11 @@ Yang, C., Z. Liu, F. Gao, P. P. Childs, and J. Min, 2017: Impact of assimilating
 Yang, Z.-L., G.-Y. Niu, K. E. Mitchell, F. Chen, M. B. Ek, M. Barlage, L. Longuevergne, K. Manning, D. Niyogi, M. Tewari, and Y. Xia, 2011: 
 The community Noah land surface model with multiparameterization options (Noah-MP): 2. Evaluation over global river basins. 
 {\em J. Geophys. Res.}, {\bf 116}, D12110.
+
+\bibitem[Zalesak (1979)]{Zalesak-1979}%
+Zalesak, S. T., 1979:
+Fully multidimensional flux-corrected transport algorithms for fluids.
+  {\em J. Comp. Phys.}, {\bf 31}, 335–362.
 
 \bibitem[Zhang and Wang(2011)]{zhangc11}%
 Zhang, Chunxi, Yuqing Wang, and Kevin Hamilton, 2011: Improved representation of boundary layer clouds over 
