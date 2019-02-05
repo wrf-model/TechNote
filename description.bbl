@@ -205,6 +205,9 @@ Deardorff, J. W., 1972 Numerical investigation of neutral and unstable
 Dee, D. P.,2004: Variational bias correction of radiance data in the ECMWF system. 
 {em In: Proc. of the ECMWF Workshop on Assimilation of High Spectral Resolution Sounders in NWP}, Reading, U. K., 28 June--1 July.
 
+\bibitem[Deng et al.(2003)]{deng03}%
+Deng, A., N. L. Seaman, and J. S. Kain, 2003: A shallow-convection parameterization for mesoscale models. Part I: Submodel description and preliminary applications. J. Atmos. Sci., 60, 34–56. 
+
 \bibitem[Desroziers(1997)]{desroziers97}%
 Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
   frontal structures. {\em Mon. Wea. Rev.}, {\bf 125}, 3030--3039.
@@ -335,12 +338,12 @@ Hong, S.-Y., 2007:
  The Korea Meteor. Soc., Fall conference, Seoul, Korea, Oct. 25-26.
 
 \bibitem[Hong and Lim(2006)]{honglim06}%
-Hong, S.-Y., and J.-O. J. Lim, 2006:
+Hong, S.-Y. and J.-O. J. Lim, 2006:
  The WRF Single-Moment 6-Class Microphysics Scheme (WSM6),
  {\em J. Korean Meteor. Soc.}, {\bf 42}, 129--151.
 
 \bibitem[Hong and Pan(1996)]{hong96}%
-Hong, S.-Y., and H.-L. Pan, 1996:
+Hong, S.-Y. and H.-L. Pan, 1996:
   Nonlocal boundary layer vertical diffusion in a medium-range forecast model, 
   {\em Mon. Wea. Rev.}, {\bf 124}, 2322--2339.
 
@@ -356,9 +359,14 @@ Hong, S.-Y., J. Dudhia, and S.-H. Chen, 2004:
   {\em Mon. Wea. Rev.}, {\bf 132}, 103--120.
 
 \bibitem[Hong et al.(2006)]{hong06}%
-Hong, S.-Y., and Y. Noh, and J. Dudhia, 2006:
+Hong, S.-Y., Y. Noh, and J. Dudhia, 2006:
 A new vertical diffusion package with an explicit treatment of entrainment processes. 
  {\em Mon. Wea. Rev.}, {\bf 134}, 2318--2341. 
+
+\bibitem[Hong and Jang(2018)]{hong18}%
+Hong, S.-Y. and J.-H. Jang, 2018: Impacts of shallow convection processes on a simulated 
+Boreal summer climatology in a global atmospheric model. {\em Asia-Pacific J. Atmos. Sci.} 
+(2018) 54(Suppl 1): 361. doi:10.1007/s13143-018-0013-3.
 
 \bibitem[Huang and Lynch, 1993]{huanglynch93}%
 Huang, X.-Y. and P. Lynch, 1993:
@@ -733,6 +741,9 @@ Palmer, T.~N., R.~Buizza, F.~Doblas-Reyes, T.~Jung, M.~Leutbecher, G.~Shutts,
 \bibitem[Pan and Wu(1995)]{pan95}%
 Pan, H.-L., and W.-S. Wu, 1995: Implementing a mass flux convective parameterization package 
   for the NMC Medium-Range Forecast model. NMC Office Note 409, 40 pp. 
+
+\bibitem[Park and Bretherton(2009)]{park09}%
+Park, Sungsu, and Christopher S. Bretherton, 2009: The University of Washington shallow convection and moist turbulence schemes and their impact on climate simulations with the Community Atmosphere Model. J. Climate, 22, 3449–3469. doi:10.1175/2008JCLI2557.1
 
 \bibitem[Park et al. (2013)]{park13}%
 Park, S.-H., W. Skamarock, J. Klemp, L. Fowler, and M. Duda, 2013: Evaluation of global atmospheric solvers using extensions of the Jablonowski and Williamson baroclinic wave test case. {\em Mon. Wea. Rev.}, {\bf 141}, 3116--3129.
