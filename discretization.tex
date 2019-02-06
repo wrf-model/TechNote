@@ -1013,25 +1013,28 @@ The diffusion term is the leading order error term in the flux
 divergence discretization.
 Further details concerning RK3 advection can be found in \citet{wicker02}
 
-\subsubsection{Positive-Definite Limiter for RK3 Advection}
+\subsubsection{Positive-Definite and Shape-Preserving Limiters for RK3 Advection}
 \label{positive-definite-transport}
 
 Mixing ratios of moisture, chemical species or other tracer species
 should remain positive-definite, that is, negative masses should not be
-permitted.  The Runge-Kutta transport integration defined by the
+permitted.  Additionally, transport should not introduce any new maxima or minima 
+in the mixing ratios; this property is referred to as shape-preservation also monotonicity.
+The Runge-Kutta transport integration defined by the
 timestepping algorithm \eqref{rk3a} -- \eqref{rk3c}, combined with the
 flux divergence operator \eqref{flux-divergence}, is conservative but it
-does not guarantee positive definiteness; any negative values will be
-offset by positive mass such that mass is conserved.  In many physics
+does not guarantee positive definiteness or shape preservation; any negative values will be
+offset by positive mass such that mass is conserved, and new maxima and minima may be produced.  In many physics
 options, negative mixing ratios will be set to zero, and this will
-result in an increase in mass of that species.  A positive-definite flux
-renormalization, applied on the final Runge-Kutta transport step
-\eqref{rk3a}, can be used to remove this unphysical effect from the RK3
-scalar transport scheme.  This scheme is described in
-\citet{skamarock-weisman-08} and \citet{skamarock2005}, and we briefly
-outline the ARW implementation here.
+result in an increase in mass of that species.  Both positive-definite and shape-preserving flux
+renormalizations, applied on the final Runge-Kutta transport step
+\eqref{rk3a}, can be used to remove these unphysical effect from the RK3
+scalar transport scheme.  The positive-definite renormalization in the ARW solver is described in 
+\citet{skamarock-weisman-08} and the shape-preserving (monotonic) extension is described in \citet{Wang-et-al-2009}, 
+both of which follow an approach first described by \citet{Zalesak-1979}.
 
-The final RK3 time integration step for transport of a scalar can be
+The renormalizations occur as part of the final RK3 time integration step for scalar transport, and the preliminary
+(i.e. before renormalization) evaluation of the final transport step can be
 expressed as
 %
 \begin{equation}
@@ -1089,8 +1092,9 @@ first-order upwind flux, that is,
 \end{equation}
 %
 with similar definitions for $(V \overline{q}^{y_{adv}})'$ 
-and $(\Omega \overline{q}^{\eta_{adv}})'$.  The correction flux is then
-renormalized as follows.  First, the upwind fluxes are used to perform a
+and $(\Omega \overline{q}^{\eta_{adv}})'$.  The correction flux can then
+renormalized to achieve positive-definite or shape preserving (monotonic) behavior as follows.  
+First, the upwind fluxes are used to perform a
 partial update of the scalar mass.
 %
 \begin{equation}
@@ -1103,8 +1107,8 @@ m_x m_y [\delta_x (U \overline{q}^{x_{adv}})^1
 \notag
 \end{equation}
 %
-This update is positive definite (and monotonic) by design because it is
-the first-order upwind scheme.  Next, a prediction of the minimum
+This update is positive definite (and monotonic) by design because it is a property of the
+the first-order upwind scheme.  Next, a prediction of the minimum and maximum
 possible values of the new-time-level species mass is computed at each
 point by using only the outward directed fluxes (fluxes that remove mass
 from the control volume),
@@ -1119,10 +1123,25 @@ m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})'
 \label{min-prediction}
 \end{equation}
 %
+\begin{equation}
+(\mu\phi)_{max}^{t+\Delta t} = (\tilde{\mu\phi}) 
+-{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_- \overline{q}^{x_{adv}})' 
++ \delta_y (V_-\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_- \overline{q}^{\eta_{adv}})'\bigr\}
+\label{max-prediction}
+\end{equation}
+%
 where $U_+$, $V_+$ and $\Omega_+$ indicated the use of fluxes 
-out of a control volume only, that is, only those that contribute to
-lowering the scalar mass.  As is obvious from \eqref{min-prediction},
-the scalar mass $(\mu\phi)_{min}^{t+\Delta t} < 0$ if 
+out of the control volume only, that is, only those that contribute to
+lowering the scalar mass,
+and $U_-$, $V_-$ and $\Omega_-$ indicated the use of fluxes 
+into the control volume only, that is, only those that contribute to
+rasing the scalar mass.  
+
+For the positive-definite renormalization, from \eqref{min-prediction}
+the scalar mass $(\mu\phi)_{min}^{t+\Delta t} < 0$ if and only if
 %
 \begin{equation}
 (\tilde{\mu\phi}) < 
@@ -1130,7 +1149,7 @@ the scalar mass $(\mu\phi)_{min}^{t+\Delta t} < 0$ if
 m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
 + \delta_y (V_+\overline{q}^{y_{adv}})'] 
 + m_y \delta_\eta
-(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\}
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\}.
 \notag
 \end{equation}
 %
@@ -1147,41 +1166,56 @@ m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})'
 + \delta_y (V_+\overline{q}^{y_{adv}})'] 
 + m_y \delta_\eta
 (\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\} }
-\label{renormalization}
+\notag %\label{renormalization}
 \end{equation}
 %
 with a similar renormalization applied to the 
-$(V \overline{q}^{y_{adv}})'$ 
-and $(\Omega \overline{q}^{\eta_{adv}})'$.
-If no negative mass is indicated in \eqref{min-prediction}, the
-correction flux is equal to the 
+$(V_+ \overline{q}^{y_{adv}})'$ 
+and $(\Omega_+ \overline{q}^{\eta_{adv}})'$.
+
+
+For the shape-preserving (monotonic) renormalization, the minimum (maximum) value
+for a cell mixing ratio at the new time level is set as the minimum (maximum) mixing ratio at time $t$ from that 
+cell and its nearest neighbors.  This lower bound on the mixing ratio, 
+denoted $(\phi)_{min}$, will be violated when
+%
+\begin{equation}
+(\tilde{\mu\phi}) - (\mu \phi)_{min} < 
+{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
++ \delta_y (V_+\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\}
+\notag
+\end{equation}
+%
+If the lower bound is violated,
+the fluxes are renormalized with
 %
 \begin{equation}
 R\left(U_+\overline{q}^{x_{adv}}\right)' = 
-\left(U_+\overline{q}^{x_{adv}}\right)',
-\,\,\,
-R\left(V_+\overline{q}^{y_{adv}}\right)' = 
-\left(V_+\overline{q}^{y_{adv}}\right)',
-\,\,\,
-R\left(\Omega_+\overline{q}^{\eta_{adv}}\right)' = 
-\left(\Omega_+\overline{q}^{\eta_{adv}}\right)'.
-\label{r-ok}
+\left(U_+\overline{q}^{x_{adv}}\right)' 
+{ \tilde{\mu \phi} - (\mu \phi)_{min}\over
+{\Delta t} \bigl\{
+m_x m_y [\delta_x (U_+ \overline{q}^{x_{adv}})' 
++ \delta_y (V_+\overline{q}^{y_{adv}})'] 
++ m_y \delta_\eta
+(\Omega_+ \overline{q}^{\eta_{adv}})'\bigr\} }
+\notag %\label{renormalization}
 \end{equation}
 %
-The renormalized fluxes \eqref{renormalization} and \eqref{r-ok}, along
-with the first order fluxes, are then used in the update equation
-\eqref{pd-update}.  Note that if no renormalization is needed, the
-scheme \eqref{pd-update} reverts to the standard RK3 update because
-the definition of the correction \eqref{correction-def}.
+with a similar renormalization applied to the 
+$(V_+ \overline{q}^{y_{adv}})'$ 
+and $(\Omega_+ \overline{q}^{\eta_{adv}})'$.
+A similar limiting process is used to renormalize the fluxes such that the maximum mixing ratio is not exceeded.  
+Note that outgoing fluxes for one cell are inflow fluxes for another, and the renormalized flux used in the update is the minimum flux necessary to satisfy the mimimum or maximum bounds for the two cells utilizing the flux.
 
-%
-%  figure 3.2 for polar b.c
-%
-\begin{figure}
-  \includegraphics *[width=6.5in,bb= 0 0 419 183]{figures/polar_bc.pdf}
-  \caption{\label{figure_pole} Latitude-longitude grid structure in the
-pole region. In the ARW formulation, $r_e\Delta\psi = \Delta y/m_y $.}
-\end{figure}
+The renormalized higher-order-correction fluxes along
+with the first order fluxes are then used in the update equation
+\eqref{pd-update}.  Note that if no renormalization is needed the
+scheme \eqref{pd-update} reverts to the standard RK3 update because of
+the definition of the higher-order correction \eqref{correction-def}.
+
 
 \subsection{Pole Conditions for the Global Latitude-Longitude Grid}
 \label{pole_condition}
@@ -1196,6 +1230,15 @@ conservation equation \eqref{mu-discrete} for $\mu$ in a control volume
 closest to the pole, the meridional gradient ($y$ gradient) of the mass
 flux $\delta_y V''$ will use zero for the pole contribution to this
 term.
+
+%
+%  figure 3.2 for polar b.c
+%
+\begin{figure}
+  \includegraphics *[width=6.5in,bb= 0 0 419 183]{figures/polar_bc.pdf}
+  \caption{\label{figure_pole} Latitude-longitude grid structure in the
+pole region. In the ARW formulation, $r_e\Delta\psi = \Delta y/m_y $.}
+\end{figure}
 
 The stencils for advection operators higher than 2nd order, described in
 Section \ref{rk3-advection}, cross the poles for flux calculations at
@@ -1217,121 +1260,6 @@ operators. This approximation is also used for the meridional advection
 of $V$, combined with a lowering of the flux-operator order to avoid
 differencing across the pole (as with the flux divergence terms for the
 other prognostic variables).
-
-%\subsubsection{Forward-In-Time Scalar Advection}
-%
-%A forward-in-time scalar advection scheme having monotonic and positive
-%definite options will be available in the next major release of the ARW.
-%This option entails bypassing step (7) in the time-split
-%integration sequence in Fig. \ref{time_integration_figure}, and adding
-%a single advection evaluation before step (9), after the end of the RK3
-%loop in the integration sequence.  The new advection algorithm is
-%patterned after \citet{easter93} and can be written as follows
-%
-%\begin{align}
-%              (\mu_d q)^* &= (\mu_d q)^t + m_x m_y F_x (q^t)
-%                                       \label{split_adv_start}      \\
-%\mu_d^{*}                   &= \mu_d^t + m_x m_y  F_x (I) \label{cont-x}             \\
-%q^{*}                   &=  (\mu_d q)^{*}/ (\mu_d)^{*}       \\
-%(\mu_d q)^{**}             &= (\mu_d q)^* + m_x m_y F_y (q^*)        \\
-%\mu_d^{**}                   &= \mu_d^* + m_x m_y  F_y (I) \label{cont-y}            \\
-%q^{**}                   &=  (\mu_d q)^{**}/ (\mu_d)^{**}    \\
-%(\mu_d q)^{t+\Delta t}     &= (\mu_d q)^{**} + m_y F_\eta (q^{**})  \\
-%\mu_d^{t+\Delta t}           &= \mu_d^{**} + m_y F_\eta (I) \label{cont-z}          \\
-%q^{t+\Delta t} & = (\mu_d q)^{t+\Delta t}/\mu_d^{t+\Delta t}. \label{split_adv_end}
-%\end{align}
-%
-%\noindent
-%In \eqref{split_adv_start} - \eqref{split_adv_end} the operator 
-%
-%\begin{equation}
-%F_x (q) = - \Delta t \Delta x^{-1}( (
-%{\overline{U}^t q})_{i+1/2} - 
-%({\overline{U}^t q})_{i-1/2}),
-%\label{flux_divergence}
-%\end{equation}
-%
-%\noindent
-%with similar definitions 
-%for $F_y$ and $F_\eta$,  and $I$ is a vector with all values equal to
-%1. 
-%The discrete mass continuity
-%equation (\eqref{cont-x}+\eqref{cont-y}+\eqref{cont-z}) can be
-%written as
-%
-%\begin{equation}
-%\delta_\tau \mu_d = 
-%- m_x m_y [\delta_x \overline{U}^t + \delta_y \overline{V}^t] 
-%- m_y {\delta_\eta \overline{\Omega}^t}.
-%\label{continuity}
-%\end{equation}
-%
-%\noindent
-%It can easily be seen that the scheme 
-%\eqref{split_adv_start} - \eqref{split_adv_end} 
-%collapses to \eqref{continuity} for $ q = I$, 
-%and hence it is consistent.  The mass fluxes
-%$\overline{U}^t$, $\overline{V}^t$, and $\overline{\Omega}^t$,
-%represent time-averaged values where the averaging is performed over the
-%final RK3 small-time-step cycle.  Hence, the mass conservation equation
-%\eqref{continuity} produces the mass conservation equation integrated
-%within the RK3 scheme.  Equation \eqref{continuity} is re-integrated 
-%within the time-split transport scheme only because a consistent 
-%column mass $\mu_d$ is
-%needed on the sub-steps to retrieve $ q$ from the prognostic
-%variable $\mu_d  q$. 
-%
-%Any forward-in-time flux operator that is stable
-%for $Cr \le 1$ can be used to evaluate
-%the operators
-%$F_x (q)$, $F_y (q)$,
-%or $F_\eta (q)$.  A scheme based on the Piecewise Parabolic Method
-%(PPM) has been implemented in the ARW.  It
-%is the non-monotonized PPM advection described in \citet{carpenter1990},
-%and it provides the fluxes 
-%$({\overline{U}^t q})_{i\pm {1\over 2}}$
-%used
-%in \eqref{flux_divergence} in the flux divergence operators.
-%Defining $ q_i$ as the control-volume average mixing ratio for cell
-%$i$, zone edge values $q^{adv}$ can be defined as
-%
-%\begin{equation}
-%q^{adv}_{i+{1\over 2}} = \bigl( 7( q_{i+1}+ q_i) -
-%( q_{i+2}+ q_{i-1})\bigr)/12. 
-%\end{equation}
-%
-%\noindent
-%The flux through the $i + {1 \over 2}$ face can be written as
-%%
-%\begin{equation}
-%(\overline{U}^t q)_{i+{1 \over 2}} = {\overline{U}^t}_{i+{1 \over 2}} \bigl[
-%q^{adv}_{i+{1 \over 2}} - Cr (q^{adv}_{i+{1 \over 2}} -  q_{i})
-%-Cr(1 - Cr)(  q^{adv}_{i-{1 \over 2}} - 2  q_{i} 
-%              + q^{adv}_{i+{1\over 2}}) \bigr]
-%\end{equation}
-%%
-%\noindent
-%for $Cr > 0$, and
-%
-%\begin{equation}
-%(\overline{U}^t q)_{i+{1 \over 2}} = {\overline{U}^t}_{i+{1 \over 2}} \bigl[
-%q^{adv}_{i+{1 \over 2}} - Cr  ( q^{adv}_{i+{1 \over 2}}-  q_{i+1})
-% + Cr(1 + Cr)(  q^{adv}_{i+{1 \over 2}} - 2  q_{i+1} 
-%              + q^{adv}_{i+{3\over 2}}) \bigr]
-%\end{equation}
-%
-%\noindent
-%for $Cr < 0$, where $Cr = u_{i+{1\over 2}}\Delta t/\Delta
-%x$.  In addition, to maintain second-order accuracy for the time-split
-%forward-in-time advection scheme, the sequence
-%\eqref{split_adv_start} -- \eqref{split_adv_end} is reversed
-%every other time step; that is, the flux divergence in $\eta$ is
-%computed first followed by $y$ and then $x$.
-%Finally, the scheme has also been augmented for Courant numbers
-%greater than one using the 1D ``semi-Lagrangian'' flux calculation
-%described in \citet{linrood96}.   More information about this
-%scheme and a description of the limiters 
-%can be found in \citet{skamarock2005}.
 
 \section{Stability Constraints}
 
@@ -1502,12 +1430,12 @@ of the time step suggested in section \ref{rk3_timestep_constraint}:
 %
 \noindent
 to guard the time step from becoming too small or too large.  
-The computation of the number of acoustic time steps $n_a$, described in section
+The computation of the number of acoustic time steps $n_s$, described in section
 \ref{acoustic_step_constraint}, is handled during the first of each of the
 RK3 model integration steps:
 %
 \begin{equation}
-n_a
+n_s
 = max \Big( 2 \cdot \lfloor { 300 \cdot {\Delta t \over \Delta x} + 1 } \rfloor , 4 \Big).
 \label{adapt_acoustic_timestep}
 \end{equation}
