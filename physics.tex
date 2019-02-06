@@ -126,6 +126,11 @@ Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavi
 These have ice-phase processes the same as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The scheme is therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected. These are initialized with a constant value. As with all the WSM schemes, sedimentation is handled with a Lagrangian scheme. Also as with WSM5 and WSM6, the method of \citet{dudhia08} is used
 to provide a combined fallspeed for snow and graupel.
 
+\subsection{WSM7 and WDM7 schemes}
+
+The extension of WSM6 and WDM6 to include hail as a separate category from graupel is also available as a choice in WRF as WSM7 and WDM7 respectively \citep{bae18}. 
+These schemes, by allowing for hail, also can give more intense precipitation rates. As with the other WDM schemes, WDM7 only affects the cloud and rain water processes.
+
 \subsection{Eta Grid-scale Cloud and Precipitation (2001) scheme}
 
 This is also known as EGCP01 or the Eta Ferrier scheme. The scheme predicts changes 
@@ -222,6 +227,12 @@ The P3 scheme \citep{morrison15} uses a novel approach for predicting properties
 snow and may rime into graupel. The scheme has double-moment rain with an option for double-moment cloud to
 handle aerosol effects. The ice is also double-moment, but also has associated scalars for rimed mass and volume that
 allow the ice-particle properties to evolve rather than imposing categories like snow, graupel and hail.
+
+\subsection {Jensen ISHMAEL microphysics}
+The ISHMAEL (Ice-Spheroids Habit Model with Aspect-ratio EvoLution) scheme \citep{jensen17} can predict ice-particle habits
+that are defined by their aspect ratios and volumes and how these develop through deposition and riming. Up to three independent
+habits are carried that contain generalized particles which represent the whole evolution from ice to snow to graupel together with
+number concentrations of these.
 
 \section{Cumulus parameterization}
 

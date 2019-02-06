@@ -26,6 +26,10 @@ Auligne, T. D., 2014: Multivariate minimum residual method for cloud retrieval. 
 \bibitem[Auligne et al.(2007)]{auligne07}%
 Auligne, T., A. P. McNally, and D. P. Dee, 2007: Adaptive bias correction for satellite data in a numerical weather prediction system.
  {\em Q. J. R. Meteorol. Soc.}, {\bf 133}, 631--642.
+ 
+\bibitem[Bae et al.(2018)]{bae18}%
+Bae, S. Y., S.-Y. Hong, and W.-K. Tao, 2018: Development of a single-moment cloud microphysics schemewith prognostic hail for the Weather Research and Forecasting (WRF) model.
+{\em Asia-Pac. J. Atmos. Sci.}, https://doi.org/10.1007/s13143-018-0066-3.
 
 \bibitem[Ban et al.(2017)]{ban17}%
 Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data assimilation in WRFDA 4D-Var: implementation and
@@ -417,6 +421,10 @@ Janjic, Z. I., 2000: Comments on "Development and Evaluation of a Convection
 Janjic, Z. I., 2002: Nonsingular Implementation of the Mellor--Yamada Level 2.5 Scheme 
   in the NCEP Meso model,
   {\em NCEP Office Note}, {\bf No. 437}, 61 pp.
+  
+\bibitem[Jensen et al.(2017)]{jensen17}
+Jensen, A. A., J. Y. Harrington,  H. Morrison, and J. A. Milbrandt, 2017: Predicting ice shape evolution in a bulk microphysics model. 
+{\em J. Atmos. Sci.}, {\bf 74}, 2081--2104, https://doi.org/10.1175/JAS-D-16-0350.1.
   
 \bibitem[Jimenez et al.(2012)]{jimenez12}%
 Jimenez, P., J. Dudhia, J. F. Gonzalez-Ruoco, J. Navarro, J. P. Montavez,
