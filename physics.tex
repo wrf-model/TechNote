@@ -238,7 +238,8 @@ that are defined by their aspect ratios and volumes and how these develop throug
 habits are carried that contain generalized particles which represent the whole evolution from ice to snow to graupel together with
 number concentrations of these.
 
-\section{Cumulus parameterization}
+
+\section{Cumulus Parameterization}
 
 These schemes are responsible for the sub-grid-scale effects of 
 convective and/or shallow clouds. The schemes are intended to 
@@ -247,7 +248,7 @@ downdrafts and compensating motion outside the clouds. They
 operate only on individual columns where the scheme is triggered and 
 provide vertical heating and moistening profiles. Some schemes 
 additionally provide cloud and precipitation field tendencies 
-in the column, and future schemes may provide momentum tendencies 
+in the column, and some provide momentum tendencies 
 due to convective transport of momentum. The schemes all provide 
 the convective component of surface rainfall.
 
@@ -259,6 +260,10 @@ sub-grid-scale break down for finer grid sizes, sometimes these
 schemes have been found to be helpful in triggering convection in
 5--10 km grid applications. Generally, they should not be used when
 the model can resolve the convective eddies itself (e.g., $\le$ 5 km grid).
+
+A few schemes have developed capability to adapt to finer grid sizes. As the grid sizes
+decrease, these schemes will reduce the effect of deep convection accordingly, or gradually turn
+off deep convection and let the shallow convection takes over.
 
 Note that some cumulus schemes include both deep and shallow
 convection, while others only include deep convection.
@@ -500,6 +505,41 @@ boundary layer which improves the diurnal precipitation over land. The convectiv
 adjustment time is no longer a constant, but it depends on the vertical velocity averaged 
 in the updraft and cloud depth.
 
+
+\section{Shallow Cumulus Parameterization}
+
+Similar to the deep cumulus parameterization, these schemes represent the sub-grid-scale transport of heat 
+and moisture in shallow, and sometimes non-precipitating, clouds. Since the scale of shallow convective
+cloud is generally smaller than its deep counterpart, it should be used in models when a deep cumulus
+scheme is turned off. These stand-alone shallow schemes can therefore serve that purpose. 
+
+\subsection{University of Washington Scheme}
+
+The University of Washington shallow convection scheme is a mass flux scheme \citep{park09} using moist 
+adiabatically conserved variables of total specific humidity and liquid water potential 
+temperature. The scheme allows for precipitation, considers momentum mixing, and an entrainment 
+formulation that depends on the vertical velocity of the updraft. The scheme's closure is 
+controlled by convective inhibition. This scheme is adopted from CAM.
+
+\subsection{GRIMs Scheme}
+
+The GRIMs (The Global and Regional Integrated Model System) shallow convection scheme \citep{hong18} is based 
+on the shallow convection scheme of Tiedtke and uses an eddy-diffusivity method. The modification 
+to the Tiedtke scheme includes defining the cloud base at the top of the PBL and diffusion 
+coefficient as a function of relative humidity, mixed-layer vertical velocity scale and the 
+entrainment depth at the PBL top. The scheme is non-precipitating and can only be used with YSU PBL scheme.
+
+\subsection{NSAS Scheme}
+
+This shallow convection scheme is the same as the shallow component in the NSAS scheme.
+
+\subsection{Deng Scheme}
+
+The Deng scheme \citep{deng03} is a mass flux scheme. It considers both buoyang updraft and cloud with nearly neutral buoyancy.
+The scheme triggers convection based on the turbulent kinetic enerty (TKE) in the boundary layer, and its closure uses a
+hybrid formulation that depends on both boundary layer TKE as well as CAPE.
+In conditionally unstable environment, the scheme transitions to the Kain-Fritsch deep convective scheme.
+The scheme also predicts cloud fraction and cloud liquid content from the detrained convective updraft air.
 
 \section{Surface Layer}
 

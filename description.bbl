@@ -214,6 +214,9 @@ Deardorff, J. W., 1972 Numerical investigation of neutral and unstable
 Dee, D. P.,2004: Variational bias correction of radiance data in the ECMWF system. 
 {em In: Proc. of the ECMWF Workshop on Assimilation of High Spectral Resolution Sounders in NWP}, Reading, U. K., 28 June--1 July.
 
+\bibitem[Deng et al.(2003)]{deng03}%
+Deng, A., N. L. Seaman, and J. S. Kain, 2003: A shallow-convection parameterization for mesoscale models. Part I: Submodel description and preliminary applications. J. Atmos. Sci., 60, 34–56. 
+
 \bibitem[Desroziers(1997)]{desroziers97}%
 Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
   frontal structures. {\em Mon. Wea. Rev.}, {\bf 125}, 3030--3039.
@@ -344,12 +347,12 @@ Hong, S.-Y., 2007:
  The Korea Meteor. Soc., Fall conference, Seoul, Korea, Oct. 25-26.
 
 \bibitem[Hong and Lim(2006)]{honglim06}%
-Hong, S.-Y., and J.-O. J. Lim, 2006:
+Hong, S.-Y. and J.-O. J. Lim, 2006:
  The WRF Single-Moment 6-Class Microphysics Scheme (WSM6),
  {\em J. Korean Meteor. Soc.}, {\bf 42}, 129--151.
 
 \bibitem[Hong and Pan(1996)]{hong96}%
-Hong, S.-Y., and H.-L. Pan, 1996:
+Hong, S.-Y. and H.-L. Pan, 1996:
   Nonlocal boundary layer vertical diffusion in a medium-range forecast model, 
   {\em Mon. Wea. Rev.}, {\bf 124}, 2322--2339.
 
@@ -365,9 +368,14 @@ Hong, S.-Y., J. Dudhia, and S.-H. Chen, 2004:
   {\em Mon. Wea. Rev.}, {\bf 132}, 103--120.
 
 \bibitem[Hong et al.(2006)]{hong06}%
-Hong, S.-Y., and Y. Noh, and J. Dudhia, 2006:
+Hong, S.-Y., Y. Noh, and J. Dudhia, 2006:
 A new vertical diffusion package with an explicit treatment of entrainment processes. 
  {\em Mon. Wea. Rev.}, {\bf 134}, 2318--2341. 
+
+\bibitem[Hong and Jang(2018)]{hong18}%
+Hong, S.-Y. and J.-H. Jang, 2018: Impacts of shallow convection processes on a simulated 
+Boreal summer climatology in a global atmospheric model. {\em Asia-Pacific J. Atmos. Sci.} 
+(2018) 54(Suppl 1): 361. doi:10.1007/s13143-018-0013-3.
 
 \bibitem[Huang and Lynch, 1993]{huanglynch93}%
 Huang, X.-Y. and P. Lynch, 1993:
@@ -622,7 +630,7 @@ Ma, L.-M. and Z.-M. Tan, 2009: Improving the behavior of the cumulus parameteriz
 Mahalov, A., and M. Moustaoui, 2009: 
   Vertically nested nonhydrostatic model for multiscale resolution of flows in the 
   upper troposphere and lower stratosphere. 
-  {\em J. Comput. Phys.}, {\bf 228}, 1294--–1311, doi:10.1016/j.jcp.2008.10.030.
+  {\em J. Comput. Phys.}, {\bf 228}, 1294--1311, doi:10.1016/j.jcp.2008.10.030.
   
 \bibitem[Mansell et al.(2010)]{mansell10}%
 Mansell, E. R., C. L. Ziegler, and E. C. Bruning, 2010: Simulated electrification of a small thunderstorm 
@@ -754,6 +762,9 @@ Palmer, T.~N., R.~Buizza, F.~Doblas-Reyes, T.~Jung, M.~Leutbecher, G.~Shutts,
 \bibitem[Pan and Wu(1995)]{pan95}%
 Pan, H.-L., and W.-S. Wu, 1995: Implementing a mass flux convective parameterization package 
   for the NMC Medium-Range Forecast model. NMC Office Note 409, 40 pp. 
+
+\bibitem[Park and Bretherton(2009)]{park09}%
+Park, Sungsu, and Christopher S. Bretherton, 2009: The University of Washington shallow convection and moist turbulence schemes and their impact on climate simulations with the Community Atmosphere Model. J. Climate, 22, 3449–3469. doi:10.1175/2008JCLI2557.1
 
 \bibitem[Park et al. (2013)]{park13}%
 Park, S.-H., W. Skamarock, J. Klemp, L. Fowler, and M. Duda, 2013: Evaluation of global atmospheric solvers using extensions of the Jablonowski and Williamson baroclinic wave test case. {\em Mon. Wea. Rev.}, {\bf 141}, 3116--3129.
@@ -892,12 +903,6 @@ Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
 moisture transport on NWP precipitation forecasts, 
   {\em Mon. Wea. Rev.}: submitted.
 
-\bibitem[Skamarock(2005)]{skamarock2005}%
-Skamarock W. C., 2005: Timesplitting techniques for multidimensional transport,
-  available at {\em
-  http://www.mmm.ucar.edu/individual/skamarock/advect3d\_2005.pdf},
-  26 pp.
-
 \bibitem[Skamarock et al.(2012)]{skamarock12}%
 Skamarock, W. C, J. B. Klemp, M. G. Duda, L. Fowler, S.-H. Park, and T. D. Ringler, 2012: A Multi-scale Nonhydrostatic Atmospheric Model Using Centroidal Voronoi Tesselations and C-Grid Staggering. {\em Mon. Wea. Rev.}, {\bf 240}, 3090-3105, doi: 10.1175/MWR-D-11-00215.1.
 
@@ -1008,6 +1013,11 @@ Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS 
 Wang, W., D. Barker, C. Bruy\`ere, M. Duda, J. Dudhia, D. Gill, J. Michalakes, and S. Rizvi, 2008: 
 WRF Version 3 Modeling System User's Guide.
   {\em http://www.mmm.ucar.edu/wrf/users/docs/user$\_$guide$\_$V3/}.
+
+\bibitem[Wang et al.(2009)]{Wang-et-al-2009}%
+Wang, H., Skamarock, W. C., Feingold, G., 2009: Evaluation of scalar advection schemes in the 
+Advanced Research WRF model using large-eddy simulations of aerosol-cloud interactions.
+ {\em Mon. Wea. Rev.}, {\bf 137}, 2547--2558.
 
 \bibitem[Wang et al.(2013a)]{wang13a}%
 Wang, H., J. Sun, S. Fan, and X.-Y. Huang, 2013: Indirect Assimilation of Radar Reflectivity with WRF 3D-Var and Its Impact on Prediction of
@@ -1130,6 +1140,11 @@ Yang, C., Z. Liu, F. Gao, P. P. Childs, and J. Min, 2017: Impact of assimilating
 Yang, Z.-L., G.-Y. Niu, K. E. Mitchell, F. Chen, M. B. Ek, M. Barlage, L. Longuevergne, K. Manning, D. Niyogi, M. Tewari, and Y. Xia, 2011: 
 The community Noah land surface model with multiparameterization options (Noah-MP): 2. Evaluation over global river basins. 
 {\em J. Geophys. Res.}, {\bf 116}, D12110.
+
+\bibitem[Zalesak (1979)]{Zalesak-1979}%
+Zalesak, S. T., 1979:
+Fully multidimensional flux-corrected transport algorithms for fluids.
+  {\em J. Comp. Phys.}, {\bf 31}, 335–362.
 
 \bibitem[Zhang and Wang(2011)]{zhangc11}%
 Zhang, Chunxi, Yuqing Wang, and Kevin Hamilton, 2011: Improved representation of boundary layer clouds over 
