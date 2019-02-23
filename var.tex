@@ -112,7 +112,7 @@ with the analysis, and surface fields (e.g. SST) are also updated in the {\it wr
 Relative to that described in the MM5 3DVAR technical note \citep{barker03} and the WRF technical note Version 3 
 \citep{skamarock08}, the latest version of WRFDA (V4.0) contains a number of improvements,
 including four-dimensional variational (4D-Var) and hybrid variational/ensemble (hybrid-EnVar) data assimilation 
-techniques, the direct assimilation of satellite radiances, the improvements on radar data assimilation, more choices
+techniques, the direct assimilation of satellite radiances, improvements on radar data assimilation, and more choices
 of control variables among other new capabilities. These will be briefly overviewed below and more details can be
 found in cited references.
 
@@ -124,22 +124,22 @@ improved by \citet{zhang13, zhang14a}. WRFDA 4D-Var allows the use of LBC contro
 tangent linear model (TLM) (adjoint model, ADJ) of WRF during the minimization within the assimilation time window. 
 In Version 4.0, WRFPlus code (i.e., TLM/ADJ of WRF) is fully integrated into the WRF main code repository, 
 which will ease future code maintenance
-and development. While the TLM/ADJ (located under {\bf wrftladj} directory of WRF source code) of full 
-WRF dynamic is available in WRFPlus code, only few WRF physics schemes have corresponding TLM/ADJ, including
+and development. While the TLM/ADJ (located under {\bf wrftladj} directory of WRF source code) of the full 
+WRF dynamics is available in WRFPlus code, only a few WRF physics schemes have corresponding TLM/ADJ, including
 the large-scale condensation and modified Kessler (warm-rain) \citep{wang13b} scheme for microphysics, a simplified
 cumulus parameterization scheme, vertical diffusion, and gravity wave drag. TLM/ADJ of two new features in WRF V4, 
 hybrid vertical coordinate and moist potential temperature, is not implemented yet in WRFPlus V4, but expected to
 be available in a future release.
-It is worth noting that the precipitation data can be assimilated with 4D-Var since version 3.4 \citep{ban17}.
+It is worth noting that precipitation data can be assimilated with 4D-Var since version 3.4 \citep{ban17}.
 
 The capability of computing the forecast sensitivity to observations (FSO) was also introduced in WRFDA \citep{zhang15}. 
 FSO allows the calculation of the forecast impact of different observations using the adjoint of WRF and WRFDA. 
-Notice that Lanczos minimization algorithm instead of Conjugate Gradient Method needs to be used when calculating FSO
+Notice that the Lanczos minimization algorithm needs to be used instead of the Conjugate Gradient Method when calculating FSO
 with WRFDA.
 
 \subsection{Hybrid variational/ensemble techniques}
 
-The WRFDA's 4D-Var provides implicitly flow-dependent forecast error covariance
+WRFDA's 4D-Var provides implicitly flow-dependent forecast error covariance
 through the use of the linear forecast model to evolve perturbations through a short time window. 
 However, this comes at a cost; there are both computational as well as human resources
 required to maintain a linear forecast model and its adjoint. 
@@ -158,18 +158,18 @@ The easiest way is to obtain the ensemble input from a ``third-party" ensemble p
 NCEP's Global Ensemble Forecast System (GEFS). In that case, computational cost is significantly reduced
 because there is no need to run the own ensemble forecasts.
 An arguably better way is to produce your own ensemble analysis and forecast with your choice of model and resolution.
-WRFDA package includes a program to perform the ensemble transform Kalman filter (ETKF) to produce the ensemble
+The WRFDA package includes a program to perform the ensemble transform Kalman filter (ETKF) to produce the ensemble
 analysis and then ensemble forecasts can be generated and used as the input of the WRFDA hybrid analysis.
-Another possibility of producing ensemble analysis is to run multiple WRFDA hybrid with perturbed observations.
+Another possibility of producing ensemble analyses is to run an ensemble of WRFDA hybrid-EnVar with perturbed observations for each member analysis.
 
 \subsection{Satellite radiance data assimilation}
 
 The capability of radiance data assimilation was introduced in WRFDA 3.1 \citep{liu06}.
-Most of BUFR format radiance data (HIRS, AMSU-A/B, MHS, AIRS, IASI, ATMS, SSMIS, and SEVIRI), 
-operationally used in the NCEP's GFS model, can be ingested by WRFDA. In addition, AMSR2 radiance data
+Most of the BUFR format radiance data (HIRS, AMSU-A/B, MHS, AIRS, IASI, ATMS, SSMIS, and SEVIRI) 
+used operationally in the NCEP's GFS model can be ingested by WRFDA. In addition, AMSR2 radiance data
 in HDF format \citep{yang16} and GOES-Imager radiances in NETCDF format \citep{yang17} can also be assimilated.
 The WRFDA system is unique in that it interfaces to the two most widely used fast Radiative Transfer Models (RTMs): 
-the Radiative Transfer for Television and Infrared Observation Satellite (RTTOV) and the Community Radiative Transfer Model (CRTM),
+the Radiative Transfer for TOVS (RTTOV) and the Community Radiative Transfer Model (CRTM),
  developed and maintained by the European Organisation for the Exploitation of Meteorological Satellites (EUMETSAT) and
 the U.S. Joint Center for Satellite Data Assimilation (JCSDA), respectively. A flexible interface to both RTTOV and CRTM
 ensures that WRFDA users can assimilate radiance data from all sensors that can be simulated by either
@@ -177,11 +177,11 @@ RTM, provided that corresponding data interface and quality control have been im
 
 Satellite radiance measurements and RTMs are prone to systematic errors (i.e., biases) that must be
 corrected before radiances can be assimilated. Biases typically vary with platform, instrument, channel,
-scan angle, and atmospheric conditions. WRFDA adopts the so-called the variational bias correction (VarBC) 
+scan angle, and atmospheric conditions. WRFDA adopts the so-called variational bias correction (VarBC) 
 algorithm for adaptive and online radiance bias correction, which updates the bias correction coefficients
 within the linear regression as a part of the variational minimization \citep{dee04,auligne07}.
-It is worth mentioning that an offline VarBC functionality is provided within WRFDA to generate bias correction
-coefficients statistics without running actual WRFDA analysis, which is useful when conducting data assimilation
+It is worth mentioning that an offline VarBC functionality is provided within WRFDA to generate statistics for bias correction
+coefficients without running an actual WRFDA analysis, which is useful when conducting data assimilation
 experiments for a short period \citep{liu12}.
 
 For radiance assimilation under clear-sky condition, two advanced cloud detection methods for hyperspectral infrared sensors 
@@ -193,25 +193,25 @@ with the development of the so-called ``symmetric error model" for all-sky data 
 \subsection{Radar Data Assimilation}
 
 The initial capability to assimilate Doppler radar radial velocity and reflectivity observations is available in WRFDA v3
-\citep{xiao05, xiao07, xiao072, xiao08}. In order to calculate the vertical velocity increment as a result of
-assimilating the vertical velocity component of radial velocity, the Richarson balance equation, which combines the continuity
-equation, adiabatic thermodynamic equation and hydrostatic relation, and its linear and adjoint codes are introduced.
+\citep{xiao05, xiao07, xiao072, xiao08}. In order to analyze the vertical velocity as a result of
+assimilating radar radial velocity, the Richarson balance equation
+ and its linear and adjoint codes were introduced.
 For reflectivity assimilation, total water is used as a control variable. 
 This requires a partitioning between water vapor and hydrometeor increments during the minimization procedure.
 A warm-rain parameterization is included to assist the calculation of hydrometeors, which includes condensation of water vapor
 into cloud, accretion of cloud by rain, automatic conversion of cloud to rain, and evaporation of rain to water vapor.
 The observation operators for Doppler radial velocity and reflectivity are included.
 
-Current WRFDA includes an additional option to assimilate radar reflectivity retrieved hydrometeor profiles 
+Since version 3.7, WRFDA includes an additional option to assimilate radar reflectivity retrieved hydrometeor profiles 
 in 3D-Var or 4D-Var mode \citep{wang13a, wang13b, sun13}. A preliminary capability to assimilate 
 null-echo radar reflectivity is also implemented.
 
 \subsection{Choice of control variables}
 \label{var-cvs}
 
-WRFDA uses the square root B preconditioning such that ${\bf B} = {\rm U} {\rm U^T} $. 
-The background error covariance matrix ${\bf B}$ is computed not in model space ${\bf x}': u, v, T, q, p_{s}$, but in a 
-control variable space ${\bf v}$ related to model space via the control variable transform ${\rm U}$, 
+WRFDA uses the square root B preconditioning such that ${\bf B} = {\rm U} {\rm U^T} $ (see 11.3 for more details). 
+The background error covariance matrix ${\bf B}$ is never explicitly computed in model space ${\bf x}': u, v, T, q, p_{s}$.  WRFDA's cost function is iteratively minimized in 
+control variable space ${\bf v}$, which is related to model space via the control variable transform ${\rm U}$, 
 i.e.,
 
 \begin{equation}
@@ -238,7 +238,7 @@ This option allows the statistical cross-correlation between mass and wind field
  cv\_options=6 \citep{chen13}: Streamfunction $\psi'$, unbalanced velocity potential $\chi_u'$, 
 unbalanced temperature $T_u'$, unbalanced pseudo relative humidity $rh_u'$, unbalanced surface pressure $ps_u'$.
 In addition to mass-wind balance, this option allows the cross-correlation between moisture and other variables, which
-may be more important in tropical region.
+may be more important in tropical regions.
 
 \item
  cv\_options=7 \citep{sun15}: zonal wind $u'$, meridional wind $v'$, temperature $T'$, pseudo relative humidity $rh'$, 
@@ -275,17 +275,17 @@ b) In Version 4.0, a divergence constraint (DIVC) term was added to model the co
 
 \vspace{0.5cm}
 
-c) Introduced in Version 4.0, the large scale analysis constraint (LSAC) option \citep{ven16} is to ensure that the convective-scale 
-analysis does not distort the underlining large-scale balance and to eliminate possible large-scale bias in WRF back-ground. The global analysis or forecast, such as that from GFS or FNL, is treated as bogus observations and assimilated via WRFDA. The user can choose the scale of the large-scale to be enforced by skipping grid points both in the horizontal and vertical directions. The input data for LSAC is prepared using WPS/REAL, the same as preparing WRF input data.
+c) Introduced in Version 4.0, the large scale analysis constraint (LSAC) option \citep{ven16} ensures that the convective-scale 
+analysis does not distort the underlining large-scale balance and eliminates possible large-scale bias in the WRF background. The global analysis or forecast, such as that from GFS or FNL, is treated as bogus observations and assimilated via WRFDA. The input data for LSAC is prepared using WPS/REAL, the same as preparing WRF input data.
 
 \vspace{0.5cm}
 
 d) A new option to assimilate GPS Radio Occultation (GPSRO) refractivity data using the GPS Excess Phase (GPSEPH)
-nonlocal operator \citep{chen09} is added in Version 4.0 with a parallelization strategies described in \citep{zhang14b}.
+nonlocal operator \citep{chen09} is added in Version 4.0 with a parallelization strategy described in \citep{zhang14b}.
 
 \vspace{0.5cm}
 
-e) Since Version 3.5, WRFDA can assimilation wind observations in terms of wind speed and direction \citep{huang13,gao15}, 
+e) Since Version 3.5, WRFDA can assimilate wind observations in terms of wind speed and direction \citep{huang13,gao15}, 
 in addition to originally assimilating u and v components.
 
 \section{Background Error Covariances}
@@ -297,7 +297,7 @@ completely define the analysis response away from observations. The latter impac
 particularly important in data-sparse areas of the globe. Unlike ensemble filter data 
 assimilation techniques (e.g., the Ensemble Adjustment Kalman Filter, the Ensemble 
 Transform Kalman Filter), 3/4D-Var systems do not explicitly evolve forecast error 
-covariances in real-time (although both 4D-Var and hybrid variational/ensemble data assimilation techniques currently being developed within WRF-Var implement flow-dependent covariances implicitly). Instead, climatologic statistics are usually estimated offline. 
+covariances in real-time (although both 4D-Var and hybrid variational/ensemble data assimilation techniques currently being developed within WRFDA implement flow-dependent covariances implicitly). Instead, climatologic statistics are usually estimated offline. 
 The ``NMC-method", in which forecast error covariances are approximated using 
 forecast difference (e.g., T+48 minus T+24) statistics, is a commonly used approach 
 \citep{parrish92}. Experiments at ECMWF \citep{fisher03} indicate superior statistics may 
@@ -316,7 +316,7 @@ required to specify and implement flow-dependent error covariances in 3/4D-Var i
 significant.
 
 The development of a unified global/regional WRFDA system, and its widespread use
-in the WRF community has necessitated the development of a efficient, portable forecast 
+in the WRF community has necessitated the development of an efficient, portable forecast 
 background error covariance calculation code. Numerous applications have also indicated
 that superior results are obtained if one invests effort in calculating domain-specific 
 error covariances, instead of using the the default statistics supplied with the WRFDA 
