@@ -257,6 +257,10 @@ Feedback is handled to preserve these mean values: the mass/thermodynamic/scalar
 fields are fed back with an average from within the entire 
 coarse grid point (Fig. \ref{figure:cg_fg}), and the horizontal momentum variables are
 averaged along their respective normal coarse grid cell faces.
+Horizontal interpolation from the coarse grid at each time step produces the lateral boundary
+conditions for the fine-grid domain, and horizontal interpolation may entirely 
+instantiate several fields on the fine-grid domain.
+Not all horizontal interpolation techniques used within the model necesssarily conserve mass.
 
 Staggering defines the way that the fine grid is situated 
 on top of the coarse grid.  For all odd ratios there is a coincident 
