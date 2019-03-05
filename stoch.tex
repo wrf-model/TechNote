@@ -74,22 +74,22 @@ the implementation, the SPPT scheme can use up to three patterns with
 different spatial and time scales and a vertical tapering function which 
 tapers perturbations near the surface and for the highest model levels.
 The WRF implementation uses by default only a single perturbation field \citep{Be15}.
-and perturbs the tendencies from the PBL and convection schemes, but not radiation
-or micro-physics.
+and perturbs the tendencies from the PBL and convection schemes, but not radiation or 
+microphysics.
 
 %--------------------------------------------------------------------------------------------
 \section{Stochastic kinetic-energy backscatter scheme (SKEBS)}
 %--------------------------------------------------------------------------------------------
 The Stochastic Kinetic Energy Backscatter scheme (SKEB) aims to represent
 the interactions of turbulent eddies near or below the
-truncation level with the resolved state. Some of the eddy-eddy interactions will
+truncation level with the resolved state. Some of the eddy-eddy interactions
 will dissipate, but others lead to a resolved-scale effect.
 Originally developed for large eddy simulation applications, these ideas were 
 adapted for numerical weather prediction by
 \citet{Sh05} and \citet{Be09}.
 SKEBS generates streamfunction perturbations with spatio-temporal correlations. These
-can be weighted with the dissipation rate from numerical diffusion, convection and orographic 
-wave drag. 
+can be weighted with the dissipation rate from numerical diffusion, 
+convection and orographic wave drag. 
 
 In the WRF implementation, no dissipation weighting is used and the 
 perturbations can be extended to the potential temperature field \citep{Be11}.
@@ -104,31 +104,33 @@ and near the surface \citep{Be15}.
 %--------------------------------------------------------------------------------------------
 \section {Stochastically perturbed parameterization scheme (SPP)}
 %--------------------------------------------------------------------------------------------
-To describe the statistics over the over unresolved, subgrid-scale processes, 
+To describe the statistics of the unresolved, subgrid-scale processes, 
 physical parameterization schemes have a number of deterministic parameters.
-While some of them have no uncertainty, e.g. the gravitation constant, 
-others have a large uncertainties due to 
+While some of them have no uncertainty (e.g., the gravitational constant), 
+others have large uncertainties due to 
 measurement errors and heterogeneities in the underlying physical process
-e.g. the processes represented by the parameter ``roughness length'' in the PBL scheme or
-the shape parameter characterizing the particle size distribution in the micro-physics 
-scheme.  
+(e.g., the processes represented by the parameter ``roughness length'' in the PBL 
+scheme or the shape parameter characterizing the particle size distribution in 
+the microphysics scheme).  
 
 The stochastically perturbed parameterization scheme (SPP)
 perturbs the values of uncertain key parameters and provides 
 thus a way to represent uncertainties within a particular parameterization scheme
 \citep{Bo08,Ha11a}.
-Perturbations to e.g. the vertical mass flux profile 
-in the convection scheme or the shape parameter of the particle size distribution in the
-micro-physics scheme allow in principle to represent structural model error.
-Since the in the statistical sciences fundamental distinction between ``parameter error'' and 
-``structural model error '' is blurred when parameters in the physical parameterization schemes 
-are perturbed, the scheme is called ``Stochastically perturbed {/it parameterization} scheme''
+Perturbations in the convection scheme (e.g., to the vertical mass flux 
+profile) or in the microphysics scheme (e.g., to the shape parameter of 
+the particle size distribution) allow in principle the representation of
+structural model error.  In the statistical sciences there is a fundamental 
+distinction between ``parameter error'' and 
+``structural model error ''. When parameters in the physical schemes 
+are perturbed, this disticntion is blurred, and the scheme is 
+called a ``Stochastically perturbed {/it parameterization} scheme''
 rather than ``Stochastically perturbed {/it parameter} scheme''. 
 
 The SPP released in WRF is designed in close collaborations with the physical
-parameterization developers and under active development. Hence it is only
-available for selected physics packages, namely the Grell Freitas convection
-scheme and the the MYNN boundary layer scheme \citep{jankov2017performance}.
+parameterization developers and is under active development. Hence it is only
+available for selected physics packages, namely the Grell-Freitas convection
+scheme and the MYNN PBL scheme \citep{jankov2017performance}.
 
 The member diversity introduced by SPP tends to be smaller than that of SKEBS and SPPT 
 and is in itself typically not enough to generate reliable ensemble spread 
@@ -145,12 +147,11 @@ parameters of interest.  Since the interface has to be provided by the
 user, this option is not recommended for novice users.
 
 %--------------------------------------------------------------------------------------------
-\section {Stochastic Perturbations to the lateral boundary conditions}
+\section {Stochastic perturbations to the lateral boundary conditions}
 %--------------------------------------------------------------------------------------------
 The stochastic tendencies in WRF are typically treated as physics-tendencies and change the 
 perturbed fields at each time step within the WRF domain. However, since the stochastic
-perturbation field is also generated on the boundary, it can be used to perturb the lateral boundary 
-boxes. We refer to the user guide for details.
+perturbation field is also generated on the boundary, it can be used to perturb the lateral boundary specified and relaxation zones. We refer to the user guide for details.
 
 %--------------------------------------------------------------------------------------------
 \begin{figure}[h!]
