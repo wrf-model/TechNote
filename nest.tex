@@ -291,7 +291,8 @@ if the coarse grid point to which values are being fed back is a water value.  S
 several sea ice values on the fine grid does not make sense if some of the neighboring
 points included in the mean are fine grid land points. 
 Only masked fields use the feedback method in which a single
-point from the fine grid is assigned to the coarse grid.
+point (such as for land use category) or a mean of valid points
+(such as for soil temperature) from the fine grid is assigned to the coarse grid.
 
 One difference between odd and even grid-distance ratios 
 is in the feedback from the fine grid to the coarse grid.  No 
