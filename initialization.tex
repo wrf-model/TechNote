@@ -9,7 +9,7 @@ simulations.
 Several sample cases are provided for real-data simulations, which
 rely on pre-processing from an external package (usually the 
 WRF Preprocessor System, referred to as WPS) that converts
-the large-scale GRIB data into a format suitable for ingest by the ARW's
+the large-scale GRIB-formatted data into a format suitable for ingest by the ARW's
 real-data processor.
 
 The programs that generate the specific initial conditions for the selected 
@@ -171,7 +171,7 @@ the projection type, location on the globe,
 number of grid points, nest locations, and grid distances) and
 to interpolate static fields to the prescribed domain.
 Independent of the domain configuration,
-an external analysis or forecast is processed by the WPS GRIB decoder,
+an external analysis or forecast is processed by the WPS decoder,
 which diagnoses required fields and
 reformats GRIB data into an internal binary format.
 With a specified domain,
@@ -190,7 +190,7 @@ on the selected model grid's horizontal staggering, at the selected time slices.
 data flow and program components in WPS, and how WPS feeds initial data to the ARW.
 Text in the rectangular boxes indicates program names.
 GEOGRID: defines the model domain and creates static files of terrestrial data.  UNGRIB:
-decodes GRIB data. METGRID: interpolates meteorological data to the model domain.}
+decodes GRIB-formatted data. METGRID: interpolates meteorological data to the model domain.}
 \end{figure}
 
 Input to the ARW real-data processor from 
