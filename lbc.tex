@@ -209,14 +209,19 @@ coupled with $\mu_d$ and the inverse map factor (both at the specific variable's
 horizontal staggering location), and the other 3-dimensional fields are coupled with
 $\mu_d$.  The $\mu'_d$ field is not coupled in the lateral boundary file.
 
+Several fields within the model have specified lateral boundary conditions that are 
+associated particularly with a known variable.
 Vertical velocity has a zero gradient boundary condition applied in the
-specified zone (usually the outer-most row and column).
-Microphysical variables (with the exception of vapor) and all other scalars have flow-dependent boundary
-conditions applied in the specified zone. This boundary condition is specified as zero on inflow
+specified zone (the outer-most row and column).
+Users are able to control the behavior of the treatment of the lateral boundary conditions
+for scalar variables that are subject to transport. 
+By default, all scalars except for vapor have flow-dependent boundary
+conditions applied in the specified zone. This boundary condition is defined as zero-value on inflow
 and zero-gradient on outflow. Since these boundary conditions require only information from
-the interior of the grid, these variables are not in the specified boundary condition file.
-However, for nested boundaries, microphysical variables and scalars are also available
-from the parent domain, and use the same relaxation towards interpolated variables as the
+the interior of the grid, these scalar variables are not required to be in the lateral boundary condition file.
+If sufficient scalar data is provided to the lateral boundary condition file, the same technique of
+relaxation
+towards temporally interpolated variables is employed, identically as with the
 dynamic variables.
 
 \section{Polar Conditions}
