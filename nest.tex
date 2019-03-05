@@ -415,7 +415,7 @@ of a parent grid at the requested start time.
 This initialization is within the integration step for the parent 
 grid, meaning that no child grid integration can begin if the parent is not active.  
 To fill in the correct meteorological 
-fields, an initialization routine is called to horizontally interpolate
+fields, a default initialization routine is called to horizontally interpolate
 coarse-grid data to the fine-grid locations using a monotone
 interpolation scheme \citep[described in][]{smolargrell92} for most fields 
 (i.e., the same scheme employed for generating the fine grid lateral
