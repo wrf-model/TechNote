@@ -186,9 +186,9 @@ F_2 = {1 \over {50 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}
 $F_1$ and $F_2$ are
 linear ramping functions with a maximum at the first relaxation row or column 
 nearest to the coarse grid boundary (just inside the specified zone).  
-In Version 3.0 these linear functions can optionally be multiplied by an
+These linear functions can optionally be multiplied by an
 exponential function for smoother behavior when broad boundary zones are
-needed. This is achieved through an additional multiplier.
+needed. This is achieved through an extra factor.
 \begin{equation}
 F_1 = {1 \over {10 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}}
 \exp [ - SpecExp ( n - SpecZone - 1)]
