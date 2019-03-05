@@ -426,7 +426,7 @@ boundary along each of the four sides is user-selectable at run-time.
 
 \subsection{Masking of Surface Fields}
 
-Some of the meteorological and static fields are ``masked".  A masked field is one in which
+Some of the meteorological and static fields are "masked".  A masked field is one in which
 values are typically defined only over water (e.g., sea surface temperature) or defined
 only over land (e.g., soil temperature).
 The need to match all of the masked fields consistently to each other requires additional steps
@@ -461,7 +461,7 @@ remove this noise by filtering all oscillations above a specified cutoff
 frequency. Accordingly, filters in the ARW DFI are low-pass digital 
 filters, which are applied to time-series of model fields. The {\it initialized} 
 model state is the output of the filter at some prescribed time, 
-( e.g., the analysis time). Time series of model states are generated through 
+(e.g., the analysis time). Time series of model states are generated through 
 combinations of integration types that may include adiabatic, backward integration and diabatic, and/or forward 
 integration in the model, along with the chosen DFI scheme (which determines the 
 specific combination of integration). Three DFI schemes are available: 
@@ -512,9 +512,9 @@ y_n = \sum_{k=0}^{N} h_k x_{n-k} + \sum_{k=1}^{N} b_k y_{n-k}.
 \noindent
 However, this form is inconvenient when inputs to the filter consist of 
 model states, and storing many such states should be avoided. \cite{lynchhuang94} 
-show how this type of recursive filter can be reformulated to have the same 
+show how this type of recursive filter can be reformulated to the same 
 form as a nonrecursive filter, and thus, the second-order 
-Quick-Start filter should be thought of as having the same form as (\ref{fir_filter}).
+Quick-Start filter follows the same form as (\ref{fir_filter}).
 
 \subsection{DFI Schemes}
 
