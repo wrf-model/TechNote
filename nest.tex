@@ -357,48 +357,48 @@ multiple grids on the same level.
 \parbox{6.5truein}{
 \vskip 5truept
 \noindent
-{\bf Integrate Parent Grid One Time Step} \medskip \hfill \break
+{\bf Integrate parent grid one time step} \medskip \hfill \break
 %
-\hphantom{Begin} {\bf If Nest Grid Start Time}  \smallskip \hfill \break
+\hphantom{Begin} {\bf If nest grid start time}  \smallskip \hfill \break
 \hphantom{BeginBegin}
-(1) Horizontally Interpolate Parent to Child Grid \hfill \break
+(1) Horizontally interpolate parent to child grid \hfill \break
 \hphantom{BeginBegin}
-(2) Optionally Input High-resolution Child Data \hfill \break
+(2) Optionally input high-resolution child data \hfill \break
 \hphantom{BeginBegin}
-(3) Compute Child Reference State \hfill \break
+(3) Compute child reference state \hfill \break
 \hphantom{BeginBegin}
 (4) Feedback Child Initial Data to Parent Grid \hfill \break
 \hphantom{BeginBegin}
-(5) Re-Compute Parent Reference State \hfill \break
-\hphantom{Begin} {\bf End If Nest Grid Start Time}  \medskip \hfill \break
+(5) Re-compute parent reference state \hfill \break
+\hphantom{Begin} {\bf End If nest grid start time}  \medskip \hfill \break
 %
-\hphantom{Begin} {\bf Solve Time Step for Parent Grid (see Fig. \ref{time_integration_figure})}  \medskip \hfill \break
+\hphantom{Begin} {\bf Solve time step for parent grid (see Fig. \ref{time_integration_figure})}  \medskip \hfill \break
 %
-\hphantom{Begin} {\bf If Nest Grid Move Time and FG Away from CG Boundary}  \smallskip \hfill \break
+\hphantom{Begin} {\bf If nest grid move time and FG away from CG boundary}  \smallskip \hfill \break
 \hphantom{BeginBegin}
-(1) Move Nest Grid (Vortex Following or Prescribed)\hfill \break
+(1) Move nest grid (vortex following or prescribed)\hfill \break
 \hphantom{BeginBegin}
-(2) Horizontally Translate Data Due to Grid Shift \hfill \break
+(2) Horizontally translate data due to grid shift \hfill \break
 \hphantom{BeginBegin}
-(3) Horizontally Interpolate Parent to Child Grid (Along New Boundary) \hfill \break
+(3) Horizontally interpolate parent to child grid (along new boundary) \hfill \break
 \hphantom{BeginBegin}
-(4) Optionally Input High-resolution Child Topo-landuse Data \hfill \break
+(4) Optionally input high-resolution child topo-landuse data \hfill \break
 \hphantom{BeginBegin}
-(5) Compute Child Reference State \hfill \break
+(5) Compute child reference state \hfill \break
 \hphantom{BeginBegin}
-(6) Feedback Child Initial Data to Parent Grid \hfill \break
+(6) Feedback child initial data to parent grid \hfill \break
 \hphantom{BeginBegin}
-(7) Recompute Parent Reference State \hfill \break
-\hphantom{Begin} {\bf End If Nest Grid Move Time}  \medskip \hfill \break
+(7) Recompute parent reference state \hfill \break
+\hphantom{Begin} {\bf End If nest grid move time}  \medskip \hfill \break
 %
-\hphantom{Begin} {\bf While Existing Nest Grids to Integrate}  \smallskip \hfill \break
+\hphantom{Begin} {\bf While existing nest grids to integrate}  \smallskip \hfill \break
 \hphantom{BeginBegin}
-(1) Lateral Forcing from Parent Grid to Child \hfill \break
+(1) Lateral forcing from parent grid to child \hfill \break
 \hphantom{BeginBegin}
-(2) Integrate Child Grid to Current Time of Parent Grid\hfill \break
+(2) Integrate child grid to current time of parent grid\hfill \break
 \hphantom{BeginBegin}
-(3) Feedback Child Grid Information to Parent Grid \hfill \break
-\hphantom{Begin} {\bf End While Existing Nest Grids to Integrate}  \medskip \hfill \break
+(3) Feedback child grid information to parent grid \hfill \break
+\hphantom{Begin} {\bf End While existing nest grids to integrate}  \medskip \hfill \break
 %
 {\bf End Grid Integrate}
 \vskip 5truept
