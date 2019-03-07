@@ -217,6 +217,12 @@ Dee, D. P.,2004: Variational bias correction of radiance data in the ECMWF syste
 \bibitem[Deng et al.(2003)]{deng03}%
 Deng, A., N. L. Seaman, and J. S. Kain, 2003: A shallow-convection parameterization for mesoscale models. Part I: Submodel description and preliminary applications. J. Atmos. Sci., 60, 34–56. 
 
+\bibitem[Deng et al.(2009)]{deng09}%
+Deng, A., D. Stauffer, B. Gaudet, J. Dudhia, C. Bruyere, W. Wu, F. Vandenberghe, Y. Liu, and A. Bourgeois, 2009: 
+Update on WRF-ARW end-to-end multi-scale FDDA system.  {\em Preprints, 10th WRF Users' Workshop}, 23--26 June, Boulder, CO,
+National Center for Atmospheric Research. 1.9. 
+Available: http://www2.mmm.ucar.edu/wrf/users/workshops/WS2009/abstracts/1-09.pdf
+
 \bibitem[Desroziers(1997)]{desroziers97}%
 Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
   frontal structures. {\em Mon. Wea. Rev.}, {\bf 125}, 3030--3039.
@@ -580,6 +586,12 @@ Lin, Y.-L., R. D. Farley, and H. D. Orville, 1983:
 Lin, S.-J., and R. B. Rood, 1996: Multidimensional flux-form
   semi-Lagrangian transport schemes.  {\em Mon. Wea. Rev.}, {\bf 124},
   2046--2070.
+
+\bibitem[Liu et al.(2005)]{liu05}%
+Liu, Y., A. Bourgeois, T. Warner, S. Swerdlin, and J. Hacker, 2005: Implementation of observation-nudging
+based FDDA into WRF for supporting ATEC test operations.  {\em Preprints, 6th Annual WRF and 15th Annual MM5 Users's
+Workshop}, 27--30 June, Boulder, CO, National Center for Atmospheric Research. 10.7.  
+Available: http://www2.mmm.ucar.edu/wrf/users/workshops/WS2005/abstracts/Session10/7-Liu.pdf
 
 \bibitem[Liu et al.(2008)]{liu08}%,
 Liu, Y., T.T. Warner, J. F. Bowers, L. P. Carson, F. Chen, C. A. Clough,
