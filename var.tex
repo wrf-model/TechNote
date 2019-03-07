@@ -5,10 +5,11 @@ An introduction to the basic ideas of variational data assimilation and
 the WRF Data Assimilation (WRFDA) system \citep{barker12} is given in this chapter, followed by a brief
 overview of recent major improvements to WRFDA.  This overview
 supplements the original description of the three-dimensional
-variational (3D-Var) algorithm found in \citet{barker04}.  One of the
-most important additions to WRFDA is a utility {\it gen$\_$be},
-used to calculate background error covariances for a user's own
-application; it is discussed in the latter half of this chapter.
+variational (3D-Var) algorithm found in \citet{barker04},
+and since then the WRFDA system has grown substantially with 
+many important additions.  One is a utility {\it gen$\_$be},
+for calculating background error covariances for a user's own
+application, discussed in the latter half of this chapter.
 
 \section{Introduction}
 \label{var-intro}
@@ -33,9 +34,9 @@ atmosphere given the two sources of {\it a priori} data: the first guess
 (or background) ${\bf x^{b}}$ and observations ${\bf y^{o}}$
 \citep{lorenc86}. The fit to individual data points is weighted by
 estimates of their errors: ${\bf B}$, ${\bf E}$, and ${\bf F}$ are the
-background, observation (instrumental), and representivity error
-covariance matrices, respectively. Representivity error is an estimate of
-inaccuracies introduced in the observation operator $H$ used to
+background, observation (instrumental), and representative error
+covariance matrices, respectively. The representative error is an estimate of
+inaccuracies introduced via the observation operator $H$ used to
 transform the gridded analysis ${\bf x}$ to observation space ${\bf
 y}=H({\bf x})$ for comparison against observations. This error will be
 resolution dependent and may also include a contribution from
@@ -120,8 +121,8 @@ found in cited references.
 
 Initial capability of 4D-Var was introduced in WRFDA 3.1 \citep{huang09}, which has been further
 improved by \citet{zhang13, zhang14a}. WRFDA 4D-Var allows the use of LBC control variables and Jc-DFI 
-(to control the gravity wave). WRFDA analysis in 4D-Var mode involves the forward (backward) integration of 
-tangent linear model (TLM) (adjoint model, ADJ) of WRF during the minimization within the assimilation time window. 
+(to control the gravity wave). WRFDA analysis in 4D-Var mode involves forward integration of the
+tangent linear model (TLM) and backward integration of the adjoint model (ADJ) of WRF during the minimization in the assimilation time window. 
 In Version 4.0, WRFPlus code (i.e., TLM/ADJ of WRF) is fully integrated into the WRF main code repository, 
 which will ease future code maintenance
 and development. While the TLM/ADJ (located under {\bf wrftladj} directory of WRF source code) of the full 
