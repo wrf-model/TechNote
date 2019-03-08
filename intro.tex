@@ -249,45 +249,6 @@ Global and regional, multi-model DA capability.
 %
 \end{description}
 
-\vskip 12pt
-{\noindent\bf WRF-Chem}
-\vskip 12pt
-
-\begin{description}
-\setlength{\itemsep}{-5pt}
-\item{$\bullet$} Online (or ``inline'') model, in which the model is consistent
-with all conservative transport done by the meteorology model. 
-%
-\item{$\bullet$} Dry deposition, coupled with the soil/vegetation scheme.
-%
-\item{$\bullet$} Aqueous phase chemistry coupled to some of the microphysics and aerosol schemes.
-%
-\item{$\bullet$} Three choices for biogenic emissions:
-No biogenic emissions; Online calculation of biogenic emissions; Online modification 
-of user specified biogenic emissions (e.g., EPA Biogenic Emissions Inventory System (BEIS)).
-%
-\item{$\bullet$} Two choices for anthropogenic emissions:
-No anthropogenic emissions and user-specified anthropogenic emissions.
-%
-\item{$\bullet$} Two choices for gas-phase chemical reaction calculations:
-RADM2 chemical mechanism and CBM-Z mechanism.
-%
-\item{$\bullet$} Several choices for gas-phase chemical reaction calculations 
-through the use of the Kinetic Pre-Processor (KPP). 
-%
-\item{$\bullet$} Three choices for photolysis schemes:
-Madronich scheme coupled with hydrometeors, aerosols, and convective parameterizations;
-Fast-J Photolysis scheme coupled with hydrometeors, aerosols, and convective parameterizations;
-FTUV scheme scheme coupled with hydrometeors, aerosols, and convective parameterizations.
-%
-\item{$\bullet$} Choices for aerosol schemes:
-The Modal Aerosol Dynamics Model for Europe (MADE/SORGAM);
-Model for Simulating Aerosol Interactions and Chemistry (MOSAIC); and 
-The GOCART aerosol model (experimental). 
-%
-\item{$\bullet$} A tracer transport option in which the chemical mechanism, 
-deposition, etc., has been turned off. 
-\end{description}
 
 \vskip 12pt
 {\noindent\bf WRF Software Framework}
@@ -326,3 +287,24 @@ component.
 Model coupling API enabling WRF to be coupled with other models such as
 ocean, and land models using ESMF, MCT, or MCEL.
 \end{description}
+
+\vskip 12pt
+{\noindent\bf WRF-Chem, WRF-Hydro and WRF-Fire}
+\vskip 12pt
+
+
+A brief description of these additional components can by found in \citet{powers17}, but these will
+not be described in detail in this document.
+
+{\em WRF-Chem} is a full online atmospheric chemistry model with many options and some
+interactions with the physics via aerosols affecting radiation and microphysics when appropriate
+options are chosen. Typically it requires emission source maps as additional inputs.
+
+{\em WRF-Hydro} is a surface hydrological model that can be run online with WRF or offline,
+interacting with WRF through the land-surface model. This model can calculate the land water
+budget terms including streamflow given additional data for routing. It operates on a higher-resolution
+sub-grid relative to the atmospheric model.
+
+{\em WRF-Fire} operates as a coupled wildland fire model that keeps track of a fire front at the
+sub-grid level. It interacts with the model via winds and heat fluxes and requires fuel information as
+an additional input.
