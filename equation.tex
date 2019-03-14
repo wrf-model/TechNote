@@ -64,7 +64,7 @@ B(\eta) = c_1+c_2\eta+c_3\eta^2+c_4\eta^3
 \label{B_def}
  \end{equation}
 %
-subject to the boundary conditions
+(where the subscript $\eta$ denotes differentiation) subject to the boundary conditions
 %
 \begin{equation}
 B(1)=1,\quad B_\eta(1)=1, \quad B(\eta_c)=0, \quad B_\eta(\eta_c)=0,         
@@ -86,7 +86,7 @@ where $\eta_c$ is a specified value of $\eta$ at which it becomes a pure pressur
 \begin{figure}
  % \includegraphics *[width=6.5in,bb= 0 0 900 300]{figures/vertical_coordinate_new.pdf}
 \centerline{\includegraphics[width=38pc]{figures/B_profile.pdf}}
-\caption{\label{figure:B_profile}B($\eta$) profiles for sigma ($\sigma$) coordinate and for hybrid coordinate for $\eta_c=0-0.5$ display (a) as a function of $\eta$, and (b) as a function of height for a standard atmosphere in a domain with a 30 km upper boundary.}
+\caption{\label{figure:B_profile}B($\eta$) profiles for sigma ($\sigma$) coordinate and for hybrid coordinate for $\eta_c=0.,0.1,\,0.2,\,0.3,\,0.4,\,$ and $0.5$ displayed (a) as a function of $\eta$, and (b) as a function of height for a standard atmosphere in a domain with a 30 km upper boundary.}
 \end{figure}
 
 Figure \ref{figure:B_profile} displays the $B(\eta)$ profiles for the traditional sigma coordinate and for the hybrid coordinate for several values of the parameter $\eta_c$. Plotted as a function of $\eta$ (Fig. \ref{figure:B_profile}a), these profiles depict the form of the polynomial defined in \eqref{B_def}. However, plotting $B(\eta)$ as a function of height  (Fig. \ref{figure:B_profile}b) provides a better physical sense of the transition toward a pressure coordinate with increasing height. For example, with a model domain having a depth of 30 km, for $\eta_c=0.2$ the vertical coordinate becomes a pure pressure coordinate at an altitude of about 12 km.
@@ -111,7 +111,7 @@ Here, ${\hbox{\bf v}} = (u,v,w)$ are the covariant velocities in the
 horizontal and vertical directions, while 
 $\omega = \dot\eta$ is the contravariant `vertical' velocity.  $\theta_m = \theta (1 + (R_v/R_d) q_v) 
 \approx \theta (1 + 1.61 q_v)$ is the moist potential temperature and $Q_m = \mu_d q_m$, where $q_m = q_v, q_c,
-q_r ...$ represents the mixing rations of moisture variables (water vapor, cloud water, rain water, ...).  Although the geopotential $\phi=gz$ is also a prognostic variable in the governing equations of the ARW, it is not written in flux-form as $\mu_d\phi$ is not a conserved quantity. 
+q_r ...$ represents the mixing ratios of moisture variables (water vapor, cloud water, rain water, ...).  Although the geopotential $\phi=gz$ is also a prognostic variable in the governing equations of the ARW, it is not written in flux-form as $\mu_d\phi$ is not a conserved quantity. 
  
 \section{Flux-Form Euler Equations}
 
@@ -151,7 +151,7 @@ and the diagnostic relation for the
 full pressure (dry air plus water vapor)
 %
 \begin{equation}
-p = p_0 (R_d \theta_m / p_0 \alpha_d)^{\gamma}.
+p = p_0 {\left({R_d \theta_m \over p_0 \alpha_d}\right)}^{\gamma}.
 \label{ideal_gas_law}
 \end{equation}
 %
@@ -207,7 +207,7 @@ nonhydrostatic equations, the full hydrostatic equation $\partial_\eta p=\mu_d\a
 vertical momentum equation \eqref{W_eq} and enforces a hydrostatic 
 constraint on the solution.
 
-In previous versions of the ARW the prognostic thermodynamic equation was expressed in terms of $\Theta$ instead of $\Theta_m$ as in \eqref{T_eq}. That representation is consistent with the expectation that variations in $q_v$ have little impact during the small acoustic time steps in the split-explicit numerics described in the next chapter, has proven to be a robust approximation over a wide spectrum of applications. However, in a recent study, \citet{xiao15} found that in high-resolution LES with sharp vertical variations in water vapor, WRF simulations exhibited a strong sensitivity to the time step used to accommodate the acoustic modes. Recasting the prognostic thermodynamic equation in terms of $\Theta_m$ allowed consistent treatment of moisture in the calculation of pressure during the acoustic time steps, and spurious motions and time-step sensitivity were eliminated. Use of $\Theta_m$ as the prognostic thermodynamic variable is also consistent with formulation used in the Model for Prediction Across Scales (MPAS), which utilizes similar split-explicit numerics \citep{skamarock12}.
+In previous versions of the ARW the prognostic thermodynamic equation was expressed in terms of $\Theta$ instead of $\Theta_m$ in \eqref{T_eq}. That representation is consistent with the expectation that variations in $q_v$ have little impact during the small acoustic time steps in the split-explicit numerics described in the next chapter, which has proven to be a robust approximation over a wide spectrum of applications. However, in a recent study, \citet{xiao15} found that in high-resolution LES with sharp vertical variations in water vapor, WRF simulations exhibited a strong sensitivity to the time step used to accommodate the acoustic modes. Recasting the prognostic thermodynamic equation in terms of $\Theta_m$ allowed consistent treatment of moisture in the calculation of pressure during the acoustic time steps, and spurious motions and time-step sensitivity were eliminated. Use of $\Theta_m$ as the prognostic thermodynamic variable is also consistent with formulation used in the Model for Prediction Across Scales (MPAS), which utilizes similar split-explicit numerics \citep{skamarock12}.
 
 
 \section{Map Projections, Coriolis and Curvature Terms}
@@ -451,10 +451,12 @@ and the diagnostic equation for dry hydrostatic pressure \eqref{pd_eq} becomes
 Additionally, an option is available to use the hypsometric equation for the dry hydrostatic pressure in place of (\ref{hydro-pert}):
 \begin{equation}
 %{1 \over p}{\partial \phi \over \partial (\ln p)} = - \bar \alpha - \alpha'
-{\partial \phi / \partial (\ln p_d)} = - p_d(\bar \alpha_d + \alpha'_d)
+{\partial \phi / \partial (\ln p_d)} = - p_d(\bar \alpha_d + \alpha'_d).
 \label{hypsometric_eqn}
 \end{equation}
 %
+This form of the hydrostatic relation can produce a more accurate discretization compared with (\ref{hydro-pert}) when the variation with $\eta$ of temperature 
+$(p_d \alpha_d)$ is more linear than that of density $(\alpha_d^{-1})$.
 The conservation equations for the potential temperature \eqref{tm_full} and 
 the scalar moisture equations \eqref{qm_full} remain unchanged.
 

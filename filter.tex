@@ -8,13 +8,13 @@ acoustic modes from the solution and polar filtering is used to reduce
 the timestep restriction arising from the converging gridlines of the 
 latitude-longitude grid.  Other filters are meant to represent
 sub-grid turbulence processes that cannot be resolved on the chosen
-grid.  These filters remove energy from the solution and are formulated
+grid.  These filters typically remove energy from the solution and are formulated
 in part on turbulence theory and observations, or represent energy sink
 terms in some approximation to the Euler equation.  In this section, we
 begin by outlining the formulation and discretization of turbulent
 mixing processes in the ARW solver commonly associated with sub-gridscale
 turbulence as parameterized in cloud-scale models--- the second-order
-horizontal and vertical mixing.  In large-scale models and most NWP
+horizontal and vertical mixing.  In existing global models and most NWP
 models, vertical mixing is parameterized within the planetary boundary
 layer (PBL) physics.  Vertical mixing parameterized within the PBL
 physics is described later in Chapter \ref{physics_chap}.  Here we note
@@ -27,7 +27,7 @@ described.
 \section{Latitude-Longitude Global Grid and Polar Filtering}
 \label{polar_filter_section}
 
-Polar filtering is used to reduce the timestep restriction associated
+In the ARW global model grid configuration, polar filtering is used to reduce the timestep restriction associated
 with the gridlines that converge as they approach the poles of the
 latitude-longitude grid; the converging gridlines reduce the
 longitudinal gridlength, and thus the stable timestep for transport,
@@ -98,8 +98,8 @@ not be used.
 
 \section{Explicit Spatial Diffusion}
 
-The ARW solver has three formulations for spatial dissipation--- diffusion
-along coordinate surfaces, diffusion in physical $(x,y,z)$ space, and 
+The ARW solver has three formulations for spatial diffusion
+on coordinate surfaces, diffusion in physical $(x,y,z)$ space, and 
 a sixth-order diffusion applied on horizontal coordinate surfaces.  In
 the following sections we present the diffusion operators for the the
 first two
@@ -116,7 +116,7 @@ staggered model grid.
 For any model variable, horizontal and vertical second order spatial
 filtering on model coordinate surfaces is considered part of the RHS
 terms in the continuous equations 
-\eqref{u-mom-pert} -- \eqref{scalar-pert}
+\eqref{U_eq} -- \eqref{Q_eq}
 and can be expressed as follows for
 a model variable $a$:
 %
@@ -135,10 +135,10 @@ For the horizontal and vertical momentum equations,
 \partial_t U &= ... \,\, +
 {\overline{\mu_d}}^x {\overline{m_x}}^x
 \bigl[ \delta_x(m_x K_h \delta_x u) 
-+ \delta_y({\overline{m_y}}^{xy} {\overline{K_h}}^{xy} \delta_y u)  \bigr]
++ \delta_y({\overline{m_y}}^{xy} {\overline K_h}^{xy} \delta_y u)  \bigr]
 + m_y^{-1} g^2({\overline{\mu_d}}^x {\overline\alpha}^x)^{-1} 
 %% \delta_\eta(K_v ({\overline \alpha}^{x\eta})^{-1} \delta_\eta u) 
-\delta_\eta({\overline K_v}^{x\eta} ({\overline \alpha}^{x\eta})^{-1} \delta_\eta u) 
+\delta_\eta({\overline K_v}^{x\eta} ({\overline \alpha}^{x\eta})^{-1} \delta_\eta u),
 \notag \\
 %
 \partial_t V &= ... \,\, +
@@ -149,7 +149,7 @@ For the horizontal and vertical momentum equations,
 \bigr]
 + m_x^{-1} g^2({\overline{\mu_d}}^y {\overline\alpha}^y)^{-1} 
 %% \delta_\eta(K_v ({\overline \alpha}^{y\eta})^{-1} \delta_\eta v) 
-\delta_\eta({\overline K_v}^{y\eta} ({\overline \alpha}^{y\eta})^{-1} \delta_\eta v) 
+\delta_\eta({\overline K_v}^{y\eta} ({\overline \alpha}^{y\eta})^{-1} \delta_\eta v),
 \notag \\
 %
 \partial_t W &= ... \,\, +
@@ -499,7 +499,7 @@ eddy viscosities as
 
 \begin{equation}
 K_{h,v} = C_s^2 \, l_{h,v}^2 \,\hbox{max}
-\biggl[ 0., \bigl( D^2 - P_r^{-1} N^2 \bigr)^{1/2}\biggr],
+\biggl[ 0., \bigl( D^2 - P_r^{-1} N^2 \bigr)^{1 \over 2}\biggr],
 \label{k_calc}
 \end{equation}
 %
@@ -553,7 +553,9 @@ where $e$ is the turbulent kinetic energy (a prognostic variable
 in this scheme), $C_k$ is a constant (typically $0.15 < C_k < 0.25$),
 and $l$ is a length scale.  
 
-If the isotropic mixing option is chosen,
+If the isotropic mixing option is chosen then the 
+horizontal and vertical eddy viscosities
+are equivalent and the length scale is defined as
 %
 \begin{align}
 l_{h,v} & = \hbox{min} 
@@ -564,7 +566,7 @@ l_{h,v} & = \hbox{min}
 l_{h,v} & = (\Delta x \Delta y \Delta z)^{1/3} 
 \,\,\,\,\,
 \hphantom{hbox{min}\bigl[,0.76 \sqrt{e} / N\bigr]}
-\hbox{for } N^2 \le 0
+\hbox{for } N^2 \le 0,
 \notag 
 \end{align} 
 %
@@ -572,9 +574,7 @@ l_{h,v} & = (\Delta x \Delta y \Delta z)^{1/3}
 Both the horizontal and vertical eddy viscosities are multiplied by an
 inverse turbulent
 Prandtl number $P_r^{-1} = 1 + 2l/(\Delta x \Delta y \Delta z)^{1/3}$ for
-scalar mixing.  In this case $(l_{cr} > \Delta x)$ the 
-horizontal and vertical eddy viscosities
-are equivalent.
+scalar mixing.  
 
 If the anisotropic mixing option is chosen, 
 then $l_h=\sqrt{\Delta x \Delta y}$ for the calculation of $K_h$.
@@ -604,7 +604,7 @@ The prognostic equation governing the evolution of the
 turbulent kinetic energy $e$ is 
 %
 \begin{equation}
- \partial_t (\mu_d e) + (\nabla \cdot {\bf V} e )_\eta 
+ \partial_t (\mu_d e) + \nabla \cdot {\bf V} e 
 = \mu_d (\hbox{ shear production } + \hbox{ buoyancy } + \hbox{ dissipation }).
 \label{tke}
 \end{equation}
@@ -700,12 +700,14 @@ The dissipation term in \eqref{tke} is
 where 
 %
 \begin{equation}
-C = 1.9 \, C_k  + { (0.93 - 1.9 \, C_k)\, l \over \Delta s},
+C = 1.9 \, C_k  + { \hbox{max}(0,\,0.93 - 1.9 \, C_k)\, l \over \Delta s},
 \notag
 \end{equation}
 %
-\noindent
-$\Delta s =  (\Delta x \Delta y \Delta z)^{1/3}$,  
+\begin{equation}
+\Delta s =  (\Delta x \Delta y \Delta z)^{1/3}, 
+\notag 
+\end{equation}
 and
 %
 \begin{equation}
@@ -920,7 +922,7 @@ It has proven more effective than the spatial-filter-based absorbing
 layer described in Section \ref{absorbing_layer_spatial}, and it is more
 effective and more generally applicable than traditional Rayleigh
 damping because of its implicit nature and the fact that it does not
-need a reference state.  This formulation has been introduced in WRFV3.
+need a reference state.  This formulation was introduced in WRFV3.
 It can only be used with the nonhydrostatic dynamics option.
 
 In the vertically-implicit solution procedure for $W''^{\tau+\Delta
