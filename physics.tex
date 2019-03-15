@@ -21,7 +21,7 @@ The velocities are also de-staggered so that the physics part is independent
 of the dynamical solver's velocity staggering. Physics packages 
 compute tendencies
 for the velocity components (un-staggered), potential temperature, and moisture
-fields. The solver-dependent post-physics step will re-stagger these tendencies
+fields. A post-physics step will re-stagger these tendencies
 as necessary, couple tendencies with coordinate metrics, and convert
 to variables or units appropriate to the dynamics solver.
 
@@ -55,7 +55,8 @@ arrays, is allocated depending on the needs of the scheme chosen,
 and advection of the species also applies to all those required 
 by the microphysics option. In the current version of the ARW, microphysics 
 is carried out at the end of the time-step as an adjustment process, 
-and so does not provide tendencies. The rationale for this is that 
+and so does not provide tendencies but directly updates the state variables. 
+The rationale for this is that 
 condensation adjustment should be at the end of the time-step
 to guarantee that the final saturation balance is accurate for the 
 updated temperature and moisture. However, it is also important to 
@@ -75,14 +76,14 @@ subroutine to enable the remaining microphysics to be called less frequently
 than the model's advection step for efficiency.
 
 The various microphysics options have differing
-numbers of moisture variables, depending on ice-phase and mixed-phase
+numbers of moisture variables, depending on the ice-phase and mixed-phase
 processes included. Mixed-phase processes are those that result from
 the interaction of ice and water particles, such as riming that produces
 graupel or hail.
 As a general rule, for grid sizes less than 10 km, where updrafts may be
 resolved, mixed-phase schemes should be used, particularly in convective
-or icing situations. For coarser grids the added expense of these schemes
-is not worth it because riming is not likely to be well resolved.
+or icing situations. For coarser grids it is not worth the added expense of these schemes
+because riming is not likely to occur with the relatively weak vertical motion that is resolved.
 Many schemes are also double-moment for some species and include
 number concentrations for those as extra advected scalar variables.
 
@@ -100,18 +101,18 @@ and the production of cloud water from condensation.
 Six classes of hydrometeors are included: water vapor, cloud water, rain, cloud ice, 
 snow, and graupel. All parameterization production terms are based on \citet{lin83}
 and \citet{rutledge84} with some modifications, including saturation 
-adjustment following \citet{tao89} and ice sedimentation. This is a relatively 
+adjustment following \citet{tao89} and ice sedimentation. Compared to Kessler, this is a relatively 
 sophisticated microphysics scheme in WRF, and it is most suitable for use 
 in research studies. The scheme is taken from the Purdue cloud model, and 
 the details can be found in \citet{chen02}.
 
 \subsection{WRF Single-Moment 3-class (WSM3) scheme}
 
-The WRF single-moment microphysics scheme follows \citet{hong04} including ice sedimentation and other new ice-phase parameterizations. A major difference from other approaches is that a diagnostic relation is used for ice number concentration that is based on ice mass content rather than temperature. The computational procedures are described in \citet{honglim06}. As with WSM5 and WSM6, the fall terms are computed using a Lagrangian technique instead of time-splitting that was used in earlier versions of these schemes. The WSM3 scheme predicts three categories of hydrometers: vapor, cloud water/ice, and rain/snow, which is a so-called simple-ice scheme. It follows \citet{dudhia89} in assuming cloud water and rain for temperatures above freezing, and cloud ice and snow for temperatures below freezing. This scheme is computationally efficient for the inclusion of ice processes, but lacks supercooled water and gradual melting rates. 
+The WRF single-moment microphysics scheme follows \citet{hong04} including ice sedimentation and other new ice-phase parameterizations. A major difference from other approaches is that a diagnostic relation is used for ice number concentration that is based on ice mass content rather than temperature. The computational procedures are described in \citet{honglim06}. As with WSM5 and WSM6, the fall terms are computed using a Lagrangian technique instead of time-splitting that was used in earlier versions of these schemes. The WSM3 scheme predicts three categories of hydrometeors: water vapor, cloud water/ice, and rain/snow, making it a so-called simple-ice scheme. It follows \citet{dudhia89} in assuming cloud water and rain for temperatures above freezing, and cloud ice and snow for temperatures below freezing. This scheme is computationally efficient for the inclusion of ice processes, but lacks supercooled water and gradual melting rates. 
 
 \subsection{WSM5 scheme}
 
-This scheme is similar to the WSM3 simple ice scheme. However, vapor, rain, snow, cloud ice,
+This scheme is similar to the WSM3 simple ice scheme. However, water vapor, rain, snow, cloud ice,
 and cloud water are held in five different arrays. Thus, it allows supercooled water to exist, and
 a gradual melting of snow falling below the melting layer. Details can be found in 
 \citet{hong04}, and \citet{honglim06}. As with WSM6, the saturation adjustment follows \citet{dudhia89} and \citet{hong98} in separately treating ice and water saturation processes, rather than a combined saturation such as the Purdue Lin (above) and Goddard \citep{tao89} schemes. This scheme is efficient in intermediate grids between the mesoscale and cloud-resolving grids.
@@ -119,11 +120,11 @@ a gradual melting of snow falling below the melting layer. Details can be found 
 \subsection{WSM6 scheme}
 
 The six-class scheme extends the WSM5 scheme to include graupel and its associated processes.
-Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavior is much different due to the changes of \citet{hong04}. A new method for representing mixed-phase particle fall speeds for the snow and graupel particles by assigning a single fallspeed to both that is weighted by the mixing ratios, and applying that fallspeed to both sedimentation and accretion processes is introduced \citep{dudhia08}. The behavior of the WSM3, WSM5, and WSM6 schemes differ little for coarser mesoscale grids, but they work much differently on cloud-resolving grids. Of the three WSM schemes, the WSM6 scheme is the most suitable for cloud-resolving grids, considering the efficiency and theoretical backgrounds \citep{honglim06}. All of the WSM and WDM schemes compute effective radii for ice, snow and cloud water to interact with RRTMG radiation. All except WSM3 compute reflectivity diagnostics.
+Some of the graupel-related terms follow \citet{lin83}, but its ice-phase behavior is much different due to the changes of \citet{hong04}. A new method is introduced for representing mixed-phase particle fall speeds for the snow and graupel particles by assigning a single fallspeed to both that is weighted by the mixing ratios, and applying that fallspeed to both sedimentation and accretion processes \citep{dudhia08}. The behavior of the WSM3, WSM5, and WSM6 schemes differ little for coarser mesoscale grids, but they work much differently on cloud-resolving grids. Of the three WSM schemes, the WSM6 scheme is the most suitable for cloud-resolving grids, considering the efficiency and theoretical backgrounds \citep{honglim06}. All of the WSM and WDM schemes compute effective radii for ice, snow and cloud water to interact with RRTMG radiation. All except WSM3 compute reflectivity diagnostics.
 
 \subsection{WDM5 and WDM6 schemes}
 
-These have ice-phase processes the same as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The scheme is therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected. These are initialized with a constant value. As with all the WSM schemes, sedimentation is handled with a Lagrangian scheme. Also as with WSM5 and WSM6, the method of \citet{dudhia08} is used
+These schemes have the same ice-phase processes as WSM5 and WSM6, but warm-rain processes are now double-moment calculations \citep{lim10} with number concentrations for cloud and rain being calculated as prognostic variables. The schemes are therefore also sensitive to cloud-condensation nuclei (CCNs) concentrations that are also advected, but these are initialized with a constant value. As with all the WSM schemes, sedimentation is handled with a Lagrangian scheme. Also as with WSM5 and WSM6, the method of \citet{dudhia08} is used
 to provide a combined fallspeed for snow and graupel.
 
 \subsection{WSM7 and WDM7 schemes}
@@ -155,11 +156,9 @@ now considered at temperatures warmer than -30$^\circ$C (previously
 whereas ice saturation 
 is assumed for cloudy conditions at colder temperatures. Further 
 description of the scheme can be found in Sec. 3.1 of the November 
-2001 Technical Procedures Bulletin (TPB) at 
-http://www.emc.ncep.noaa.gov/mmb/mmbpll/eta12tpb/ and 
-on the COMET page at http://meted.ucar.edu/nwp/pcu2/etapcp1.htm. 
-More recently an advection option for this scheme has been added that explicitly advects cloud water, rain and ice
-and carries a rimed fraction.
+2001 Technical Procedures Bulletin (TPB). 
+An advection option has been added for this scheme that explicitly advects cloud water, rain and ice
+and includes a rimed fraction.
 
 \subsection{Thompson et al. and aerosol-aware Thompson-Eidhammer schemes}
 This is a bulk microphysics scheme that has double-moment ice and rain and has been updated as described by \citet{thompson08}. The aerosol-aware scheme \citep{thompson14}
@@ -170,7 +169,7 @@ and cloud droplet radii are passed to the RRTMG radiation schemes along with the
 
 The Goddard Cumulus Ensemble (GCE) models \citep{tao93} one-moment bulk microphysical schemes  are mainly based on \citet{lin83} with additional processes from \citet{rutledge84}.  However, the Goddard microphysics schemes have several modifications. 
 
-First, there is an option to choose either graupel or hail as the third class of ice \citep{mccumber91}.  Graupel has a relatively low density and a high intercept value (i.e., more numerous small particles).  In contrast, hail has a relative high density and a low intercept value (i.e., more numerous large particles).  These differences can affect not only the description of the hydrometeor population and formation of the anvil-stratiform region but also the relative importance of the microphysical-dynamical-radiative processes. 
+First, there is an option to choose either graupel or hail as the third class of ice in the so-called 3ICE scheme \citep{mccumber91}.  Graupel has a relatively low density and a high intercept value (i.e., more numerous small particles).  In contrast, hail has a relative high density and a low intercept value (i.e., more numerous large particles).  These differences can affect not only the description of the hydrometeor population and formation of the anvil-stratiform region but also the relative importance of the microphysical-dynamical-radiative processes. 
 
 Second, new saturation techniques \citep{tao89, tao03} were added.  These saturation techniques are basically designed to ensure that super saturation (sub-saturation) cannot exist at a grid point that is clear (cloudy).  
 
@@ -178,13 +177,13 @@ Third, all microphysical processes that do not involve melting, evaporation or s
 
 Fourth, the sum of all sink processes associated with one species will not exceed its mass.  This ensures that the water budget will be balanced in the microphysical calculations .
 
-The Goddard microphysics has a third option, which is equivalent to a two-ice (2ICE) scheme having only cloud ice and snow.  This option may be needed for coarse resolution simulations (i.e., $>$ 5 km grid size).  The two-class ice scheme could be applied for winter and frontal convection.
+The Goddard microphysics has a simpler option, which is equivalent to a two-ice (2ICE) scheme having only cloud ice and snow.  This option may be needed for coarse resolution simulations (i.e., $>$ 5 km grid size).  The two-class ice scheme could be applied for winter and frontal convection.
 
 \subsection {Morrison et al. 2-Moment scheme}
 
 The \citet{morrison08} scheme is based on the two-moment bulk
 microphysics scheme of \citet{morrison05} and \citet{morrison06}. Six species of
-water are included: vapor, cloud droplets, cloud ice, rain, snow, and
+water are included: water vapor, cloud droplets, cloud ice, rain, snow, and
 graupel/hail. The code has a user-specified switch to include either graupel or hail. 
 Prognostic variables include number concentrations and mixing ratios
 of cloud ice, rain, snow, and graupel/hail, and mixing ratios of cloud
@@ -200,11 +199,11 @@ idealized and real case studies covering a wide range of conditions.
 
 \subsection {Milbrandt-Yau Double-Moment scheme}
 The \citet{milbrandt05} scheme is a fully double-moment scheme that carries graupel and hail as separate species.
-It therefore has 12 prognostic variables in addition to vapor.
+It therefore has 12 prognostic variables in addition to water vapor.
 
 \subsection {CAM Morrison-Gettelman scheme}
 The \citet{morrisongettelman08} scheme matches the microphysics used in the CESM CAM5.1 climate model. It is added as part of the CAM
-suite of physics. It carries cloud, ice, rain and snow as double-moment variables. It is primarily designed for global low resolution applications.
+suite of physics. It carries cloud water, ice, rain and snow as double-moment variables. It is primarily designed for global low resolution applications.
 
 \subsection {Stony-Brook University Lin-Colle scheme}
 A single-moment bulk microphysics scheme \citep{lin11} that predicts cloud, rain, ice and snow and also carries riming intensity
