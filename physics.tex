@@ -179,6 +179,10 @@ Fourth, the sum of all sink processes associated with one species will not excee
 
 The Goddard microphysics has a simpler option, which is equivalent to a two-ice (2ICE) scheme having only cloud ice and snow.  This option may be needed for coarse resolution simulations (i.e., $>$ 5 km grid size).  The two-class ice scheme could be applied for winter and frontal convection.
 
+\subsection {Goddard 4ICE  scheme}
+
+The new Goddard 4ICE scheme \citep{lang14, tao16} is a significant improvement over the previous Goddard 3ICE WRF scheme.  The new 4ICE scheme explicitly predicts the evolution of hail in addition to the traditional ice, snow, and graupel categories available in the 3ICE scheme.  The 4ICE scheme was built upon improved versions of the Goddard 3ICE scheme developed for the Goddard Cumulus Ensemble model and includes dozens of new/modified functions regarding ice microphysics and unique particle-size mapping and observation-driven snow density.
+
 \subsection {Morrison et al. 2-Moment scheme}
 
 The \citet{morrison08} scheme is based on the two-moment bulk
@@ -986,7 +990,8 @@ It interacts with resolved clouds and cloud fractions,
 several aerosol types and trace gases. It uses cloud fractions and overlap assumptions
 in unsaturated regions, and has a monthly zonal ozone climatology.
  
- In more recent versions of CAM, this has been replaced by RRTMG radiation.
+ Note that in more recent versions of CAM, currently used in CESM, this scheme has been replaced 
+ by RRTMG radiation.
  
 \subsection {RRTMG Longwave and Shortwave}
 
@@ -1004,6 +1009,14 @@ Aerosols can use a global monthly climatology (Tegen or Eidhammer/Thompson) or c
 optical properties computed by WRF-Chem or can be specified/input in other ways. The longwave scheme has been
 modified at the top-of-atmosphere to account for the significant downward flux originating from 
 above the model top \citep{cavallo11}.
+
+\subsection {RRTMG-K Longwave and Shortwave}
+
+A version of RRTMG provided by KIAPS (Korea) that is optimized and improved in several ways as detailed
+by \citet{baek17}. The scheme optimizes the MCICA cloud column calculations using a method called G-Packed
+MCICA that reduces the number of random samples and uses the same ones for both longwave and shortwave.
+Several improvements have also been made to the shortwave scheme that uses a revised two-stream
+approximation and reduces errors by adjusting the scattering of microphysical and aerosol particles.
  
 \subsection {Eta Geophysical Fluid Dynamics Laboratory (GFDL) Longwave and Shortwave}
 
@@ -1049,7 +1062,7 @@ respectively. It does not interact with WRF-Chem but 2D aerosol optical depth
 information can be used for aerosol effects. It includes trace gases and uses
 ozone climatology profiles. Cloud fractions in layers are also accounted for with
 low, middle and high layers maximally overlapped within these grouped layers and randomly between
-them.
+them. The newest version of the Goddard radiation scheme \citep{matsui18} involves three major improvements.  First, a size-, shape-, and radiation-spectrum-consistent single scattering database \citep{yang13} has been incorporated to represent hydrometeor-consistent optical properties (including rain, snow, graupel, and hail). Second, the molecular absorption database has been updated from HITRAN1996 to HITRAN2012, which reduces the biases for clear-sky radiation flux.  Third, the radiation code has been vectorized for improved computational efficiency.
 
 \subsection {Fu-Liou-Gu (FLG) Longwave and Shortwave}
 

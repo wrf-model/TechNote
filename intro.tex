@@ -7,7 +7,8 @@ adopted for research at universities and governmental laboratories,
 for operational forecasting by governmental and private entities,
 and for commercial applications by industry.  WRF took shape in the latter 
 half of the 1990's with the ideas of building a system shared by research 
-and operations and of creating a next-generation NWP capability moving 
+and operations and of creating a next-generation numerical weather 
+prediction (NWP) capability moving 
 past existing limitations.  The new model would be a 
 common platform on which the broad research community 
 could develop capabilities that could transition to operations, 
@@ -16,7 +17,7 @@ could guide and accelerate development.  The WRF system was developed
 through a partnership of the National 
 Center for Atmospheric Research (NCAR), the National Oceanic and Atmospheric 
 Administration (NOAA) (represented by the National Centers for Environmental 
-Prediction (NCEP) and, currently, the NOAA Earth System Research Laboratory (ESRL)), 
+Prediction (NCEP) and the NOAA Earth System Research Laboratory (ESRL)), 
 the United States Air Force, the Naval Research Laboratory, the 
 University of Oklahoma, and the Federal Aviation Administration.  
 Since the mid-late 2000's, a top-down management structure 
@@ -26,15 +27,16 @@ oversight and support, with developments reflecting community input.
 WRF consists of flexible, modular, portable code that is 
 efficient in computing environments ranging from laptops to 
 massively-parallel supercomputers and is readily-configurable for 
-a variety of applications.  Its extensive menu of physics
-and dynamics options reflect wide community input
-and make it a powerful NWP tool.  WRF has a data assimilation system (WRFDA)
-that offers a variety of DA approaches and can ingest a spectrum of 
-observation types.  In addition, for earth system prediction needs 
+a variety of applications.  Its extensive menu of options 
+for physical process schemes and for configuring numerics  
+reflect a history of community input
+and make it a powerful NWP tool.  WRF has a 
+data assimilation system (WRFDA)
+that offers a variety of DA approaches and that can ingest a 
+broad array of observation types.  In addition, for earth system prediction needs 
 beyond basic weather forecasting, WRF supports a number of tailored capabilities.  
 These include WRF-Chem (atmospheric chemistry), 
-WRF-Hydro (hydrological modeling), WRF-Fire (wildland fire modeling), 
-and WRF-Solar (solar energy forecasting).
+WRF-Hydro (hydrological modeling), and WRF-Fire (wildland fire modeling).
 
 WRF is supported as a community model, facilitating system development
 and broad use for research, operations, and education.  It supports  
@@ -93,7 +95,7 @@ WRFDA, the data assimilation system for WRF, was
 originally adapted from the MM5 
 (Pennsylvania State University--NCAR Mesoscale Model 5) 
 3DVAR (3-dimensional variational data assimilation) system 
-\citep{barker04} and is encompassed within the ARW.
+\citep{barker04} and can be used for ARW initialization.
 While WRF-Chem and other tailored systems 
 (e.g., WRF-Hydro, etc.) use the ARW solver, they are 
 not covered by this technical note.  Those seeking details on 
@@ -114,7 +116,7 @@ covers model operation
 \setlength{\itemsep}{-5pt}
 \item{$\bullet$} {\em Equations:}
 Fully compressible, Euler nonhydrostatic with 
-a run-time hydrostatic option available. Conservative for scalar variables.
+a run-time hydrostatic option available. Conservative fluxes for scalar variables.
 %
 \item{$\bullet$} {\em Prognostic Variables:}
 Velocity components $u$ and $v$ in Cartesian coordinate, vertical velocity $w$, 
@@ -161,7 +163,7 @@ Constant pressure level at top boundary along a material surface.
 Rigid lid option.
 %
 \item{$\bullet$} {\em Bottom Boundary Conditions:} 
-Physical or free-slip.
+Frictional or free-slip.
 %
 \item{$\bullet$} {\em Earth's Rotation:}
 Full Coriolis terms included.

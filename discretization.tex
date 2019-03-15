@@ -320,7 +320,7 @@ and $\mu_d''^{\tau+\Delta\tau}$ is recovered using \eqref{hyb_def}:
 \label{mu_from_pc}
 \end{equation}
 %
-From \eqref{mu_from_pc}, it is evident that $\mu$ need not be stored as a three-dimensional array, but can readily constructed when needed from the two-dimensional $p_c(x,y)$ array together with the one-dimensional $B_\eta(\eta)$ profile.
+From \eqref{mu_from_pc}, it is evident that $\mu$ need not be stored as a three-dimensional array, but can be readily constructed when needed from the two-dimensional $p_c(x,y)$ array together with the one-dimensional $B_\eta(\eta)$ profile.
 
 Knowing ${\Omega''}^{\tau+\Delta\tau}$, \eqref{theta-small-step} can be stepped forward to calculate
 ${\Theta_m''}^{\tau+\Delta\tau}$. Equations \eqref{w-small-step} and \eqref{geo-small-step}
@@ -1028,7 +1028,7 @@ offset by positive mass such that mass is conserved, and new maxima and minima m
 options, negative mixing ratios will be set to zero, and this will
 result in an increase in mass of that species.  Both positive-definite and shape-preserving flux
 renormalizations, applied on the final Runge-Kutta transport step
-\eqref{rk3a}, can be used to remove these unphysical effect from the RK3
+\eqref{rk3a}, can be used to remove these unphysical effects from the RK3
 scalar transport scheme.  The positive-definite renormalization in the ARW solver is described in 
 \citet{skamarock-weisman-08} and the shape-preserving (monotonic) extension is described in \citet{Wang-et-al-2009}, 
 both of which follow an approach first described by \citet{Zalesak-1979}.
@@ -1092,7 +1092,7 @@ first-order upwind flux, that is,
 \end{equation}
 %
 with similar definitions for $(V \overline{q}^{y_{adv}})'$ 
-and $(\Omega \overline{q}^{\eta_{adv}})'$.  The correction flux can then
+and $(\Omega \overline{q}^{\eta_{adv}})'$.  The correction flux can then be
 renormalized to achieve positive-definite or shape preserving (monotonic) behavior as follows.  
 First, the upwind fluxes are used to perform a
 partial update of the scalar mass.
@@ -1325,7 +1325,7 @@ time step would be approximately 80 s on a $\Delta x = 10 \,\,\hbox{km}$ grid
 using $5^{th}$ order advection.  For convection-permitting resolutions
 (typically $\Delta x \le 5$ km), the vertical velocities in convective
 updrafts produce the stability-limiting Courant numbers.
-Given additional constraint from the time splitting, and to provide a
+Given the additional constraint from the time splitting, and to provide a
 safety buffer, we usually choose a time step that is approximately 25\%
 less than that given by \eqref{rk3_timestep}.  This time step is
 typically a factor of two greater than that used in leapfrog-based
@@ -1346,7 +1346,7 @@ by replacing the limiting value $1/\sqrt{2}$ with $1/2$.  Thus, the acoustic
 time step used in the model is
 %
 \begin{equation}
-\Delta \tau < 2 \cdot {\Delta x \over c_s}.
+\Delta \tau < {1 \over 2} \cdot {\Delta x \over c_s}.
 \label{acoustic_timestep}
 \end{equation}
 %
@@ -1370,8 +1370,8 @@ time step to the acoustic time step that is the required input in the ARW.
 The ARW model is typically integrated with a fixed timestep, 
 that is chosen to produce a stable integration.  During any time in
 the integration, the maximum stable timestep is likely to be larger than
-the fixed timestep.  In ARWV3, an adaptive timestepping capability has
-been introduced that chooses the RK3 timestep based on the temporally-evolving
+the fixed timestep.  In ARW Version 3, an adaptive timestepping capability was
+introduced that chooses the RK3 timestep based on the temporally-evolving
 wind fields.  The adaptively-chosen timestep is usually larger than the
 typical fixed timestep, hence the dynamics integrates faster and
 physics are called less often, and the time-to-completion of the
