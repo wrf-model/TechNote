@@ -8,7 +8,7 @@ real-data cases.  Both 2D and 3D tests cases for idealized
 simulations are provided.  
 Several sample cases for real-data simulations are provided, which
 rely on pre-processing from an external package (usually the 
-WRF Preprocessor System, referred to as WPS) that converts
+WRF Preprocessng System, referred to as WPS) that converts
 the large-scale GriB data into a format suitable for ingest by ARW's
 real-data processor.
 
@@ -291,7 +291,7 @@ the reference state geopotential defined from the hydrostatic relation is
 
 \subsection{Vertical Interpolation and Extrapolation}
 
-The ARW real-data preprocessor vertically interpolates using functions of dry pressure.
+The ARW real-data preprocessor, {\it real}, vertically interpolates using functions of dry pressure.
 The input data from WPS contains both a total pressure and a moisture field (typically
 relative humidity).  Starting at the top each column of input pressure data, the integrated moisture
 is subtracted from the pressure field step-wise down to the surface.  
