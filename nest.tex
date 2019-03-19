@@ -1,9 +1,9 @@
 \chapter{Nesting}
 \label{nesting_chap}
 
-The ARW provides the capability to concentrate the area of importance of a simulation
+ARW provides the capability to concentrate the area of importance of a simulation
 via nesting options. 
-The ARW supports horizontal nesting that allows resolution to be
+ARW supports horizontal nesting that allows resolution to be
 focused over a region of interest by introducing an additional grid (or
 grids) into the simulation.  This subdomain with increased horizontal resolution is completely
 contained within the parent domain. Vertical refinement options are also 
@@ -32,13 +32,13 @@ implementations provided in other mesoscale and cloudscale models (e.g. MM5,
 ARPS, COAMPS). The vertical refinement options are described in 
 \citet{mahalovmoustaoui09} and \citet{daniels16}.
 
-The ARW's nesting
+ARW's nesting
 infrastruture computes nested
 simulations efficiently on parallel distributed-memory computer systems,
 which includes support for moving nested grids.
 The WRF Software Framework, described in
 \citet{michalak04}, makes these capabilities possible.  In this chapter we
-describe the various horizontal and vertical nesting options available in the ARW and the 
+describe the various horizontal and vertical nesting options available in ARW and the 
 numerical coupling between the grids.
 
 \section {Horizontal Nesting Options}
@@ -51,7 +51,7 @@ numerical coupling between the grids.
   \includegraphics *[width=4.5in]{figures/12way_v4.pdf}
   \caption{\label{figure:12way} 1-way (parent provides boundary data to child) and 
    2-way (parent provides boundary data to child, then child feeds information back to
-   the parent) nesting options in the ARW.}
+   the parent) nesting options in ARW.}
 \end{figure}
 
 \subsubsection{1-Way and 2-Way Grid Nesting}
@@ -94,7 +94,7 @@ is an advantage of the concurrent 1-way method (no feedback).
 
 \subsubsection{Fine Grid Initialization Options}
 
-The ARW supports several strategies to horizontally refine a coarse-grid 
+ARW supports several strategies to horizontally refine a coarse-grid 
 simulation with the introduction of a nested grid.  When using concurrent 1-way and
 2-way nesting, several options for initializing the fine grid
 are provided.
@@ -118,7 +118,7 @@ to update the fine-grid domain as it moves over land.
 \end{itemize}
 
 \noindent These fine grid initialization settings are user specified at
-run-time, and the ARW allows nested grids to instantiate and cease during any
+run-time, and ARW allows nested grids to instantiate and cease during any
 time that the fine grid's parent is still integrating. While cost savings are
 evident when starting the fine-grid domain at a later time, that advantage 
 must be weighed against the impact of relatively coarse and inconsistent
@@ -139,7 +139,7 @@ fields for both masked and meteorological variables on the fine grid.
 \subsubsection{Possible Grid Configurations}
 
 A simulation involves one outer grid and may contain multiple
-inner nested grids.  In the ARW, each nested region is entirely
+inner nested grids.  In ARW, each nested region is entirely
 contained within 
 a single coarser grid, referred to as the {\em parent}
 grid.  The finer, nested grids are referred to as {\em child} grids.
@@ -154,7 +154,7 @@ same parent at the same level of nesting (Fig.
 Any valid fine grid may either be a static domain or it may be a moving nest
 (with either prescribed incremental shifts or with automatic moves
 via a vortex following algorithm, such as tracking the minimum of the 500 mb height).  
-The ARW does not permit overlapping
+ARW does not permit overlapping
 grids, where a coarse grid point is contained within more than a
 single child grid (i.e., both of which are at the same nest level with respect
 to the parent; Fig. \ref{figure:nest_domains}c).  In addition, no grid can have
@@ -183,7 +183,7 @@ specifics for the fine-grid
 domains (initialization, feedback, configurations, staggering,
 lateral boundaries, etc.) apply also to moving nests.  In
 general, all nests
-in an ARW forecast are eligible to be moving nests.  The ARW
+in an ARW forecast are eligible to be moving nests.  ARW
 provides two methods to have nests move during the model
 integration: specified and automatic.
 For both types of moving nests,
@@ -225,7 +225,7 @@ from the parent domain.
 
 \section{Staggering and Feedback}
 
-The ARW uses an Arakawa-C grid staggering.  As shown in Fig.
+ARW uses an Arakawa-C grid staggering.  As shown in Fig.
 \ref{figure:cg_fg}, the $u$ and $v$ components 
 of horizontal velocity are normal to the respective faces of the 
 grid cell, and the mass/thermodynamic/scalar/chemistry variables are located 
@@ -565,5 +565,5 @@ on the most-coarse grid are available (examples include stochastic forcing and
 simple ocean models that are only defined on the outer-most domain).
 \end{itemize}
 \noindent 
-The ARW supports a number of horizontal interpolation options, available via
+ARW supports a number of horizontal interpolation options, available via
 the user-defined namelist.

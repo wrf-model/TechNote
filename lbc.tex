@@ -1,7 +1,7 @@
 \chapter{Lateral Boundary Conditions}
 \label{lbc_chap}
 
-Several lateral boundary condition options exist for the ARW 
+Several lateral boundary condition options exist for ARW 
 that are suitable for idealized flows, and a specified lateral boundary
 condition for real-data simulations is available.  These choices are
 handled via a run-time option in the Fortran namelist file.
@@ -14,7 +14,7 @@ for use by the most coarse/parent domain.
 
 \section{Periodic Lateral Boundary Conditions}
 
-Periodic lateral boundary conditions in the ARW can be specified as
+Periodic lateral boundary conditions in ARW can be specified as
 periodic in $x$ (west-east), $y$ (south-north), or doubly periodic in
 $(x,y)$.  The periodic boundary conditions constrain the solutions to be
 periodic; that is, a generic model state variable $\psi$ will follow
@@ -126,7 +126,7 @@ condition for a real-data case.}
 
 Primarily for real-data cases, the specified boundary condition is also referred to as a
 relaxation, or nudging, boundary condition.  There are two uses of
-the specified boundaries in the ARW: for the outer-most coarse grid or
+the specified boundaries in ARW: for the outer-most coarse grid or
 for the time-dependent boundaries supplied to a nested grid.
 The specified lateral boundary conditions for the nest are automatically selected for all of the
 fine grids, even if the coarse grid is using combinations
