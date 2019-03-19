@@ -33,7 +33,8 @@ with prognostic hail for the Weather Research and Forecasting (WRF) model.
 {\em Asia-Pac. J. Atmos. Sci.}, https://doi.org/10.1007/s13143-018-0066-3.
 
 \bibitem[Baek(2017)]{baek17}%
-Baek, S., 2017: A revised radiation package of G-packed McICA and two-stream approximation:Performance evaluation in a global weather forecasting model. 
+Baek, S., 2017: A revised radiation package of G-packed McICA and two-stream approximation:
+Performance evaluation in a global weather forecasting model. 
 {\em J. Adv. Model. Earth Syst.}, {\bf 9}, 1--13, doi:10.1002/2017MS000994.
 
 \bibitem[Ban et al.(2017)]{ban17}%
@@ -984,7 +985,7 @@ Tao, W.-K., J. Simpson, and M. McCumber 1989: An ice-water saturation adjustment
 Tao, W.-K., D. Wu, S. Lang, J.-D. Chern, C. Peters-Lidard, A. Fridlind, and T. Matsui (2016), High-resolution NU-WRF simulations of a deep convective-precipitation system during MC3E: Further improvements and comparisons between Goddard microphysics schemes and observations. 
 {\em J. Geophys. Res. Atmos.}, {\bf 121}, 1278--1305, doi:10.1002/2015JD023986.
 
-\bibitem[Tiedtke (1989)]{tiedtke89}%
+\bibitem[Tiedtke(1989)]{tiedtke89}%
 Tiedtke, M., 1989: A comprehensive mass flux scheme for cumulus parameterization in large–scale models. 
   {\em Mon. Wea. Rev.}, {\bf 117}, 1779–1800. doi:10.1175/1520-0493(1989)117<1779:ACMFSF>2.0.CO;2.
 
