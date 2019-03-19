@@ -98,7 +98,7 @@ OpenMP.
 comprises the actual computational routines that make
 up the model:  advection, diffusion, physical parameterizations, and so
 forth. Model layer subroutines are called through a standard Model
-Layer Interface: all state data is passed as arguments, along with the
+Layer Interface: all state data are passed as arguments, along with the
 starting and ending indices in each of the three grid dimensions for
 the tile that is being computed. Model layer subroutines may not
 include I/O, stop statements, multi-threading, or interprocessor
@@ -117,7 +117,7 @@ communication at the appropriate location in the solve routine.
 \paragraph{Data Structures.} \label{ds} The WRF ASF represents model
 data structures differently at different layers.  In the higher levels
 of the mediation layer and in the driver layer, above, operations are
-on entire domains. Data representing the state of each domain is stored
+on entire domains. Data representing the state of each domain are stored
 as fields in a Fortran 90 derived data type that can be manipulated and
 operated upon as a single entity.  Within and below the mediation
 layer, operations are on individual data elements take place. Here,
@@ -509,7 +509,7 @@ and software infrastructure employs a different approach to model coupling. As
 opposed to handling coupling as a form of I/O, ESMF components are restructured 
 to conform to a top-level ESMF-compliant component interface. This allows an 
 ESMF-based driver to control model initialization, integration, and finalization. 
-Coupling data is exchanged between components by passing import and export 
+Coupling data are exchanged between components by passing import and export 
 state objects through the components top-level interface.  Multi-executable mode
 and compatibility with distributed and Grid-computing environments are
 not currently supported.

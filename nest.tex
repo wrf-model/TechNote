@@ -212,11 +212,11 @@ where the inner-most nest drives the moving domains.
 
 After a nested domain has moved a parent grid-cell distance,
 the majority of the fine-grid data in the domain is still valid.  The
-data that is not along the outer row or column of the nested
+data that are not along the outer row or column of the nested
 domain is shifted to the new location in that domain: not interpolated
 from the parent domain.
 Once a domain moves, the data in the outer
-row or column falls into two categories: discarded data on the
+row or column fall into two categories: discarded data on the
 trailing edge, and horizontally interpolated data on the
 leading edge in the direction of the nest move. 
 Only the topography elevation and the landuse categories are elegible
@@ -532,7 +532,7 @@ that described for the real-data initialization in section
 \ref{initialization_real_base_section},
 the routines return 
 back to the integration step for the coarse and fine grids.
-The fine grid data is now properly initialized for integration and
+The fine grid data are now properly initialized for integration and
 can be advanced forward a time step.
 
 \subsubsection{Integration}

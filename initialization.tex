@@ -15,7 +15,7 @@ real-data processor.
 The programs that generate the specific initial conditions for the selected 
 idealized or real-data case function similarly. They provide ARW with:
 \begin{itemize}\setlength{\parskip}{-5pt}
-\item input data that is on the correct horizontal and vertical staggering;
+\item input data that are on the correct horizontal and vertical staggering;
 \item hydrostatically balanced reference state and perturbation fields; and
 \item metadata specifying such information as the date, grid physical characteristics,
 and projection details.
@@ -177,7 +177,7 @@ which diagnoses required fields and
 reformats the GRIB data into an internal binary format.
 With a specified domain,
 WPS horizontally interpolates the meteorological data onto the projected domain(s). 
-The output data from WPS supplies a complete 3-dimensional snapshot of the atmosphere
+The output data from WPS supply a complete 3-dimensional snapshot of the atmosphere
 on the selected model grid's horizontal staggering at the selected time slices,
 which is sent to the ARW pre-processor program for real-data cases.
 
@@ -292,7 +292,7 @@ the reference state geopotential defined from the hydrostatic relation is
 \subsection{Vertical Interpolation and Extrapolation}
 
 The ARW real-data preprocessor, {\it real}, vertically interpolates using functions of dry pressure.
-The input data from WPS contains both a total pressure and a moisture field (typically
+The input data from WPS contain both a total pressure and a moisture field (typically
 relative humidity).  Starting at the top each column of input pressure data, the integrated moisture
 is subtracted from the pressure field step-wise down to the surface.  
 Then, by removing the pressure at the model
