@@ -9,7 +9,7 @@ simulations are provided.
 Several sample cases for real-data simulations are provided, which
 rely on pre-processing from an external package (usually the 
 WRF Preprocessng System, referred to as WPS) that converts
-the large-scale GriB data into a format suitable for ingest by ARW's
+the large-scale GRIB data into a format suitable for ingest by ARW's
 real-data processor.
 
 The programs that generate the specific initial conditions for the selected 
@@ -164,7 +164,7 @@ for real-data cases.
 \subsection{Use of the WRF Preprocessing System by ARW}
 
 The WPS is a set of programs that takes
-terrestrial and meteorological data (typically in GriB format) and transforms them for input to
+terrestrial and meteorological data (typically in GRIB format) and transforms them for input to
 the ARW pre-processor program for real-data cases ({\it real}).
 Figure \ref {figure:WPS_real_wrf} shows the flow of data into and out of the WPS system.  
 The first step for the WPS is to define a physical grid (including
@@ -172,9 +172,9 @@ the projection type, location on the globe,
 number of grid points, nest locations, and grid distances) and
 to interpolate static fields to the prescribed domain.
 Independent of the domain configuration,
-an external analysis or forecast is processed by the WPS GriB decoder,
+an external analysis or forecast is processed by the WPS GRIB decoder,
 which diagnoses required fields and
-reformats the GriB data into an internal binary format.
+reformats the GRIB data into an internal binary format.
 With a specified domain,
 WPS horizontally interpolates the meteorological data onto the projected domain(s). 
 The output data from WPS supplies a complete 3-dimensional snapshot of the atmosphere
@@ -191,7 +191,7 @@ which is sent to the ARW pre-processor program for real-data cases.
 the data flow and program components in WPS, and how WPS feeds initial data to ARW.
 Letters in the rectangular boxes indicate program names.
 GEOGRID: defines the model domain and creates static files of terrestrial data.  UNGRIB:
-decodes GriB data. METGRID: interpolates meteorological data to the model domain.}
+decodes GRIB data. METGRID: interpolates meteorological data to the model domain.}
 \end{figure}
 
 The input to the ARW real-data processor from 
