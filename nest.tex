@@ -1,11 +1,15 @@
 \chapter{Nesting}
 \label{nesting_chap}
 
-The ARW provides a nesting capability to concentrate the area of importance of a simulation. 
-Horizontal nesting is supported, and allows resolution to be
+ARW provides the capability to focus the area of a simulation
+via nesting options. 
+ARW supports horizontal nesting that allows resolution to be
 focused over a region of interest by introducing an additional grid (or
 grids) into the simulation.  This subdomain with increased horizontal resolution is completely
-contained within the parent domain. Vertical refinement options are also 
+contained within the parent domain (this is also commonly referred to as the
+coarse domain and abbreviated CG). 
+The subdomain is commonly referred to as the child domain or the fine grid (FG).
+Vertical refinement options are
 available, where a child domain may have a different vertical structure than
 the parent domain. Parent and child domains always extend from the lower model surface,
 through to the upper model lid. In this way, the vertical capability is more accurately referred
@@ -31,13 +35,9 @@ implementations provided in other mesoscale and cloud-scale models (e.g. MM5,
 ARPS, COAMPS). Vertical refinement options are described in 
 \citet{mahalovmoustaoui09} and \citet{daniels16}.
 
-The ARW's nesting
-infrastructure, which includes support for moving nested grids,
-computes nested simulations efficiently on parallel distributed-memory computer systems.
-The WRF Software Framework, described in
-\citet{michalak04}, makes these capabilities possible.  In this chapter we
-describe the various horizontal and vertical nesting options available in the ARW, along with
-numerical coupling between grids.
+In this chapter we
+describe the various horizontal and vertical nesting options available in ARW and the 
+exchange of data between the grids.
 
 \section {Horizontal Nesting Options}
 
@@ -49,7 +49,7 @@ numerical coupling between grids.
   \includegraphics *[width=4.5in]{figures/12way_v4.pdf}
   \caption{\label{figure:12way} 1-way (parent provides boundary data to child) and 
    2-way (parent provides boundary data to child, then child feeds information back to
-   the parent) nesting options in the ARW.}
+   the parent) nesting options in ARW.}
 \end{figure}
 
 \subsubsection{1-Way and 2-Way Grid Nesting}
@@ -92,7 +92,7 @@ is an advantage of the concurrent 1-way method (no feedback).
 
 \subsubsection{Fine Grid Initialization Options}
 
-The ARW supports several strategies to horizontally refine a coarse-grid 
+ARW supports several strategies to horizontally refine a coarse-grid 
 simulation with the introduction of a nested grid.  When using concurrent 1-way and
 2-way nesting, several options for initializing the fine grid
 are provided.
@@ -116,7 +116,7 @@ to update the fine-grid domain as it moves over land.
 \end{itemize}
 
 \noindent These fine-grid initialization settings are user-specified at
-run-time, and the ARW allows nested grids to instantiate and cease during any
+run-time, and ARW allows nested grids to instantiate and cease during any
 time that the fine grid's parent is still integrating. While cost savings are
 evident when starting the fine-grid domain at a later time, that advantage 
 must be weighed against the impact of relatively coarse and inconsistent
@@ -137,23 +137,24 @@ fields for both masked and meteorological variables on the fine grid.
 \subsubsection{Possible Grid Configurations}
 
 A simulation involves one outer grid and may contain multiple
-inner nested grids.  In the ARW, each nested region is entirely
+inner nested grids.  In ARW, each nested region is entirely
 contained within 
 a single coarser grid, referred to as the {\em parent}
 grid.  The finer nested grids are referred to as {\em child} grids.
-Using this terminology, children are also parents when multiple levels
+Using this terminology, child domains may also be parent domains when multiple levels
 of nesting are used.  The fine grids may be telescoped to any depth (i.e., 
 a
 parent grid may contain one or more child grids, each of which in turn
 may successively contain one or more child grids; Fig.
 \ref{figure:nest_domains}a), and several fine grids may share the
 same parent at the same level of nesting (Fig.
-\ref{figure:nest_domains}b).  
+\ref{figure:nest_domains}b). Currently, the software limit for the number of subdomains is 
+ten levels of nesting, but the practical limit is much smaller.
 Any valid fine grid may either be a static domain or a moving nest
-(with either prescribed incremental shifts, or with automatic moves
-via a vortex-following algorithm, such as tracking the minimum of the 500 hPa height).  
-The ARW does not permit overlapping
-grids where a coarse grid point is contained within more than a
+(with either prescribed incremental shifts or with automatic moves
+via a vortex following algorithm, such as tracking the minimum of the 500 mb height).  
+ARW does not permit overlapping
+grids, where a coarse grid point is contained within more than a
 single child grid (i.e., both of which are at the same nest level with respect
 to the parent; Fig. \ref{figure:nest_domains}c).  In addition, no grid can have
 more than a single parent (Fig. \ref{figure:nest_domains}d).  For global domains, a
@@ -181,7 +182,7 @@ specifics for fine-grid
 domains (initialization, feedback, configurations, staggering,
 lateral boundaries, etc.) also apply to moving nests.  In
 general, all nests
-in an ARW forecast are eligible to be moving nests.  The ARW
+in an ARW forecast are eligible to be moving nests.  ARW
 provides two methods to allow nests to move during model
 integration: specified and automatic.
 For both types of moving nests,
@@ -204,27 +205,27 @@ when the area of horizontal refinement is reduced in
 size to cover only the physical extent of a cyclone, and not the 
 much larger domain necessary to contain a moving system.
 The typical instance for utilizing a moving nest is during tropical
-cyclone tracking via the automatic vortex-following technique (which 
-tracks a center of lowest pressure or height, or maximum vorticity), 
-where the inner-most nest drives the moving domains.
+cyclone tracking via the automatic vortex-following technique.
+With this automated cyclone tracking, the inner-most domain
+is responsible for steering the movement of the coarser, moving grids.
 
 After a nested domain has moved a parent grid-cell distance,
 the majority of the fine-grid data in the domain is still valid.  Data 
-that is not along the outer row or column of the nested
+that are not along the outer row or column of the nested
 domain is shifted to the new location in that domain; not interpolated
 from the parent domain.
 Once a domain moves, data in the outer
-row or column falls into one of two categories: discarded data on the
+row or column fall into one of two categories: discarded data on the
 trailing edge, or horizontally interpolated data on the
 leading edge in the direction of the nest move. 
-Only topography elevation and landuse categories are eligible
-to be used as input from high-resolution files, instead of an interpolation
+Only elevation of the topography and landuse categories are eligible
+to be used as input from high-resolution files, instead of being interpolated
 from the parent domain.
 
 \section{Staggering and Feedback}
 
-The ARW uses an Arakawa-C grid-staggering.  As shown in Fig.
-\ref{figure:cg_fg}, $u$ and $v$ components 
+ARW uses an Arakawa-C grid staggering.  As shown in Fig.
+\ref{figure:cg_fg}, the $u$ and $v$ components 
 of horizontal velocity are normal to the respective faces of the 
 grid cell, and the mass/thermodynamic/scalar/chemistry variables are located 
 in the center of the cell.   
@@ -262,8 +263,18 @@ conditions for the fine-grid domain, and horizontal interpolation may entirely
 instantiate several fields on the fine-grid domain.
 Not all horizontal interpolation techniques used within the model necesssarily conserve mass.
 
+The horizontal interpolation (to instantiate a grid and to provide 
+time-dependent lateral boundaries) does not conserve mass.  The 
+feedback mechanism, for most of the unmasked fields, uses cell 
+averages (for mass/thermodynamic/scalar/chemistry quantities) and cell-face 
+averages for the horizontal momentum fields.
+
+
 Staggering defines the way that the fine grid is situated 
-on top of the coarse grid.  For all odd ratios there is a coincident 
+on top of the coarse grid.  For all odd grid-distance ratios 
+(for example, a 3:1 ratio could have a parent with a 90 km grid distance 
+and a child with a 30 km grid distance) 
+there is a coincident 
 point for each variable: a location that has the coarse grid 
 and the fine grid at the same physical point.  The location of 
 this point depends on the variable. 
@@ -502,13 +513,18 @@ Subsequent to the feedback step, the coarse grid may be optionally smoothed in t
 of the fine grid.  Two smoothers are available: a 5-point 1-2-1 smoother, and a smoother-desmoother
 with a similar stencil size.
 Both the feedback and the smoothers are run one row and column in from the 
-interface row and column of the coarse grid that is providing
-lateral boundary conditions to the fine grid.
+interface row and column of the coarse grid (the coarse grid provides
+the lateral boundary conditions to the fine grid, so the outer most row
+cannot be modified).
 
 \subsubsection{Reference State}
 When the nest is instantiated, the initial feedback ensures
 that the coarse grid is consistent with the fine grid, particularly 
+<<<<<<< HEAD
 with regard to elevation and the reference state fields inside the blended region, and for such 
+=======
+with regards to topography and the reference state fields inside the blended region, and for such 
+>>>>>>> BEFORE_KELLY_ADD_KEVIN
 terrestrial features as coasts, lakes, and islands.  The adjustment 
 of elevation in the coarse grid forces a base state recalculation.  
 The fine grid needs an initial base state calculation, and after
@@ -524,7 +540,7 @@ that described for the real-data initialization in section
 \ref{initialization_real_base_section},
 routines return 
 back to the integration step for the coarse and fine grids.
-The fine-grid data is now properly initialized for integration and
+The fine grid data are now properly initialized for integration and
 can be advanced forward one time step.
 
 \subsubsection{Integration}
@@ -533,7 +549,7 @@ The integration by grid is recursive.  At the end of each grid's time step, a ch
 is made to determine if a child grid exists for that parent and if the
 current time is bracketed by the child's start/end time.  
 This is shown in Fig. \ref{nest_domain_integration_figure}.  The integration process for the nest (step 2 under the
-while loop) is recursively calling the top step in the overall sequence as a coarse grid itself.
+while loop) recursively calls the top step in the overall sequence as a coarse grid itself.
 This is a ``depth first'' 
 traversal of the tree of grids.
 If a child grid does exist, that child grid is integrated up through the current time of 
@@ -541,14 +557,14 @@ the parent grid.
 
 \subsubsection{Interpolation Options}
 
-The parent domain (coarse grid, CG) must be interpolated to the child domain 
+Fields from the parent domain (coarse grid, CG) are interpolated to the child domain 
 (fine grid, FG) prior to the CG data being used by the FG. There are several 
 occurrences of this interpolation.
 \begin{itemize}\setlength{\parskip}{-4pt}
 \item At initialization, or upon a domain move, horizontally interpolate all 
 non-masked fields from CG to FG.
-\item At initialization, or upon a domain move, topography elevation (and 
-fields derived from topography elevation) within the FG domain are blended 
+\item At initialization or upon a domain move, topography (and 
+fields derived from topography) within the FG domain are blended 
 with data from the CG, as shown in Fig. \ref{figure:zone12}.
 \item At the completion of each CG timestep, CG fields are interpolated
 for use by the FG. This is primarily for the construction of lateral boundary 
@@ -557,5 +573,5 @@ only computed on the coarsest grid (examples include stochastic forcing and
 simple ocean models that are only defined on the outer-most domain).
 \end{itemize}
 \noindent 
-The ARW supports a number of horizontal interpolation options, available via
+ARW supports a number of horizontal interpolation options, available via
 the user-defined namelist.

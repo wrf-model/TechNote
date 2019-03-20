@@ -1,20 +1,20 @@
 \chapter{Lateral Boundary Conditions}
 \label{lbc_chap}
 
-The ARW provides several lateral boundary conditions suitable 
+ARW provides several lateral boundary conditions suitable 
 for idealized flow, in addition to a specified lateral boundary
 condition for real-data simulations.  These choices are
 handled via a run-time option in the Fortran namelist file.
 For nesting, all fine domains use the 
 nest time-dependent lateral boundary condition where the outer row and column of the
-fine grid is specified from the parent domain, described in 
+fine grid are specified from the parent domain, described in 
 Section \ref{nest-lbc}.
 The remaining lateral boundary options are exclusively 
 for use by the outer-most parent domain.
 
 \section{Periodic Lateral Boundary Conditions}
 
-Periodic lateral boundary conditions in the ARW can be specified as
+Periodic lateral boundary conditions in ARW can be specified as
 periodic in $x$ (west-east), $y$ (south-north), or doubly periodic in
 $(x,y)$.  The periodic boundary conditions constrain the solutions to be
 periodic; that is, a generic model state variable $\psi$ will follow
@@ -128,7 +128,7 @@ boundary edge.}
 
 Primarily for real-data cases, the specified boundary condition is also referred to as a
 relaxation, or nudging, boundary condition.  There are two uses of
-specified boundaries in the ARW: for the outer-most coarse grid or
+the specified boundaries in ARW: for the outer-most coarse grid or
 for the time-dependent boundaries supplied to a nested grid.
 The specified lateral boundary conditions for the nest are automatically selected for all of the
 fine grids, even if the coarse grid is using combinations
@@ -185,7 +185,7 @@ F_2 = {1 \over {50 \Delta t }} {{SpecZone + RelaxZone - n} \over {RelaxZone - 1}
 ($SpecZone + 1 \leq n \leq SpecZone + RelaxZone - 1$).
 $F_1$ and $F_2$ are
 linear ramping functions with a maximum at the first relaxation row or column 
-nearest to the coarse grid boundary (just inside the specified zone).  
+nearest to the coarse-grid boundary (just inside the specified zone).  
 These linear functions can optionally be multiplied by an
 exponential function for smoother behavior when broad boundary zones are
 needed. This is achieved through an extra factor.
@@ -215,7 +215,9 @@ Vertical velocity has a zero gradient boundary condition applied in the
 specified zone (the outer-most row and column).
 Users are able to control the behavior of the treatment of the lateral boundary conditions
 for scalar variables that are subject to transport. 
-By default, all scalars except for vapor have flow-dependent boundary
+By default, microphysical variables (except vapor) and all other scalars 
+(such as chemistry constituents, passive tracers, scheme-specific aerosols, and number concentration fields)
+have flow-dependent boundary
 conditions applied in the specified zone. This boundary condition is defined as zero-value on inflow
 and zero-gradient on outflow. Since these boundary conditions require only information from
 the interior of the grid, these scalar variables are not required to be in the lateral boundary condition file.
