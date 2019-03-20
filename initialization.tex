@@ -30,7 +30,7 @@ Data Assimilation package (see Chapter \ref{var_chap}).
 Table \ref {ideal cases table} summarizes the names of the ARW ideal test cases that
 utilize various assumptions of idealized environments.
 These test cases include
-tests with a single column model (em\_scm\_xy), 
+a single column model (em\_scm\_xy), 
 large eddy simulations (em\_les), ground fire simulations (em\_fire),
 sea breezes (em\_seabreeze2d\_x), mountain waves (em\_hill2d\_x), squall lines
 (em\_squall2d\_x, em\_squall2d\_y), supercell thunderstorms
@@ -71,9 +71,9 @@ em\_scm\_xy     &  em\_grav2d\_x      & em\_b\_wave           \cr
 
 The initial conditions for the Held-Suarez test case are analytically
 defined in the initialization routines. Other than the baroclinic wave case
-that utilizes a binary 2D profile specified in $[y,z]$, all of the rest of the
+that utilizes a binary file providing a 2D profile specified in $[y,z]$, the
 idealized ARW cases use as input a 1D sounding specified as a function of
-geometric height $z$. This text-based sounding may be
+geometric height $z$. The text file defining the sounding may be
 directly edited by the user.  
 The 1D specification of the sounding in
 these test files requires the surface values of pressure, potential
@@ -90,7 +90,7 @@ reference state used in the idealized initializations is computed using
 the input sounding from which the moisture is discarded (because the
 reference state is dry).  The perturbation state is computed using the full
 moist input sounding.  The procedure for computing the hydrostatically-balanced 
-ARW reference and perturbation state variables from the input
+ARW reference state and perturbation state variables from the input
 sounding is as follows.  First, density and both a dry and full
 hydrostatic pressure are computed from the input sounding at the input
 sounding levels $z$.  This is accomplished by integrating the
@@ -140,7 +140,7 @@ ARW's dry hydrostatic relation \eqref{pd_eq}
 is used to compute the geopotential.  This procedure is used to compute
 the reference state (based on a dry atmosphere) and the full state
 (using the full moist sounding).  The perturbation variables are
-computed as the difference between the reference and full state.  It
+computed as the difference between the reference state and full state.  It
 should also be noted that in the nonhydrostatic model integration,
 the inverse density $\alpha_d$ is diagnosed from the geopotential using
 this dry hydrostatic relation, and the pressure is diagnosed from the equation
@@ -166,7 +166,7 @@ for real-data cases.
 The WPS is a set of programs that takes
 terrestrial and meteorological data (typically in GRIB format) and transforms them for input to
 the ARW pre-processor program for real-data cases ({\it real}).
-Figure \ref {figure:WPS_real_wrf} shows the flow of data into and out of the WPS system.  
+Figure \ref {figure:WPS_real_wrf} shows the flow of data into and out of WPS.  
 The first step for the WPS is to define a physical grid (including
 the projection type, location on the globe, 
 number of grid points, nest locations, and grid distances) and
@@ -197,7 +197,7 @@ decodes GRIB data. METGRID: interpolates meteorological data to the model domain
 The input to the ARW real-data processor from 
 WPS contains 3-dimensional fields (including
 the surface) of temperature (K), relative humidity
-(%), geopotential height (m), pressure (Pa), 
+(\%), geopotential height (m), pressure (Pa), 
 and the horizontal components of momentum (m/s, already rotated to the model 
 projection).  
 The 2-dimensional static terrestrial fields include:
@@ -293,7 +293,7 @@ the reference state geopotential defined from the hydrostatic relation is
 
 The ARW real-data preprocessor, {\it real}, vertically interpolates using functions of dry pressure.
 The input data from WPS contain both a total pressure and a moisture field (typically
-relative humidity).  Starting at the top each column of input pressure data, the integrated moisture
+relative humidity).  Starting at the top of each column of input pressure data, the integrated moisture
 is subtracted from the pressure field step-wise down to the surface.  
 Then, by removing the pressure at the model
 lid, the total dry surface pressure $p_{s}$ diagnosed from WPS defines the vertical coordinate metric
@@ -312,7 +312,7 @@ surface pressure (based largely on the input surface elevation) and the ARW surf
 pressure (possibly with a much higher resolution topography).  These inconsistencies
 may lead to an extrapolation.  The default behavior for extrapolating the horizontal winds and
 the relative humidity below the known surface is to keep the values constant, with zero vertical gradient.
-For the potential temperature, by default a -6.5 $K/km$ lapse rate for the temperature is applied.
+For the potential temperature, by default a 6.5 K/km lapse rate for the temperature is applied.
 The vertical interpolation of the geopotential field is optional and is
 handled separately.  Since a known lower boundary condition exists  
 (the geopotential is defined as zero at the pressure at sea-level), no extrapolation is required.
@@ -410,7 +410,7 @@ U_t = { U_{3h} - U_{0h} \over 3h},
 \notag
 \end{equation}
 
-\noindent which would take a grid point from the initial value to the value at the next large-scale time 
+\noindent which would take a grid point from the initial value to the value at the next boundary update time 
 during 3 simulation hours.
 The horizontal momentum fields are coupled both with  $\mu_d$ and the inverse map factor.  The 
 other 3-dimensional fields ($\theta$, $q_v$, and $\phi'$) are coupled only with $\mu_d$.
@@ -423,7 +423,8 @@ The boundary values and tendencies for vertical velocity and the non-vapor moist
 in the external lateral boundary file, but act as
 place-holders for the nested boundary data for the fine grids.
 The width of the lateral
-boundary along each of the four sides is user selectable at run-time.
+boundary zone along each of the four sides is user selectable at run-time
+(as shown in Fig. \ref{figure:spec})
 
 \subsection{Masking of Surface Fields}
 
