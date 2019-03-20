@@ -449,8 +449,11 @@ used within the model.
 \section{Digital Filtering Initialization}
 
 ARW provides a digital filtering initialization (DFI) to 
-remove noise, which results from imbalances between mass and wind fields, 
-from the model initial state. DFI is applied to output from the {\it real} 
+remove noise from the model initial state.
+This noise results from imbalances between the interpolated mass and wind fields, and
+the differences between the coarser topography of the first-guess 
+data set and relatively higher resolution topography of ARW.
+DFI is applied to output from the {\it real} 
 preprocessor before the model simulation begins. If data assimilation is 
 performed using WRF-Var, DFI is applied to analysis produced by the 
 WRF-Var system, rather than the output of program {\it real}.
