@@ -291,7 +291,7 @@ the reference state geopotential defined from the hydrostatic relation is
 
 \subsection{Vertical Interpolation and Extrapolation}
 
-The ARW real-data preprocessor, {\it real}, vertically interpolates using functions of dry pressure.
+The ARW real-data preprocessor, {\it real}, vertically interpolates 3D input fields using functions of dry pressure.
 Input data from WPS contain both a total pressure and a moisture field (typically
 relative humidity).  Starting at the top of each column of input pressure data, integrated moisture
 is subtracted from the pressure field, step-wise, down to the surface.  
