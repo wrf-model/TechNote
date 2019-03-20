@@ -547,7 +547,7 @@ The integration by grid is recursive.  At the end of each grid's time step, a ch
 is made to determine if a child grid exists for that parent and if the
 current time is bracketed by the child's start/end time.  
 This is shown in Fig. \ref{nest_domain_integration_figure}.  The integration process for the nest (step 2 under the
-while loop) recursively calls the top step in the overall sequence as a coarse grid itself.
+while loop) recursively calls the top step in the overall sequence as a parent grid itself.
 This is a ``depth first'' 
 traversal of the tree of grids.
 If a child grid does exist, that child grid is integrated up through the current time of 
