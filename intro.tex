@@ -202,6 +202,8 @@ Cloud effects and surface fluxes are included.
 \setlength{\itemsep}{-5pt}
 \item{$\bullet$} Data assimilation capability merged into WRF software framework.
 %
+\item{$\bullet$} WRFPlus code (i.e., tangent linear and adjoint versions of WRF) integrated into WRF software package.
+%
 \item{$\bullet$} Incremental formulation of the model-space cost function.
 %
 \item{$\bullet$} Quasi-Newton or conjugate gradient minimization algorithms.
@@ -223,8 +225,21 @@ via a control variable transform ${\rm U}$ defined as ${\bf B}={\rm U} {\rm U}^T
 NMC-method of averaged forecast differences or suitably-averaged
 ensemble perturbations.
 %
-\item{$\bullet$} 3DVAR, 4DVAR, hybrid ensemble-3DVAR approaches available. 
-Global and regional, multi-model DA capability.
+\item{$\bullet$} 3DVAR, 4DVAR, hybrid-3DEnVar, and hybrid-4DEnVar approaches available for deterministic analysis. 
+%
+\item{$\bullet$} Capability of running hybrid-3D/4DEnVar with a dual-resolution setting (i.e., ensemble input at a lower resolution than that of deterministic background and analysis).
+%
+\item{$\bullet$} Capability of computing forecast sensitivity to observations (FSO).
+%
+\item{$\bullet$} Ensemble Transform Kalman Filter (ETKF) and ensemble of hybrid-EnVar with perturbed observations for ensemble analysis. 
+%
+\item{$\bullet$} Flexible choice of observation ingestion from research and operational data sources. 
+%
+\item{$\bullet$} Two options of fast radiative transfer model (CRTM and RTTOV) for satellite radiance data assiimilation. 
+%
+\item{$\bullet$} Capability of assimilating all-sky satellite radiance data. 
+%
+\item{$\bullet$} Multiple options of assimilating radar observations.
 %
 \end{description}
 
