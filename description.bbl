@@ -512,7 +512,7 @@ compressible nonhydrostatic equations,
 \bibitem[Klemp et al.(2008)]{klemp_et_al_2008}%
 Klemp, J. B., J. Dudhia, and A. Hassiotis, 2008:
   An Upper Gravity Wave Absorbing Layer for NWP Applications.
-  {\em Mon. Wea. Rev..}, submitted.
+  {\em Mon. Wea. Rev..}, {\bf 136}, 3987--4004.
 
 \bibitem[Knievel et~al.(2007)]{knievel.et.al.2007}
 Knievel, J.~C., G.~H. Bryan, and J.~P. Hacker, 2007: Explicit numerical
@@ -804,14 +804,13 @@ Pleim, J. E., 2006:
 {\em J. Appl. Meteor. and Clim.}, {\bf 45}, 341--347
 
 \bibitem[Pleim(2007)]{pleim07}%
-Pleim, J. E., 2007:
- A combined local and non-local closure model for the atmospheric boundary layer. Part 1: Model description and testing,
-{\em J. Appl. Meteor. and Clim.}, {\bf 46}, 1383--1395.
+Pleim, J. E., 2007: A combined local and non-local closure model for the atmospheric boundary layer. 
+Part 1: Model description and testing. {\em J. Appl. Meteor. and Climatol.}, {\bf 46}, 1383--1395.
 
 \bibitem[Pleim and Gilliam(2008)]{pleim08}%
 Pleim, J.E. and R.C. Gilliam, 2008:
  An indirect data assimilation scheme for deep soil temperature in the Pleim-Xiu land surface model. 
- Submitted to {\em J. Appl. Meteor. Climatol.}
+ {\em J. Appl. Meteor. Climatol.}, {\bf 48}, 1362--1376.
 
 \bibitem[Pleim and Xiu(1995)]{pleim95}%
 Pleim, J. E. and A. Xiu, 1995:
@@ -922,7 +921,7 @@ X.-Y. Huang, W. Wang, J. G. Powers, 2008: A Three-Dimensional
 \bibitem[Skamarock and Weisman(2008)]{skamarock-weisman-08}%
 Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
 moisture transport on NWP precipitation forecasts, 
-  {\em Mon. Wea. Rev.}: submitted.
+  {\em Mon. Wea. Rev.}: {\bf 137}, 488--494.
 
 \bibitem[Skamarock et al.(2012)]{skamarock12}%
 Skamarock, W. C, J. B. Klemp, M. G. Duda, L. Fowler, S.-H. Park, and T. D. Ringler, 2012: A Multi-scale Nonhydrostatic Atmospheric Model Using Centroidal Voronoi Tesselations and C-Grid Staggering. {\em Mon. Wea. Rev.}, {\bf 240}, 3090-3105, doi: 10.1175/MWR-D-11-00215.1.
