@@ -53,7 +53,7 @@ indices and one species index are used to carry such scalars.
 Memory, i.e., the size of the fourth dimension in these
 arrays, is allocated depending on the needs of the scheme chosen, 
 and advection of the species also applies to all those required 
-by the microphysics option. In the current version of the ARW, microphysics 
+by the microphysics option. In the current version of ARW, microphysics 
 is carried out at the end of the time-step as an adjustment process, 
 and so does not provide tendencies but directly updates the state variables. 
 The rationale for this is that 
@@ -264,7 +264,7 @@ the model can resolve the deep convective updrafts itself (e.g., $\le$ 4 km grid
 
 A few schemes have developed capability to adapt to finer grid sizes. As the grid sizes
 decrease, these schemes will reduce the effect of deep convection accordingly, or gradually turn
-off deep convection and let the shallow convection takes over.
+off deep convection and let the shallow convection take over.
 
 Note that some cumulus schemes include both deep and shallow
 convection, while others only include deep convection.
@@ -328,7 +328,7 @@ of kilometers) to convective scales (a few kilometers) \citep{zheng16}. The main
 a dynamic adjustment time scale for CAPE removal, a modified scale-dependent minimum 
 entrainment rate, and an enhanced grid-scale vertical motion using subgrid scale updraft 
 mass fluxes. The scheme also includes an option to interact with climatological 
-aerosol through an addition of subgrid-scale cloud microphysics.
+aerosol through an addition of subgrid-scale cloud microphysics \citep{glotfelty19}.
 
 \subsubsection{Kain-Fritsch Cumulus Potential Scheme}
 
@@ -650,8 +650,7 @@ land's state variables and land-surface properties, to provide heat and moisture
 fluxes over land points and sea-ice points. These fluxes provide a lower boundary 
 condition for the vertical transport done in the PBL schemes (or the vertical 
 diffusion scheme in the case where a PBL scheme is not run, such as in 
-large-eddy mode). [Note that large-eddy mode with interactive surface fluxes is 
-not yet available in the ARW, but is planned for the near future.] The land-surface 
+large-eddy mode). The land-surface 
 models have various degrees of sophistication in dealing with thermal and moisture 
 fluxes in multiple layers of the soil and also may handle vegetation, root, and 
 canopy effects and surface snow-cover prediction. The land-surface model provides 
@@ -659,7 +658,7 @@ no tendencies, but does update the land's state variables which include the grou
 temperature, soil temperature profile, soil moisture profile, snow cover, and 
 possibly canopy properties. There is no horizontal interaction between neighboring
 points in the LSM, so it can be regarded as a one-dimensional column model for
-each WRF land grid-point, and many LSMs can be run in a stand-alone mode.
+each WRF land grid-point.
 
 \subsection{5-layer thermal diffusion}
 
@@ -969,8 +968,8 @@ TOA/surface, longwave/shortwave, clearsky/allsky, upward/downward  accumulated
 fluxes for radiation budgets.
 
 Within the atmosphere the radiation responds to model-predicted 
-cloud and water vapor distributions, as well as specified carbon dioxide, 
-ozone, and (optionally) trace gas concentrations. All the radiation schemes 
+cloud and water vapor distributions, (diagnostic) cloud fraction, as well as specified carbon dioxide, 
+ozone, and (optionally) trace gas concentrations. Some schemes can handle aerosols. All the radiation schemes 
 in WRF currently are column (one-dimensional) schemes, so each column is 
 treated independently, and the fluxes correspond to those in 
 infinite horizontally uniform  planes with cloud fractions at leach layer, which
@@ -1010,7 +1009,8 @@ widely used radiative model for weather and climate applications both globally
 and regionally. The schemes use spectral bands and the k-distribution method of
 integration with look-up tables for efficiency. For clouds with cloud fractions that vary vertically it uses the 
 Monte Carlo Independent Column Approximation (MCICA) together with a 
-maximum-random overlap assumption. It can also make use of effective radii
+maximum-random overlap assumption by default (random, maximum, exponential and 
+expotential-random methods are also available). It can also make use of effective radii
 of cloud water, ice and snow if they come from the microphysics or it will use its
 own assumptions if these are not provided. It includes the effect
 of trace gases and has an option for their time variation for climate projections.
@@ -1148,7 +1148,7 @@ are kept constant between calls. This is typically done for the radiation scheme
 which are too expensive to call every timestep, and often for the cumulus schemes, for
 which it may only be necessary to update the convective columns every five minutes or so. 
 However, the surface/boundary-layer schemes are
-normally called every step in the ARW because this is likely to give the best results,
+normally called every step in ARW because this is likely to give the best results,
 but the option is available to use a less frequent call that may be useful for the more
 expensive CLM4 LSM.
 
