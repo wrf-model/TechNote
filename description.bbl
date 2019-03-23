@@ -46,7 +46,7 @@ Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data as
 Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: A Description of the
 Advanced Research WRF Version 3.
    NCAR Tech Note, NCAR/TN-475+STR,  pp. [Available from UCAR Communications, P.O.
-   Box 3000, Boulder, CO, 80307.].
+   Box 3000, Boulder, CO, 80307.]
 
 \bibitem[Barker et al.(2004)]{barker04}%
 Barker, D. M., W. Huang, Y.-R. Guo, A. Bourgeois, and X. N. Xiao, 2004: 
@@ -213,10 +213,18 @@ Deardorff, J. W., 1972 Numerical investigation of neutral and unstable
 
 \bibitem[Dee(2004)]{dee04}%
 Dee, D. P.,2004: Variational bias correction of radiance data in the ECMWF system. 
-{em In: Proc. of the ECMWF Workshop on Assimilation of High Spectral Resolution Sounders in NWP}, Reading, U. K., 28 June--1 July.
+{em In: Proc. of the ECMWF Workshop on Assimilation of High Spectral Resolution Sounders in NWP}, 
+Reading, U. K., 28 June--1 July.
 
 \bibitem[Deng et al.(2003)]{deng03}%
-Deng, A., N. L. Seaman, and J. S. Kain, 2003: A shallow-convection parameterization for mesoscale models. Part I: Submodel description and preliminary applications. J. Atmos. Sci., 60, 34–56. 
+Deng, A., N. L. Seaman, and J. S. Kain, 2003: A shallow-convection parameterization for 
+mesoscale models. Part I: Submodel description and preliminary applications. J. Atmos. Sci., 60, 34–56. 
+
+\bibitem[Deng et al.(2009)]{deng09}%
+Deng, A., D. Stauffer, B. Gaudet, J. Dudhia, C. Bruyere, W. Wu, F. Vandenberghe, Y. Liu, and A. Bourgeois, 
+2009: Update on WRF-ARW end-to-end multi-scale FDDA system.  {\em Preprints, 10th WRF Users' Workshop}, 
+23--26 June, Boulder, CO, National Center for Atmospheric Research. 1.9. 
+[Available at http://www2.mmm.ucar.edu/wrf/users/workshops/WS2009/abstracts/1-09.pdf.]
 
 \bibitem[Desroziers(1997)]{desroziers97}%
 Desroziers, G., 1997: A coordinate change for data assimilation in spherical geometry of
@@ -240,7 +248,7 @@ Dudhia, J., 1995: Reply,
 \bibitem[Dudhia et al.(2008)]{dudhia08}%
 Dudhia, J., S.-Y. Hong, and K.-S. Lim, 2008:
  A new method for representing mixed-phase particle fall speeds in bulk microphysics parameterizations. 
-  {\em J. Met. Soc. Japan}, in press.
+  {\em J. Met. Soc. Japan}, {\bf 86}, 33--44.
 
 \bibitem[Durran and Klemp(1983)]{durran_klemp83}%
 Durran, R. D., and J. B. Klemp, 1983: A compressible model for the simulation
@@ -291,6 +299,11 @@ Geer, A. J. and Bauer, P., 2011: Observation errors in all-sky data assimilation
 Gilmore, M. S., J. M. Straka, and E. N. Rasmussen, 2004: Precipitation uncertainty due to variations
  in precipitation particle parameters within a simple microphysics scheme. 
  {\em Mon. Wea. Rev.}, {\bf 132}, 2610--2627.
+
+\bibitem[Glotfelty el al.(2019)]{glotfelty19}%
+Glotfelty, T., K. Alapaty, J. He, P. Hawbecker, X. Song, and G. Zhang, 2019: 
+ The Weather Research and Forecasting Model with Aerosol Cloud Interactions 
+ (WRF-ACI): Development, Evaluation, and Initial Application. {\em Mon. Wea. Rev.}, in press.
 
 \bibitem[Grell(1993)]{grell93}%
 Grell, G. A., 1993: Prognostic evaluation of assumptions used by cumulus parameterizations. 
@@ -757,8 +770,8 @@ Ooyama K. V., 1990: A thermodynamic foundation for modeling the moist atmosphere
   Shutts, Steinheimer,, and Weisheimer}]{Pa09}
 Palmer, T.~N., R.~Buizza, F.~Doblas-Reyes, T.~Jung, M.~Leutbecher, G.~Shutts,
   M.~Steinheimer, and A.~Weisheimer, {2009}: {Stochastic Parametrization and 
-  Model Uncertainty}. \textit{{{ECMWF Technical Memorandum}}}, \textbf{{598}},
-  {available at http://www.ecmwf.int/publications/}.
+  Model Uncertainty}. \textit{{{ECMWF Technical Memorandum}}}, \textbf{{598}}.
+  [Available at http://www.ecmwf.int/publications/].
 
 \bibitem[Pan and Wu(1995)]{pan95}%
 Pan, H.-L., and W.-S. Wu, 1995: Implementing a mass flux convective parameterization package 
@@ -904,7 +917,7 @@ Skamarock, W. C., J. B. Klemp, J. Dudhia, D. O. Gill, D. M. Barker, M. G. Duda,
 X.-Y. Huang, W. Wang, J. G. Powers, 2008: A Three-Dimensional
    Variational (3DVAR) Data Assimilation System For Use With MM5. 
    NCAR Tech Note, NCAR/TN-453+STR, 113 pp. [Available from UCAR Communications, P.O.
-   Box 3000, Boulder, CO, 80307.].
+   Box 3000, Boulder, CO, 80307.]
 
 \bibitem[Skamarock and Weisman(2008)]{skamarock-weisman-08}%
 Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
