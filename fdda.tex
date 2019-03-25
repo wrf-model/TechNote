@@ -1,10 +1,10 @@
-\chapter{Four-Dimensional Data Assimilation}
+\chapter{Nudging}
 \label{fdda_chap}
 
-Four-dimensional data assimilation (FDDA), also known as nudging, is a method of keeping
+Nudging, also known as four-dimensional data assimilation (FDDA), is a method of keeping
 simulations close to analyses and/or observations or forcing data over the course of an
 integration by applying extra forcing terms to the model equations.
-There are three types of FDDA and some can be used in
+There are three types of nudging and some can be used in
 combination. Grid- or analysis-nudging simply forces the model simulation 
 towards a series of analyses grid-point by grid-point. Observational- or station-nudging
 locally forces the simulation towards observational data. 
@@ -17,9 +17,7 @@ off-line air quality or atmospheric chemistry models.
 
 \section{Grid Nudging or Analysis Nudging}
 
-Grid nudging is a component of FDDA. Other components are surface-analysis nudging, and observational nudging. The method can be used to nudge wind component u and v, temperature and water vapor mixing ratio.
-
-The grid-nudging method is specifically three-dimensional analysis nudging, whereby the atmospheric model is nudged towards time- and space-interpolated analyses using a point-by-point relaxation term. \citet{stauffer90} originally developed the technique for MM5.
+The grid-nudging method is specifically three-dimensional analysis nudging, whereby the atmospheric model is nudged towards time- and space-interpolated analyses using a point-by-point relaxation term. The method can be used to nudge wind component u and v, temperature and water vapor mixing ratio. \citet{stauffer90} originally developed the technique for MM5.
 
 The grid-nudging technique has several major uses.
 
