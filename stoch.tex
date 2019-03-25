@@ -1,5 +1,5 @@
 \chapter{Stochastic Parameterization Suite}
-\label{stoch}
+\label{stoch_chap}
 
 Physical parameterization schemes represent averages over unresolved,
 subgrid-scale processes, and those averages necessarily 
@@ -23,14 +23,14 @@ perturbation fields are generated and used to perturb tendencies or
 parameters in the physical parameterization schemes.
 The random perturbation fields are characterized by spatial and temporal
 correlations as well as an overall perturbation amplitude, which can be
-prescribed by namelist parameters. Figure \ref{stoch_pattern}
+prescribed by namelist parameters. Figure \ref{figure:stoch_pattern}
 provides an example for perturbation patterns with different spatial length-scales.
 
 %--------------------------------------------------------------------------------------------
-\begin{table}[h!]
-\label{stoch_table}
+\begin{table}
 \begin{center}
 \caption{Stochastic parameterization suite}
+\label{stoch_table}
 \begin{tabular}{ | l | l | l |}
 \hline
 Scheme          & Name & Perturbations to \\ 
@@ -61,7 +61,7 @@ ensemble spread and improved probabilistic forecast skill \citep[e.g.][]{Be15}.
   \includegraphics[width=6.5in]{figures/stoch_pattern.png}
     \caption{Perturbation patterns for three different spatial scales: 
      a) convection-scale, b) meso-scale, c) synoptic scale.}
-  \label{stoch_pattern}
+  \label{figure:stoch_pattern}
 \end{figure}
 %--------------------------------------------------------------------------------------------
 
