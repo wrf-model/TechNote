@@ -1084,10 +1084,20 @@ A correlated-k distribution method is used for the longwave scheme.
 
 \section {Physics Interactions}
 
+%
+% Figure showing physics interaction
+%
+\begin{figure}
+ \centering
+  \includegraphics[width=4.0in]{figures/physics.pdf}
+  \caption{\label{figure:physics}Diagram showing interactions between
+   various physics components.}
+\end{figure}
+
 While the model physics parameterizations are categorized in a modular way,
 it should be noted that there are many interactions between them via the
 model state variables (potential temperature, moisture, wind, etc.)
-and their tendencies, and via the surface fluxes.
+and their tendencies, and via the surface fluxes, as shown in Fig.\ref{figure:physics}.
 Table \ref {physics interaction table} summarizes how the various physics
 processes interact in the model. In the table, {\em i} indicates that the 
 state variable or flux is required input for the physics scheme, and {\em o}
