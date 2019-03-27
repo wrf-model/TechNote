@@ -43,10 +43,9 @@ Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data as
  {\em Tellus A: Dynamic Meteorology and Oceanography}, {\bf 69:1}, 1368310, DOI: 10.1080/16000870.2017.1368310.
 
 \bibitem[Barker et al.(2003)]{barker03}%
-Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: A Description of the
-Advanced Research WRF Version 3.
-   NCAR Tech Note, NCAR/TN-475+STR,  pp. [Available from UCAR Communications, P.O.
-   Box 3000, Boulder, CO, 80307.]
+Barker, D. M., W. Huang, Y.-R. Guo, and A. Bourgeois, 2003: 
+   A Three-Dimensional Variational (3DVAR) Data Assimilation System for Use with MM5.
+   NCAR Tech Note, NCAR/TN-453+STR, 68 pp, http://dx.doi.org/10.5065/D6CF9N1J. 
 
 \bibitem[Barker et al.(2004)]{barker04}%
 Barker, D. M., W. Huang, Y.-R. Guo, A. Bourgeois, and X. N. Xiao, 2004: 
@@ -172,20 +171,20 @@ Chen, Y., S. R. H. Rizvi, X.-Y. Huang, J. Min, and X. Zhang, 2013: Balance chara
 \bibitem[Chou and Suarez(1994)]{chou94}%
 Chou M.-D., and M. J. Suarez, 1994: An efficient thermal infrared radiation 
   parameterization for use in general circulation models. 
-  NASA Tech. Memo. 104606, 3, 85pp.
+  NASA Tech. Memo. 104606, 3, 85 pp.
 
 \bibitem[Chou and Suarez(1999)]{chou99}%
 Chou M.-D., and M. J. Suarez, 1999: A solar radiation parameterization for atmospheric studies.
-  NASA Tech. Memo. 104606, 15, 40pp.
+  NASA Tech. Memo. 104606, 15, 40 pp.
   
  \bibitem[Chou et al.(2001)]{chou01}%
  Chou, M. D., M. J. Suarez, X. Z. Liang, and M. M. H. Yan, 2001: A thermal infrared radiation parameterization for atmospheric studies.
-  NASA Tech. Memo. 104606, 19, 68pp.
+  NASA Tech. Memo. 104606, 19, 68 pp.
   
 \bibitem[Collins et al.(2004)]{collins04}%
 Collins, W.D. et al., 2004: 
 Description of the NCAR Community Atmosphere Model (CAM 3.0),
-NCAR Technical Note, NCAR/TN-464+STR, 226pp.
+NCAR Technical Note, NCAR/TN-464+STR, 226 pp.
 
 \bibitem[Cooper(1986)]{cooper86}%
  Cooper, W. A., 1986: Ice initiation in natural clouds.
@@ -339,7 +338,7 @@ Hacker, J.~P., C.~Snyder, S.-Y. Ha, and M.~Pocernich, 2011: Linear and
 \bibitem[Haltiner and Williams(1980)]{haltiner_and_williams}%
 Haltiner, G. J., and R. T. Williams, 1980: 
   {\em Numerical prediction and dynamic meteorology.}
-  John Wiley \& Sons, Inc., 477pp.
+  John Wiley \& Sons, Inc., 477 pp.
 
 \bibitem[Han and Pan(2011)]{han11}%
 Han, Jongil and Hua–Lu Pan, 2011: Revision of convection and vertical diffusion schemes in the 
@@ -914,9 +913,8 @@ Skamarock W. C. and J. B. Klemp, 1992: The Stability of Time-Split Numerical
 
 \bibitem[Skamarock et al.(2008)]{skamarock08}%
 Skamarock, W. C., J. B. Klemp, J. Dudhia, D. O. Gill, D. M. Barker, M. G. Duda,
-X.-Y. Huang, W. Wang, J. G. Powers, 2008: A Three-Dimensional Variational (3DVAR) 
-   Data Assimilation System For Use With MM5.  NCAR Tech Note, NCAR/TN-453+STR, 113 pp,
-   doi:10.5065/D68S4MVH.
+X.-Y. Huang, W. Wang, J. G. Powers, 2008: A Description of the Advanced Research  
+   WRF Version 3. NCAR Tech Note, NCAR/TN-475+STR, 113 pp, http://dx.doi.org/10.5065/D68S4MVH.
 
 \bibitem[Skamarock and Weisman(2008)]{skamarock-weisman-08}%
 Skamarock W. C. and M. L. Weisman, 2008: The impact of positive-definite
