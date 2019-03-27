@@ -758,7 +758,8 @@ Noilhan, J., and S. Planton, 1989:
 Oleson, K. W., et al., 2010: Technical description of version 4 of the Community Land Model (CLM). NCAR Tech. Note NCAR/TN-478+STR. 266 pp. 
 
 \bibitem[Olson et al.(2019)]{olson19}%
-J. B. Olson, J. S. Kenyon, W.. A. Angevine, J. M. Brown, M. Pagowski, and K. Su?elj, 2019: A Description of the MYNN-EDMF Scheme and
+Olson, J. B., J. S. Kenyon, W.. A. Angevine, J. M. Brown, M. Pagowski, and K. Su$\check s$elj, 2019: 
+A Description of the MYNN-EDMF Scheme and
 the Coupling to Other Components in WRF-ARW. NOAA Technical Memorandum (in preparation).
 
 \bibitem[Ooyama(1990)]{ooyama90}%
@@ -1026,11 +1027,6 @@ Vendrasco, E. P., J. Sun, D. L. Herdies, and C. F. de Angelis, 2016: Constrainin
 Walko, R. L., W. R. Cotton, M. P. Meyers, and J. Y. Harrington, 1995: Newe RAMS cloud microphysics
   parameterization. Part I: The single-moment scheme. 
   {\em Atmos. Res.,} {\bf 38}, 29--62.
-
-\bibitem[Wang et al.(2008)]{wang08}%
-Wang, W., D. Barker, C. Bruy\`ere, M. Duda, J. Dudhia, D. Gill, J. Michalakes, and S. Rizvi, 2008: 
-WRF Version 3 Modeling System User's Guide.
-  {\em http://www.mmm.ucar.edu/wrf/users/docs/user$\_$guide$\_$V3/}.
 
 \bibitem[Wang et al.(2009)]{Wang-et-al-2009}%
 Wang, H., Skamarock, W. C., Feingold, G., 2009: Evaluation of scalar advection schemes in the 
