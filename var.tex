@@ -1,15 +1,14 @@
-\chapter{WRF Data Assimilation}
+\chapter{Data Assimilation}
 \label{var_chap}
 
 An introduction to the basic ideas of variational data assimilation and
 the WRF Data Assimilation (WRFDA) system \citep{barker12} is given in this chapter, followed by a brief
 overview of recent major improvements to WRFDA.  This overview
 supplements the original description of the three-dimensional
-variational (3D-Var) algorithm found in \citet{barker04},
-and since then the WRFDA system has grown substantially with 
-many important additions.  One is a utility {\it gen$\_$be},
-for calculating background error covariances for a user's own
-application, discussed in the latter half of this chapter.
+variational (3D-Var) algorithm found in \citet{barker04} with
+several important additions and modifications, including a utility {\it gen$\_$be}
+for calculating background error covariances, several new data assimilation algorithms, and
+new and improved capabilities to assimilate satellite radiance and radar observations.
 
 \section{Introduction}
 \label{var-intro}
@@ -62,7 +61,7 @@ will be described in Section \ref{var-upgrade}.
   \centering
   \includegraphics[width=6.5in]{figures/var-sketch.pdf}
   \caption{\label{var-sketch}Sketch showing the relationship between datasets (circles), 
-           and algorithms (rectangles) of the ARW system.}
+           and algorithms (rectangles) of ARW system.}
 \end{figure}
 
 The three inputs to WRFDA are: 
@@ -70,8 +69,8 @@ The three inputs to WRFDA are:
 \vspace{0.5cm}
 
 a) First guess ${\bf x^{b}}$--- In cold-start mode, this is typically a
-forecast/analysis from another model interpolated to the ARW grid (and variables) via the 
-WRF WPS and {\it real} programs. In cycling mode, the first guess 
+forecast/analysis from another model interpolated to ARW grid (and variables) via the 
+WPS and ARW {\it real} programs. In cycling mode, the first guess 
 is a short-range (typically 1--6 hour) ARW forecast. 
 
 \vspace{0.5cm}
@@ -91,7 +90,7 @@ variational systems, these covariances are typically calculated
 off-line, and significant tuning is required to optimize performance
 for a particular application (e.g., \citet{ingleby01, wu02}). The
 amount of work required to do this satisfactorily is significant, and
-should not be underestimated. In order to assist the user, WRF
+should not be underestimated. In order to assist the user, the WRFDA
 developers supply the following: i) a default set of statistics used
 for the initial set up of a domain; ii) a utility {\it gen$\_$be}
 (described in Section
@@ -110,8 +109,8 @@ with the analysis, and surface fields (e.g. SST) are also updated in the {\it wr
 \section{Improvements to the WRFDA Algorithm}
 \label{var-upgrade}
 
-Relative to that described in the MM5 3DVAR technical note \citep{barker03} and the WRF technical note Version 3 
-\citep{skamarock08}, the latest version of WRFDA (V4.0) contains a number of improvements,
+Relative to that described in the MM5 3DVAR technical note \citep{barker03} and the ARW technical note Version 3 
+\citep{skamarock08}, the latest version of WRFDA (V4) contains a number of improvements,
 including four-dimensional variational (4D-Var) and hybrid variational/ensemble (hybrid-EnVar) data assimilation 
 techniques, the direct assimilation of satellite radiances, improvements on radar data assimilation, and more choices
 of control variables among other new capabilities. These will be briefly overviewed below and more details can be
@@ -122,20 +121,20 @@ found in cited references.
 Initial capability of 4D-Var was introduced in WRFDA 3.1 \citep{huang09}, which has been further
 improved by \citet{zhang13, zhang14a}. WRFDA 4D-Var allows the use of LBC control variables and Jc-DFI 
 (to control the gravity wave). WRFDA analysis in 4D-Var mode involves forward integration of the
-tangent linear model (TLM) and backward integration of the adjoint model (ADJ) of WRF during the minimization in the assimilation time window. 
+tangent linear model (TLM) and backward integration of the adjoint model (ADJ) of ARW during the minimization in the assimilation time window. 
 In Version 4.0, WRFPlus code (i.e., TLM/ADJ of WRF) is fully integrated into the WRF main code repository, 
 which will ease future code maintenance
 and development. While the TLM/ADJ (located under {\bf wrftladj} directory of WRF source code) of the full 
-WRF dynamics is available in WRFPlus code, only a few WRF physics schemes have corresponding TLM/ADJ, including
+ARW dynamics is available in WRFPlus code, only a few WRF physics schemes have corresponding TLM/ADJ, including
 the large-scale condensation and modified Kessler (warm-rain) \citep{wang13b} scheme for microphysics, a simplified
-cumulus parameterization scheme, vertical diffusion, and gravity wave drag. TLM/ADJ of two new features in WRF V4, 
+cumulus parameterization scheme, vertical diffusion, and gravity wave drag. TLM/ADJ of the two new features in ARW V4, 
 hybrid vertical coordinate and moist potential temperature, is not implemented yet in WRFPlus V4, but expected to
 be available in a future release.
 It is worth noting that precipitation data can be assimilated with 4D-Var since version 3.4 \citep{ban17}.
 
 The capability of computing the forecast sensitivity to observations (FSO) was also introduced in WRFDA \citep{zhang15}. 
-FSO allows the calculation of the forecast impact of different observations using the adjoint of WRF and WRFDA. 
-Notice that the Lanczos minimization algorithm needs to be used instead of the Conjugate Gradient Method when calculating FSO
+FSO allows the calculation of the forecast impact of different observations using the adjoint of ARW and WRFDA. 
+Notice that the Lanczos minimization algorithm instead of the Conjugate Gradient Method needs to be used when calculating FSO
 with WRFDA.
 
 \subsection{Hybrid variational/ensemble techniques}
@@ -149,7 +148,7 @@ Hybrid variational/ensemble data assimilation attempts to combine the benefits o
 (flow dependence and flexibility) with those of variational systems (simultaneous treatment of observations,
 dynamical/physical constraints, complex quality control, treatment of nonlinearities via an outer
 loop, etc.). The WRFDA hybrid algorithm \citep{wang08a, wang08b} adopts the so-called $\alpha$ control variable formulation, 
-implemented first at UK MetOffice. WRFDA hybrid can run in 3D (i.e., hybrid-3dEnVar) or 
+implemented first at UK MetOffice. WRFDA hybrid can run in 3D (i.e., hybrid-3DEnVar) or 
 4D (i.e., hybrid-4DEnVar) mode and allows a dual-resolution configuration \citep{schwartz15}, i.e., the deterministic
 background and analysis at high resolution and ensemble input at lower resolution. 
 
@@ -191,7 +190,7 @@ which allows the assimilation of the channels peaking above the cloud.
 In version 3.9, all-sky radiance assimilation capability was introduced for AMSR2 radiance data \citep{yang16} 
 with the development of the so-called ``symmetric error model" for all-sky data \citep{geer11}.
 
-\subsection{Radar Data Assimilation}
+\subsection{Radar data assimilation}
 
 The initial capability to assimilate Doppler radar radial velocity and reflectivity observations is available in WRFDA v3
 \citep{xiao05, xiao07, xiao072, xiao08}. In order to analyze the vertical velocity as a result of
@@ -248,11 +247,11 @@ may be more important in tropical regions.
 
 An additional cv\_options=3 is similar to cv\_options=5 except that it uses recursive filter instead of EOF decomposition
 for vertical covariance and the corresponding background error covariance statistics (provided with WRFDA release) 
-was not based upon WRF forecasts.
+was not based upon ARW forecasts.
 This option is useful when debugging code for new development (e.g., adding a new observation type), but not recommended 
 for operational setting, in which the analysis and forecast performance is critical.
 For optimal performance, it is recommended to follow the procedure described in subsection (\ref{var-b}) to
-obtain the background error covariance statistics for selected cv\_options=5, 6, or 7 with appropriate WRF model setting.
+obtain the background error covariance statistics for selected cv\_options=5, 6, or 7 with appropriate ARW model setting.
 
 In addition to five control variables whose setting is controlled by {\bf cv\_options}, WRFDA can analyze variables related
 to the hydrometeors ($qcloud$, $qrain$, $qice$, $qsnow$, and $qgraupel$) and vertical velocity $w$. These control variables
@@ -277,7 +276,7 @@ b) In Version 4.0, a divergence constraint (DIVC) term was added to model the co
 \vspace{0.5cm}
 
 c) Introduced in Version 4.0, the large scale analysis constraint (LSAC) option \citep{ven16} ensures that the convective-scale 
-analysis does not distort the underlining large-scale balance and eliminates possible large-scale bias in the WRF background. The global analysis or forecast, such as that from GFS or FNL, is treated as bogus observations and assimilated via WRFDA. The input data for LSAC is prepared using WPS/REAL, the same as preparing WRF input data.
+analysis does not distort the underlining large-scale balance and eliminates possible large-scale bias in the ARW background. The global analysis or forecast, such as that from GFS or FNL, is treated as bogus observations and assimilated via WRFDA. The input data for LSAC is prepared using WPS/REAL, the same as preparing for ARW input data.
 
 \vspace{0.5cm}
 
@@ -398,7 +397,7 @@ represented in this way.
 
 In general, the {\it stage$\_$0} converters are developed and maintained by those supporting
 individual models. Only the WRF-to-standard-fields converter {\it gen$\_$be$\_$stage0$\_$wrf} 
-is maintained and supported by the ARW effort.
+is maintained and supported by ARW effort.
 
 \subsection{Removal of time-mean}
 
