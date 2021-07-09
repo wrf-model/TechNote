@@ -234,10 +234,10 @@ handle aerosol effects. The ice is also double-moment, but also has associated s
 allow the ice-particle properties to evolve rather than imposing categories like snow, graupel and hail.
 
 \subsection {Jensen ISHMAEL microphysics}
-The ISHMAEL (Ice-Spheroids Habit Model with Aspect-ratio EvoLution) scheme \citep{jensen17} can predict ice-particle habits
-that are defined by their aspect ratios and volumes and how these develop through deposition and riming. Up to three independent
-habits are carried which contain generalized particles that represent the whole evolution from ice to snow to graupel together with their numbers
-per unit dry air mass.
+The ISHMAEL (Ice-Spheroids Habit Model with Aspect-ratio EvoLution) scheme \citep{jensen17} can predict ice-particle habits that are defined by their aspect ratios and volumes and how these develop through deposition and riming. Up to three independent habits are carried which contain generalized particles that represent the whole evolution from ice to snow to graupel together with their numbers per unit dry air mass.
+
+\subsection {National Taiwan University (NTU) microphysics scheme}
+The NTU scheme is a multi-moment microphysics scheme \citep{tsai20}. It is double-moment for liquid phase and triple moment for ice phase hydrometeors with additional consideration of ice crystal shape and density variations. The condensation nuclei and ice nuclei are tracked separately in the processes of cloud/rain activation and ice deposition-nucleation using predicted supersaturation. The triple-moment (the zeroth, second and third moments) closure is applied to the evolution of ice particle's spectrum. The classification for solid-phase hydrometeors (pristine ice, snow aggregate, rimed ice and hailstone) is redefined according to their key formation mechanisms, while the shape and apparent density of ice crystals are allowed to evolve gradually according to the growth conditions. The fall speed of each frozen particles depends on its shape and density.
 
 
 \section{Cumulus Parameterization}
@@ -938,6 +938,12 @@ and the PBL height is determined from a critical bulk Richardson number.
 It handles vertical diffusion with an implicit local scheme, and it is based 
 on local $Ri$ in the free atmosphere.
 
+\subsection {3DTKE PBL}
+This scheme is a scale-aware, three-dimensional TKE subgrid mixing scheme \citep{zhangbao18}. It extends the original 1.5-order TKE-closure subgrid model from LES (km\_opt = 2) to mesoscale. In the LES limit, this option is the same as km\_opt = 2. Going towards the mesoscale limit, the horizontal diffusion transitions to the first-order 2D Smagorinsky and a strengthening non-local term, following Shin-Hong, is added to the vertical diffusion, which is also made implicit to allow for longer time steps and thin model layers.
+
+\subsection {E-$\epsilon$ PBL}
+This scheme \citep{zhangc20} predicts TKE (E) as well as TKE dissipation rate ($\epsilon$) with a 1.5-order closure. It follows \citet{langland96} with some modification and improvements. It uses different coefficients for the epsilon equation. The scheme chooses maximum of shear production versus the sum of shear and buoyancy productions in epsilon equation to avoid oscillation, and enhances the buoyancy term in both equations when clouds are present. It also includes TKE dissipative rate as an additional heat source. A nonlocal term is considered for potential temperature and moisture in vertical mixing.
+
 \subsection {Gravity Wave Drag}
 
 For grid sizes that exceed about 10 km and for longer simulations that include significant orography,
@@ -946,6 +952,9 @@ due to unresolved mountain waves that may affect jet-stream level winds, and mou
 have a low-level flow-blocking effect. WRF has an option for these effects \citep{choi15} that uses
 sub-grid orographic data provided by {\em geogrid}. The sub-grid information includes direction-sensitive
 statistics related to the orientation of the orography.
+
+\subsection {GSL Gravity Wave Drag}
+This is an extended and scale-aware gravity-wave drag scheme developed by Global Systems Laboratory NOAA. In addition to the traditional gravity wave drag effect due to unresolved topography and low-level blocking that remain similar to the older scheme, this scheme has two parameterizations for grid sizes down to 1 km. One of these is the turbulent orographic form drag based on \citet{Beljaars-et-al-2004}, due to pressure perturbations and shape of the orography (note that this is not gravity wave drag despite being included in this option). The other parameterization is for small-scale gravity wave drag in the stable PBL \citep{Tsiringakis-et-al-2017} which allows vertical propagation of gravity waves at smaller scales. The scheme also considers ramping down the large scale gravity wave drag as the grid sizes decrease to 5 km, and the smaller scale drags are turned off at 1 km. This option uses a different set of sub-grid orographic data based on GMTED provided by {\em geogrid}.
 
 
 \section{Atmospheric Radiation}
