@@ -292,6 +292,11 @@ Gao, F., X.-Y. Huang, N. A. Jacobs, and H. Wang, 2015: Assimilation of wind spee
 results from real observation experiments. 
 {\em Tellus A}, {\bf 67}, 27132, doi:10.3402/tellusa.v67.27132.
 
+\bibitem[Gao et al.(2019)]{gao19}%
+Gao, F., Z. Liu, J. Ma, A. N. Jacobs, P. P. Childs, and H. Wang, 2019: Variational Bias Correction of 
+TAMDAR Temperature Observations in the WRF Data Assimilation System.
+ {\em Mon. Wea. Rev.}, {\bf 147}, 1927--1945.
+
 \bibitem[Geer and Bauer(2011)]{geer11}%
 Geer, A. J. and Bauer, P., 2011: Observation errors in all-sky data assimilation. 
 {\em Q. J. Roy. Meteorol. Soc.}, {\bf 137}, 2024--2037.
@@ -607,6 +612,11 @@ U.S. Army Test and Evaluation Command.  Part 1: Overview of the modeling
 system, the forecast products.  
 {\em J. Appl. Meteor. Clim.}, {\bf 47}, 1077--1092.
 
+\bibitem[Liu et al.(2020)]{liu20}%
+Liu, Z., J. Ban, J.-S. Hong, and Y.-H. Kuo, 2020: Multi-resolution incremental 4D-Var for WRF: 
+Implementation and application at convective scale.
+{\em Quart. J. Roy. Meteor. Soc.}, {\bf 146}, 3661--3674.
+
 \bibitem[Liu and Barker(2006)]{liu06}%
 Liu Z. and Barker D. M., 2006: Radiance Assimilation in WRF-Var: Implementation and Initial Results, 
 {\em Preprints, 7th WRF Users' Workshop}, Boulder, CO, National Center for Atmospheric Research.
@@ -620,7 +630,7 @@ Atlantic tropical cyclones initialized with a limited-area ensemble Kalman filte
 Lorenc, A. C., 1986: Analysis methods for numerical weather prediction. 
   {\em Quart. J. Roy. Meteor. Soc.}, {\bf 112}, 1177--1194.
   
- \bibitem[Lorente-Plazas et al.(2016)]{lorente16}%
+\bibitem[Lorente-Plazas et al.(2016)]{lorente16}%
  Lorente-Plazas, R., P. A. Jimenez, J. Dudhia, and J. P. Montavez, 2016: Evaluating and improving the
 impact of the atmospheric stability and orography on surface winds in the WRF model. 
 {\em Mon. Wea. Rev.}, {\bf 144}, 2685--2693.
@@ -982,6 +992,11 @@ Sun, J., H. Wang, W. Tong, Y. Zhang, C. Lin, and D. Xu, 2016: Comparison of the 
  Sun, S., and Y. Xue, 2001: Implementing a new snow scheme in Simplified Simple Biosphere Model (SSiB), 
  {\em Adv. Atmos. Sci.}, {\bf 18}, 335--354.
 
+\bibitem[Sun et al.(2020)]{sun20}%
+ Sun, W., Z. Liu, D. Chen, P. Zhao, and M. Chen, 2020: Development and application of the WRFDA-Chem 
+three-dimensional variational (3DVAR) system: aiming to improve air quality forecasting and diagnose model deficiencies.
+ {\em Atmos. Chem. Phys.}, {\bf 20}, 9311--9329.
+
 \bibitem[Tao and Simpson(1993)]{tao93}%
 Tao, W.-K., and J. Simpson, 1993:
  The Goddard cumulus ensemble model. Part I: Model description.
@@ -1054,6 +1069,11 @@ Wang, H., J. Sun, X. Zhang, X.-Y. Huang, and T. Auligne, 2013: Radar data assimi
 System development and preliminary testing. 
  {\em Mon. Wea. Rev.}, {\bf 141}, 2224--2244.
 
+\bibitem[Wang and Liu(2019)]{wang19}
+Wang, S. and Z. Liu, 2019: A radar reflectivity operator with ice-phase hydrometeors for variational 
+data assimilation (version 1.0) and its evaluation with real radar data.
+ {\em Geosci. Model Dev.}, {\bf 12}, 4031--4051.
+
 \bibitem[Wang et al.(2008a)]{wang08a}%
 Wang, X., D. M. Barker, C. Snyder, and T. M. Hamill, 2008: A hybrid ETKF-3DVAR data assimilation scheme for the WRF model. Part I: Observing system simulation experiment. 
 {\em Mon. Wea. Rev.}, {\bf 136}, 5116--5131.
@@ -1062,6 +1082,11 @@ Wang, X., D. M. Barker, C. Snyder, and T. M. Hamill, 2008: A hybrid ETKF-3DVAR d
 Wang, X., D. M. Barker, C. Snyder, and T. M. Hamill, 2008: A Hybrid ETKF-3DVAR Data Assimilation Scheme for the WRF Model. 
 Part II: Real Observation Experiments. 
 {\em Mon. Wea. Rev.}, {\bf 136}, 5132--5147.
+
+\bibitem[Wang et al.(2018)]{wang18}%
+Wang, Y., Z. Liu, S. Yang, J. Min, L. Chen, Y. Chen, and T. Zhang, 2018: Added value of assimilating 
+Himawari-8 AHI water vapor radiances on analyses and forecasts for "7.19" severe storm over north China.
+{\em J. Geophys. Res. Atmos.}, {\bf 123}, 3374--3394.
 
 \bibitem[Webb(1970)]{webb70}%
 Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to strong stability, 
@@ -1086,6 +1111,11 @@ Webb, E. K., 1970: Profile relationships: The log-linear range, and extension to
 Wu, W. -S., R. J. Purser, and D. F. Parrish, 2002: Three-Dimensional Variational
  Analysis with Spatially Inhomogeneous Covariances. 
   {\em Mon. Wea. Rev.}, {\bf 130}, 2905--2916.
+
+\bibitem[Wu et al.(2020)]{wu20}%
+Wu, Y., Z. Liu, and D. Li, 2020: Improving Forecasts of a Record-Breaking Rainstorm in Guangzhou 
+by Assimilating Every 10-min AHI Radiances with WRF 4DVAR
+  {\em Atmospheric Research}, {\bf 239}, 104912.
 
 \bibitem[Xiao et al. (2015)]{xiao15}%
 Xiao, H, S. Endo, M. Wong, W. C. Skamarock, J. B. Klemp, J. D. Fast, W. I. Gustafson Jr., A. M. Vogelmann, H. Wang, Y. Liu, 2015: Modifications to WRF's dynamical core to improve the treatment of  moisture for large-eddy simulations. {\em J. Adv. Model Earth Syst.}, {\bf 7}, 1627--1642. (DOI: 10.1002/2015MS000532) 
@@ -1132,6 +1162,16 @@ Xu, D., Huang, X.-Y., Liu, Z., Min, J. 2014: Comparisons of Two Cloud Detection 
 Xu, D., T. D. Auligne, and X. -Y. Huang, 2015: A validation of the multivariate and minimum residual method for cloud retrieval using radiance
  from multiple satellites. 
  {\em Advances in Atmospheric Sciences}, {\bf 32}, 349--362.
+
+\bibitem[Xu et al.(2016)]{xu16}
+Xu, D., T. D. Auligne, G. Descombes, and C. Snyder, 2016: A method for retrieving clouds with 
+satellite infrared radiances using the particle filter.
+ {\em Geosci. Model Dev.}, {\bf 9}, 3919--3932.
+
+\bibitem[Xu et al.(2021)]{xu21}
+Xu, D., Z. Liu, S. Fan, M. Chen, and F. Shen, 2021: Assimilating all-sky infrared radiances from Himawari-8 
+using the 3DVar method for the prediction of a severe storm over North China.
+ {\em Advances in Atmospheric Sciences}, {\bf 38}, 661--676.
 
 \bibitem[Xu et al.(2002)]{xu02}
 Xu, M., Y. Liu, C. Davis and T. Warner, 2002:

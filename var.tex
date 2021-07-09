@@ -132,6 +132,9 @@ hybrid vertical coordinate and moist potential temperature, is not implemented y
 be available in a future release.
 It is worth noting that precipitation data can be assimilated with 4D-Var since version 3.4 \citep{ban17}.
 
+Prior to version 4.3, WRFDA’s 4D-Var analysis can only be run at the same horizontal resolution as that of running the WRF model forecast. This limits 4D-Var’s application at high resolution due to its high computational demand. From version 4.3, an option of running incremental 4D-Var analysis (i.e., iterative minimization process) at a lower resolution than that for the model forecast is available to speed up 4D-Var and the stand-alone interpolation utility is also provided to obtain high-resolution analysis from the low-resolution analysis. With mutiple outer loops, incremental 4D-Var analysis can have gradually increased minimization resolutions for different outer loops. This new 4D-Var capability is referred to as the Multi-Resolution Incremental 4D-Var (MRI-4DVAR) and its implementation details are documented by \citet{liu20}. MRI-4DVAR was first applied to severe storm events at convective-scale \citep{liu20, wu20}).
+ 
+
 The capability of computing the forecast sensitivity to observations (FSO) was also introduced in WRFDA \citep{zhang15}. 
 FSO allows the calculation of the forecast impact of different observations using the adjoint of ARW and WRFDA. 
 Notice that the Lanczos minimization algorithm instead of the Conjugate Gradient Method needs to be used when calculating FSO
@@ -167,7 +170,8 @@ Another possibility of producing ensemble analyses is to run an ensemble of WRFD
 The capability of radiance data assimilation was introduced in WRFDA 3.1 \citep{liu06}.
 Most of the BUFR format radiance data (HIRS, AMSU-A/B, MHS, AIRS, IASI, ATMS, SSMIS, and SEVIRI) 
 used operationally in the NCEP's GFS model can be ingested by WRFDA. In addition, AMSR2 radiance data
-in HDF format \citep{yang16} and GOES-Imager radiances in NETCDF format \citep{yang17} can also be assimilated.
+in HDF format \citep{yang16} and GOES-Imager radiances  \citep{yang17} and Himawari-AHI radiances \citep{wang18, xu21}
+in NETCDF format can also be assimilated.
 The WRFDA system is unique in that it interfaces to the two most widely used fast Radiative Transfer Models (RTMs): 
 the Radiative Transfer for TOVS (RTTOV) and the Community Radiative Transfer Model (CRTM),
  developed and maintained by the European Organisation for the Exploitation of Meteorological Satellites (EUMETSAT) and
@@ -184,8 +188,8 @@ It is worth mentioning that an offline VarBC functionality is provided within WR
 coefficients without running an actual WRFDA analysis, which is useful when conducting data assimilation
 experiments for a short period \citep{liu12}.
 
-For radiance assimilation under clear-sky condition, two advanced cloud detection methods for hyperspectral infrared sensors 
-such as AIRS and IASI were implemented in WRFDA \citep{xu13, xu14, xu15, auligne14a, auligne14b}, 
+For radiance assimilation under clear-sky condition, three advanced cloud detection methods for hyperspectral infrared sensors 
+such as AIRS and IASI were implemented in WRFDA \citep{xu13, xu14, xu15, xu16, auligne14a, auligne14b}, 
 which allows the assimilation of the channels peaking above the cloud.
 In version 3.9, all-sky radiance assimilation capability was introduced for AMSR2 radiance data \citep{yang16} 
 with the development of the so-called ``symmetric error model" for all-sky data \citep{geer11}.
@@ -204,7 +208,14 @@ The observation operators for Doppler radial velocity and reflectivity are inclu
 
 Since version 3.7, WRFDA includes an additional option to assimilate radar reflectivity retrieved hydrometeor profiles 
 in 3D-Var or 4D-Var mode \citep{wang13a, wang13b, sun13}. A preliminary capability to assimilate 
-null-echo radar reflectivity is also implemented.
+null-echo radar reflectivity is also implemented. In version 4.2, a new option was introduced for directly assimilating radar reflectivity 
+using a radar operator and its TLM/ADJ, which takes into account the ice-phase hydrometeors (dry and wet snow and graupel) \citep{wang19}. 
+
+\subsection{Aerosol/Chemical data assimilation}
+
+Aerosol/Chemical data assimilation capability is added in version 4.3. Currently it allows the assimilation of 6 types of surface measurements (PM2.5, PM10, O3, CO, NO2, SO2) with 3D-Var, which can provide the analyzed initial conditions for WRF-Chem. 
+This new capability is documented by \citet{sun20}. The four gas-phase analysis variables include O3, CO, NO2 and SO2. 
+For aerosols, it works with either GOCART or MOSAIC (4 bin) aerosol scheme in WRF-Chem, consisting of either 15 or 32 species, respectively. Note that the standard gen\_be package included in WRFDA cannot obtain the background error statistics for aerosol/chemical variables. Users will need to use another standalone package https://github.com/wrf-model/GENBE\_2.0 to generate a be.dat file that contains the background errors of aerosol/chemical variables.
 
 \subsection{Choice of control variables}
 \label{var-cvs}
@@ -287,6 +298,16 @@ nonlocal operator \citep{chen09} is added in Version 4.0 with a parallelization 
 
 e) Since Version 3.5, WRFDA can assimilate wind observations in terms of wind speed and direction \citep{huang13,gao15}, 
 in addition to originally assimilating u and v components.
+
+\vspace{0.5cm}
+
+f) Version 4.2 introduced the capability for the variational bias correction of TAMDAR aircraft temperature observations \citep{gao19}.
+
+\vspace{0.5cm}
+
+g) A version of the package for the background error covariance statistics and ensemble perturbation generation (called gen\_be\_v3) 
+was introduced in version 4.2 and then updated in version 4.3. The major advantage of gen\_be\_v3 is that it is much more 
+computationally efficient than the existing gen\_be package.
 
 \section{Background Error Covariances}
 \label{var-be}
