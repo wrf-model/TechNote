@@ -37,9 +37,11 @@ Baek, S., 2017: A revised radiation package of G-packed McICA and two-stream app
 Performance evaluation in a global weather forecasting model. 
 {\em J. Adv. Model. Earth Syst.}, {\bf 9}, 1--13, doi:10.1002/2017MS000994.
 
+\bibitem[Beljaars et al.(2004)]{Beljaars-et-al-2004}%
+Beljaars A.C.M., Brown A.R., Wood N. (2004) A new parametrization of turbulent orographic form drag. {\em Q. J. R. Meteorol Soc.}, {\bf 130}, 1327–1347. doi:10.1256/qj.03.73.
+
 \bibitem[Ban et al.(2017)]{ban17}%
-Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data assimilation in WRFDA 4D-Var: implementation and
- application to convection-permitting forecasts over United States. 
+Ban, J., Z. Liu, X. Zhang, X.-Y. Huang, and H. Wang, 2017: Precipitation data assimilation in WRFDA 4D-Var: implementation and application to convection-permitting forecasts over United States. 
  {\em Tellus A: Dynamic Meteorology and Oceanography}, {\bf 69:1}, 1368310, DOI: 10.1080/16000870.2017.1368310.
 
 \bibitem[Barker et al.(2003)]{barker03}%
@@ -449,8 +451,7 @@ Janjic, Z. I., 2002: Nonsingular Implementation of the Mellor--Yamada Level 2.5 
   {\em NCEP Office Note}, {\bf No. 437}, 61 pp.
   
 \bibitem[Jensen et al.(2017)]{jensen17}
-Jensen, A. A., J. Y. Harrington,  H. Morrison, and J. A. Milbrandt, 2017: Predicting ice shape evolution in a bulk microphysics model. 
-{\em J. Atmos. Sci.}, {\bf 74}, 2081--2104, https://doi.org/10.1175/JAS-D-16-0350.1.
+Jensen, A. A., J. Y. Harrington,  H. Morrison, and J. A. Milbrandt, 2017: Predicting ice shape evolution in a bulk microphysics model. {\em J. Atmos. Sci.}, {\bf 74}, 2081--2104, https://doi.org/10.1175/JAS-D-16-0350.1.
   
 \bibitem[Jimenez et al.(2012)]{jimenez12}%
 Jimenez, P., J. Dudhia, J. F. Gonzalez-Ruoco, J. Navarro, J. P. Montavez,
@@ -540,6 +541,9 @@ Lacis, A. A., and J. E. Hansen, 1974: A parameterization for the
 \bibitem[Lang et al.(2014)]{lang14}%
 Lang, S., W.-K. Tao, J.-D. Chern, D. Wu, and X. Li, 2014: Benefits of a 4th ice class in the simulated radar reflectivities of convective systems using a bulk microphysics scheme. 
 {\em J. Atmos. Sci.}, {\bf 71}, 3583--3612, https://doi.org/10.1175/JAS-D-13-0330.1
+
+\bibitem[Langland et al.(1996)]{langland96}%
+Langland, R. H., and C. S. Liou, 1996: Implementation of an E–$\epsilon$ parameterization of vertical subgrid-scale mixing in a re- gional model. {\em Mon. Wea. Rev.}, {\bf 124}, 905–918, https://doi.org/ 10.1175/1520-0493(1996)124,0905:IOAPOV.2.0.CO;2.
 
 \bibitem[Laprise(1992)]{laprise92}%
 Laprise R., 1992: The Euler Equations of motion with hydrostatic pressure
@@ -1014,9 +1018,17 @@ Thompson, G., and T. Eidhammer, 2014: A study of aerosol impacts on clouds and p
 {\em J. Atmos. Sci.}, {\bf 71}, 3636--3658.
 
 \bibitem[Tong et al.(2016)]{tong16}%
-Tong, W., G. Li, J. Sun, X. Tang and Y. Zhang, 2016: Design Strategies of an Hourly Update 3DVAR Data Assimilation System for 
-Improved Convective Forecasting. 
+Tong, W., G. Li, J. Sun, X. Tang and Y. Zhang, 2016: Design Strategies of an Hourly Update 3DVAR 
+Data Assimilation System for Improved Convective Forecasting. 
  {\em Weather and Forecasting}, {\bf 31}, 1673--1695.
+
+\bibitem[Tsai and Chen(2020)]{tsai20}%
+Tsai, T.C. and J.P. Chen, 2020: Multi-moment ice bulk microphysics scheme with consideration for 
+particle shape and apparent density. Part I: Methodology and idealized simulation. 
+{\em J. Atmos. Sci.}, {\bf 77}, 1821–1850, doi:10.1175/JAS-D-19-0125.1.
+
+\bibitem[Tsiringakis et al.(2017)]{Tsiringakis-et-al-2017}%
+Tsiringakis, A., Steeneveld, G. J., Holtslag, A. A. M., 2017: Small-scale orographic gravity wave drag in stable boundary layers and its impact on synoptic systems and near-surface meteorology, {\em Q. J. R. Meteorol. Soc.}, {\bf 143}, 704, https://doi.org/10.1002/qj.3021.
 
 \bibitem[Vendrasco et al.(2016)]{ven16}%
 Vendrasco, E. P., J. Sun, D. L. Herdies, and C. F. de Angelis, 2016: Constraining a 3DVAR Radar Data Assimilation System with 
@@ -1034,8 +1046,7 @@ Advanced Research WRF model using large-eddy simulations of aerosol-cloud intera
  {\em Mon. Wea. Rev.}, {\bf 137}, 2547--2558.
 
 \bibitem[Wang et al.(2013a)]{wang13a}%
-Wang, H., J. Sun, S. Fan, and X.-Y. Huang, 2013: Indirect Assimilation of Radar Reflectivity with WRF 3D-Var and Its Impact on Prediction of
- Four Summertime Convective Events. 
+Wang, H., J. Sun, S. Fan, and X.-Y. Huang, 2013: Indirect Assimilation of Radar Reflectivity with WRF 3D-Var and Its Impact on Prediction of Four Summertime Convective Events. 
  {\em J. Appl. Meteor. Climatol.}, {\bf 52}, 889--902.
 
 \bibitem[Wang et al.(2013b)]{wang13b}%
@@ -1156,18 +1167,20 @@ The community Noah land surface model with multiparameterization options (Noah-M
 {\em J. Geophys. Res.}, {\bf 116}, D12110.
 
 \bibitem[Zalesak (1979)]{Zalesak-1979}%
-Zalesak, S. T., 1979:
-Fully multidimensional flux-corrected transport algorithms for fluids.
-  {\em J. Comp. Phys.}, {\bf 31}, 335–362.
+Zalesak, S. T., 1979: Fully multidimensional flux-corrected transport algorithms for fluids.
+ {\em J. Comp. Phys.}, {\bf 31}, 335–362.
 
 \bibitem[Zhang and Wang(2011)]{zhangc11}%
-Zhang, Chunxi, Yuqing Wang, and Kevin Hamilton, 2011: Improved representation of boundary layer clouds over 
+Zhang, C,, Y. Wang, and Kevin Hamilton, 2011: Improved representation of boundary layer clouds over 
   the southeast pacific in ARW–WRF using a modified Tiedtke cumulus parameterization scheme. 
   {\em Mon. Wea. Rev.}, {\bf 139}, 3489–3513. doi:10.1175/MWR-D-10-05091.1.
 
 \bibitem[Zhang and Wang(2017)]{zhangc17}%
-Zhang, C., and Y. Wang, 2017: Projected Future Changes of Tropical Cyclone Activity over the Western North and 
+Zhang, C. and Y. Wang, 2017: Projected Future Changes of Tropical Cyclone Activity over the Western North and 
   South Pacific in a 20-km-Mesh Regional Climate Model. {\em J. Climate}, {\bf 30}, 5923-5941. doi:10.1175/JCLI-D-16-0597.1.
+
+\bibitem[Zhang et al.(2020)]{zhangc20}%
+Zhang, C., Wang, Y., and Xue, M., 2020: Evaluation of an E–$\epsilon$ and Three Other Boundary Layer Parameterization Schemes in the WRF Model over the Southeast Pacific and the Southern Great Plains, {\em Mon. Wea. Rev.}, {\bf 148(3)}, 1121-1145. doi.org/10.1175/MWR-D-19-0084.1.
 
 \bibitem[Zhang and Anthes(1982)]{zhanganthes82}%
 Zhang, D.-L., and R.A. Anthes, 1982: A high-resolution model of the
@@ -1184,19 +1197,19 @@ Zhang, X., X.-Y. Huang, and N. Pan., 2013: Development of the Upgraded Tangent L
 {\em J. Atmos. Oceanic Technol.} {\bf 30}, 1180--1188.
 
 \bibitem[Zhang et al.(2014a)]{zhang14a}%
-Zhang, X., , X.-Y. Huang, J. Liu, J. Poterjoy, Y. Weng, F. Zhang, and H. Wang, 2014: Development of an Efficient Regional 
-Four-Dimensional Variational Data Assimilation System for WRF. 
+Zhang, X., , X.-Y. Huang, J. Liu, J. Poterjoy, Y. Weng, F. Zhang, and H. Wang, 2014: Development of an Efficient Regional Four-Dimensional Variational Data Assimilation System for WRF. 
 {\em J. Atmos. Oceanic Technol.}, {\bf 31}, 2777--2794.
 
 \bibitem[Zhang et al.(2014b)]{zhang14b}%
-Zhang, X.,Y.-H. Kuo, S.-Y. Chen, X.-Y. Huang, and L.F. Hsiao, 2014: Parallelization Strategies for the GPS Radio Occultation Data
- Assimilation with a Nonlocal Operator in the Weather Research and Forecasting Model. 
+Zhang, X.,Y.-H. Kuo, S.-Y. Chen, X.-Y. Huang, and L.F. Hsiao, 2014: Parallelization Strategies for the GPS Radio Occultation Data Assimilation with a Nonlocal Operator in the Weather Research and Forecasting Model. 
  {\em J. Atmos. Oceanic Technol.}, {\bf 31}, 2008--2014.
 
 \bibitem[Zhang et al.(2015)]{zhang15}%
-Zhang, X., H. Wang, X.-Y. Huang, F. Gao, and N. A. Jacobs, 2015: Using Adjoint-Based Forecast Sensitivity Method to Evaluate TAMDAR 
-  Data Impacts on Regional Forecasts. 
+Zhang, X., H. Wang, X.-Y. Huang, F. Gao, and N. A. Jacobs, 2015: Using Adjoint-Based Forecast Sensitivity Method to Evaluate TAMDAR Data Impacts on Regional Forecasts. 
   {\em Adv. Meteorol.}, {\bf 2015}, doi:10.1155/2015/427616.
+
+\bibitem[Zhang et al.(2018)]{zhangbao18}%
+Zhang, X., Bao, J., Chen, B., and Grell, E., 2018: A Three-Dimensional Scale-Adaptive Turbulent Kinetic Energy Scheme in the WRF-ARW Model. {\em Mon. Wea. Rev.}, {\bf 146(7)}, 2023-2045, https://doi.org/10.1175/MWR-D-17-0356.1.
 
 \bibitem[Zheng et al.(2016)]{zheng16}%
 Zheng, Y., K. Alapaty, J.A. Herwehe, A.D. Del Genio, and D. Niyogi, 2016: Improving high-resolution 
